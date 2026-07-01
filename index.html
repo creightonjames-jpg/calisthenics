@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0f1729">
+<title>Calisthenics</title>
+<style>
+  :root{
+    --bg:#0f1729; --panel:#182338; --panel2:#1f2d47; --line:#2c3d5c;
+    --text:#e8eef7; --muted:#8ba0c0; --accent:#4f8cff; --accent2:#2E75B6;
+    --good:#3ecb8f; --warn:#f0a03c;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;overscroll-behavior-y:none;}
+  body{padding-bottom:env(safe-area-inset-bottom);}
+  .app{max-width:520px;margin:0 auto;min-height:100vh;}
+  header{position:sticky;top:0;z-index:20;background:rgba(15,23,41,.92);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line);
+    padding:calc(env(safe-area-inset-top) + 14px) 18px 14px;}
+  .htitle{font-size:20px;font-weight:700;letter-spacing:.2px;}
+  .hsub{font-size:12px;color:var(--muted);margin-top:2px;}
+  .back{display:inline-flex;align-items:center;gap:6px;color:var(--accent);
+    font-size:15px;font-weight:600;background:none;border:none;padding:0;margin-bottom:8px;}
+  main{padding:16px;}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;
+    padding:16px;margin-bottom:12px;}
+  .daycard{display:flex;align-items:center;justify-content:space-between;
+    cursor:pointer;transition:transform .05s;}
+  .daycard:active{transform:scale(.99);}
+  .daynum{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);font-weight:700;}
+  .dayname{font-size:18px;font-weight:700;margin-top:3px;}
+  .daydesc{font-size:13px;color:var(--muted);margin-top:4px;line-height:1.4;}
+  .chev{color:var(--muted);font-size:24px;}
+  .rest{opacity:.55;}
+  .rest .daynum{color:var(--muted);}
+  .pill{display:inline-block;font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;
+    background:var(--panel2);color:var(--muted);margin-left:6px;}
+  .pill.done{background:rgba(62,203,143,.16);color:var(--good);}
+  .ex-h{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+  .ex-name{font-size:16px;font-weight:700;line-height:1.3;}
+  .ex-meta{font-size:12px;color:var(--muted);margin-top:5px;line-height:1.5;}
+  .ex-note{font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.5;
+    padding-top:8px;border-top:1px dashed var(--line);}
+  .badge{white-space:nowrap;font-size:12px;font-weight:700;color:var(--accent2);
+    background:rgba(46,117,182,.14);padding:4px 10px;border-radius:10px;}
+  .setrow{display:grid;grid-template-columns:34px 1fr 1fr 40px;gap:8px;align-items:center;margin-top:10px;}
+  .setlbl{font-size:12px;color:var(--muted);font-weight:700;text-align:center;}
+  .fieldwrap{position:relative;}
+  .field{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:10px;
+    color:var(--text);font-size:16px;font-weight:600;padding:11px 8px 11px 10px;text-align:center;
+    -moz-appearance:textfield;}
+  .field::-webkit-outer-spin-button,.field::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+  .field:focus{outline:none;border-color:var(--accent);}
+  .field::placeholder{color:#5a6d8c;font-weight:500;}
+  .funit{position:absolute;right:9px;top:50%;transform:translateY(-50%);font-size:10px;color:var(--muted);pointer-events:none;}
+  .setcheck{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);
+    background:var(--panel2);color:var(--muted);font-size:16px;display:flex;align-items:center;
+    justify-content:center;cursor:pointer;}
+  .setcheck.on{background:var(--good);color:#06231a;border-color:var(--good);font-weight:800;}
+  .fieldhead{display:grid;grid-template-columns:34px 1fr 1fr 40px;gap:8px;margin-top:12px;}
+  .fieldhead span{font-size:10px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);
+    text-align:center;font-weight:700;}
+  .last{font-size:11.5px;color:var(--muted);margin-top:10px;font-style:italic;}
+  .last b{color:var(--text);font-style:normal;}
+  .btn{display:block;width:100%;padding:14px;border-radius:12px;border:none;font-size:15px;
+    font-weight:700;cursor:pointer;margin-top:10px;}
+  .btn-a{background:var(--accent);color:#fff;}
+  .btn-g{background:var(--panel2);color:var(--text);border:1px solid var(--line);}
+  .btn-sm{font-size:13px;padding:9px 12px;width:auto;display:inline-block;margin:0;}
+  .ladder{margin-top:10px;}
+  .ladder summary{font-size:13px;font-weight:700;color:var(--accent);cursor:pointer;padding:6px 0;list-style:none;}
+  .ladder summary::-webkit-details-marker{display:none;}
+  .ladder summary::before{content:"▸ ";}
+  .ladder[open] summary::before{content:"▾ ";}
+  .lrow{display:grid;grid-template-columns:26px 1fr auto;gap:8px;font-size:12.5px;
+    padding:7px 0;border-bottom:1px solid var(--line);color:var(--muted);}
+  .lrow b{color:var(--text);}
+  .lstage{color:var(--accent2);font-weight:800;text-align:center;}
+  /* rest timer */
+  .timerbar{position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--panel);
+    border-top:1px solid var(--line);padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+    display:none;align-items:center;gap:12px;max-width:520px;margin:0 auto;}
+  .timerbar.show{display:flex;}
+  .tdisplay{font-size:30px;font-weight:800;font-variant-numeric:tabular-nums;min-width:78px;}
+  .tsub{font-size:11px;color:var(--muted);}
+  .tbtns{margin-left:auto;display:flex;gap:8px;}
+  .tbtn{background:var(--panel2);border:1px solid var(--line);color:var(--text);
+    border-radius:10px;padding:9px 14px;font-size:14px;font-weight:700;cursor:pointer;}
+  .tbtn.stop{background:var(--warn);color:#231705;border:none;}
+  .toast{position:fixed;top:calc(env(safe-area-inset-top) + 12px);left:50%;transform:translateX(-50%);
+    background:var(--good);color:#06231a;font-weight:700;font-size:13px;padding:10px 18px;
+    border-radius:20px;z-index:60;opacity:0;transition:opacity .2s;pointer-events:none;}
+  .toast.show{opacity:1;}
+  .quicktimer{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;}
+  .tp{flex:1;min-width:60px;background:var(--panel2);border:1px solid var(--line);color:var(--text);
+    border-radius:10px;padding:10px 6px;font-size:13px;font-weight:700;cursor:pointer;text-align:center;}
+  .footwrap{text-align:center;padding:18px 16px 90px;color:var(--muted);font-size:11px;}
+  .wipe{background:none;border:none;color:#5a6d8c;font-size:11px;text-decoration:underline;cursor:pointer;margin-top:6px;}
+  .intro{font-size:13px;color:var(--muted);line-height:1.5;margin:0 0 14px;}
+  .overload{background:var(--panel2);border-radius:12px;padding:12px 14px;margin-top:4px;}
+  .overload li{font-size:12.5px;color:var(--muted);margin:4px 0;line-height:1.4;}
+  .overload b{color:var(--text);}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div id="hbar"></div>
+  </header>
+  <main id="view"></main>
+  <div class="footwrap" id="foot"></div>
+</div>
+
+<div class="timerbar" id="timerbar">
+  <div>
+    <div class="tdisplay" id="tdisplay">0:00</div>
+    <div class="tsub">rest timer</div>
+  </div>
+  <div class="tbtns">
+    <button class="tbtn" id="tplus">+30s</button>
+    <button class="tbtn stop" id="tstop">Skip</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- DATA ---------- */
+const PROGRAM = {
+  days: [
+    { id:"d1", tag:"Day 1", name:"Push / Pull — Upper A", type:"work",
+      desc:"Heavy upper. Low reps, long rest, weighted.",
+      exercises:[
+        {n:"Weighted Dips", sets:4, reps:"5-8", rest:120, note:"Add vest once you clear 8 clean reps. Full depth, control the bottom."},
+        {n:"Weighted Pull-Ups", sets:4, reps:"5-8", rest:120, note:"Dead hang to chin over bar. Add vest as reps climb."},
+        {n:"Ring Push-Ups", sets:3, reps:"8-12", rest:90, note:"Turn rings out at the top. Elevate feet to make harder."},
+        {n:"Ring Rows", sets:3, reps:"8-12", rest:90, note:"Lower your feet to make harder. Chest to rings."},
+        {n:"Ring Bicep Curls", sets:3, reps:"10-15", rest:60, note:"Walk feet forward to add difficulty. Keep elbows still."},
+        {n:"Ring Tricep Extensions", sets:3, reps:"10-15", rest:60, note:"Walk feet back to add difficulty. Lock out at the top."}
+      ]},
+    { id:"d2", tag:"Day 2", name:"Legs — Squat Focus", type:"work",
+      desc:"Knee-dominant. Quads and single-leg strength.",
+      exercises:[
+        {n:"Bulgarian Split Squat", sets:4, reps:"6-10 / leg", rest:120, note:"Rear foot on a bench. Add vest to load. Main strength move."},
+        {n:"Squat Progression", sets:3, reps:"8-12", rest:90, note:"Pick your stage from the ladder. Control the full range.", ladder:"squat"},
+        {n:"Step-Ups", sets:3, reps:"10-12 / leg", rest:75, note:"Knee-height step. Drive through the heel. Add vest."},
+        {n:"Wall Sit", sets:3, reps:"30-45 sec", rest:75, note:"Thighs parallel. Vest on lap to make harder."},
+        {n:"Standing Calf Raises", sets:4, reps:"12-20", rest:60, note:"On a step for full range. One leg at a time as you progress."},
+        {n:"Hanging Knee Raises", sets:3, reps:"10-15", rest:60, note:"Knee raise station. Slow, no swing."}
+      ]},
+    { id:"rest", tag:"Day 3", name:"Rest", type:"rest",
+      desc:"Walk, mobility, or full rest." },
+    { id:"d4", tag:"Day 4", name:"Push / Pull — Upper B", type:"work",
+      desc:"Volume upper. Higher reps, shorter rest, new angles.",
+      exercises:[
+        {n:"Dips", sets:4, reps:"8-12", rest:90, note:"Bodyweight or light vest. Lean forward slightly for more chest."},
+        {n:"Pull-Ups", sets:4, reps:"8-12", rest:90, note:"Switch grip from Day 1. Try underhand or neutral."},
+        {n:"Pseudo Planche Push-Ups", sets:3, reps:"8-12", rest:75, note:"Hands by hips, lean forward. Shoulders and chest."},
+        {n:"Inverted Row, feet high", sets:3, reps:"10-15", rest:75, note:"Feet elevated. Pull to sternum, pause one second."},
+        {n:"Ring Face Pulls", sets:3, reps:"12-15", rest:60, note:"Pull to forehead, elbows high. Rear delts, upper back."},
+        {n:"Pike Push-Ups", sets:3, reps:"8-12", rest:60, note:"Hips high, head toward floor. Builds shoulders."}
+      ]},
+    { id:"d5", tag:"Day 5", name:"Legs — Hinge Focus", type:"work",
+      desc:"Hip-dominant. Hamstrings, glutes, posterior chain.",
+      exercises:[
+        {n:"Nordic Curl Progression", sets:4, reps:"5-8", rest:120, note:"Main hamstring builder. Anchor your feet. Pick your ladder stage.", ladder:"nordic"},
+        {n:"Single-Leg RDL", sets:3, reps:"8-12 / leg", rest:90, note:"Hold vest to chest. Slow hinge, feel the hamstring stretch."},
+        {n:"Ring Hamstring Curls", sets:3, reps:"10-15", rest:75, note:"Heels in rings, hips up, curl rings toward you."},
+        {n:"Glute Bridge", sets:3, reps:"12-20", rest:75, note:"Single leg or vest on hips to load. Squeeze hard at the top."},
+        {n:"Back Extension Hold", sets:3, reps:"20-30 sec", rest:60, note:"Back pad if able, or floor superman holds."},
+        {n:"Hanging Leg Raises", sets:3, reps:"8-12", rest:60, note:"Straight legs if you can. Core and hip flexors."}
+      ]},
+    { id:"opt", tag:"Optional", name:"Skill + Core", type:"work",
+      desc:"Bonus fifth day. Keep it easy. Skill practice, not fatigue.",
+      exercises:[
+        {n:"Ring Support Hold", sets:4, reps:"20-30 sec", rest:90, note:"Arms straight, rings turned out. Base for the muscle-up."},
+        {n:"Ring Muscle-Up Progression", sets:4, reps:"3-5", rest:120, note:"Practice the transition with a band or jump assist."},
+        {n:"Tuck Front Lever Hold", sets:4, reps:"10-15 sec", rest:90, note:"Knees tucked, body horizontal. Pull shoulders down."},
+        {n:"Hollow Body Hold", sets:3, reps:"20-30 sec", rest:60, note:"Lower back pressed to floor. Foundation for skills."},
+        {n:"Plank to Side Plank", sets:3, reps:"30 sec / side", rest:60, note:"Slow and controlled. Brace the whole trunk."}
+      ]}
+  ],
+  ladders:{
+    squat:{ title:"Squat Progression", rows:[
+      ["1","Bodyweight box squat to a chair","3 x 15"],
+      ["2","Full-range bodyweight squat","3 x 20"],
+      ["3","Tempo squat, 3 sec down","3 x 15"],
+      ["4","Weighted vest squat","3 x 12"],
+      ["5","Assisted pistol (hold rings)","3 x 8 / leg"],
+      ["6","Full pistol squat","3 x 5 / leg"]
+    ]},
+    nordic:{ title:"Nordic Curl Progression", rows:[
+      ["1","Ring hamstring curls (lying)","3 x 15"],
+      ["2","Negative Nordic, slow lower","3 x 5"],
+      ["3","Banded / assisted Nordic","3 x 6"],
+      ["4","Full Nordic, partial range","3 x 5"],
+      ["5","Full Nordic, full range","3 x 5-8"]
+    ]}
+  }
+};
+
+/* ---------- STORAGE ---------- */
+const KEY="calisthenics_log_v1";
+function loadAll(){ try{ return JSON.parse(localStorage.getItem(KEY))||{}; }catch(e){ return {}; } }
+function saveAll(d){ try{ localStorage.setItem(KEY, JSON.stringify(d)); }catch(e){ toast("Storage blocked"); } }
+let DB = loadAll();
+// DB shape: { "d1": { "0": {sets:[{reps,wt,done}], ts}, ... }, ... }
+
+function todayKey(){ const d=new Date(); return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate(); }
+
+/* ---------- ROUTING ---------- */
+let current=null; // day id or null for home
+function render(){ current===null ? renderHome() : renderDay(current); renderFoot(); }
+
+function renderHome(){
+  document.getElementById("hbar").innerHTML =
+    '<div class="htitle">Calisthenics</div><div class="hsub">Strength &amp; mass · 4-5 days/week</div>';
+  const v=document.getElementById("view");
+  let html='<p class="intro">Tap a day to train. Your sets, reps, and vest weight save on this phone.</p>';
+  PROGRAM.days.forEach(day=>{
+    if(day.type==="rest"){
+      html+=`<div class="card daycard rest"><div><div class="daynum">${day.tag}</div>
+        <div class="dayname">${day.name}</div><div class="daydesc">${day.desc}</div></div></div>`;
+    } else {
+      const logged = wasLoggedToday(day.id);
+      html+=`<div class="card daycard" onclick="go('${day.id}')">
+        <div><div class="daynum">${day.tag}${logged?'<span class="pill done">logged today</span>':''}</div>
+        <div class="dayname">${day.name}</div><div class="daydesc">${day.desc}</div></div>
+        <div class="chev">›</div></div>`;
+    }
+  });
+  // overload reference
+  html+=`<div class="card"><div class="ex-name" style="font-size:15px;margin-bottom:4px;">Progressive overload</div>
+    <div class="ex-meta">Make each move harder over time, in this order:</div>
+    <ul class="overload">
+      <li><b>1. Add reps</b> to the top of the range.</li>
+      <li><b>2. Add a set</b> once every set hits the top.</li>
+      <li><b>3. Slow the tempo</b> — 3 sec down, 1 sec pause.</li>
+      <li><b>4. Harder progression</b> — next ladder stage.</li>
+      <li><b>5. Add load</b> — the weighted vest.</li>
+    </ul>
+    <div class="ex-meta" style="margin-top:8px;">Leave 1-2 reps in reserve. Push the last set close to failure.</div></div>`;
+  v.innerHTML=html;
+}
+
+function renderDay(id){
+  const day=PROGRAM.days.find(d=>d.id===id);
+  document.getElementById("hbar").innerHTML =
+    `<button class="back" onclick="go(null)">‹ Days</button>
+     <div class="htitle">${day.name}</div><div class="hsub">${day.tag} · ${day.desc}</div>`;
+  const v=document.getElementById("view");
+  let html="";
+  day.exercises.forEach((ex,ei)=>{
+    const log = (DB[id]&&DB[id][ei]) ? DB[id][ei] : null;
+    html+=`<div class="card">
+      <div class="ex-h"><div class="ex-name">${ex.n}</div><div class="badge">${ex.sets} × ${ex.reps}</div></div>
+      <div class="ex-meta">Rest ${fmt(ex.rest)} between sets</div>`;
+    if(ex.ladder){
+      const L=PROGRAM.ladders[ex.ladder];
+      html+=`<details class="ladder"><summary>${L.title}</summary>`;
+      L.rows.forEach(r=>{ html+=`<div class="lrow"><span class="lstage">${r[0]}</span><span><b>${r[1]}</b></span><span>${r[2]}</span></div>`; });
+      html+=`</details>`;
+    }
+    html+=`<div class="ex-note">${ex.note}</div>`;
+    // last session
+    const prev=lastSession(id,ei);
+    if(prev){ html+=`<div class="last">Last: <b>${prev}</b></div>`; }
+    // set rows
+    html+=`<div class="fieldhead"><span></span><span>Reps</span><span>Vest</span><span>✓</span></div>`;
+    for(let s=0;s<ex.sets;s++){
+      const sv = log&&log.sets&&log.sets[s] ? log.sets[s] : {reps:"",wt:"",done:false};
+      html+=`<div class="setrow">
+        <div class="setlbl">${s+1}</div>
+        <div class="fieldwrap"><input class="field" type="number" inputmode="numeric" placeholder="—"
+           value="${sv.reps}" oninput="upd('${id}',${ei},${s},'reps',this.value)"></div>
+        <div class="fieldwrap"><input class="field" type="number" inputmode="numeric" placeholder="0"
+           value="${sv.wt}" oninput="upd('${id}',${ei},${s},'wt',this.value)"><span class="funit">lb</span></div>
+        <div class="setcheck ${sv.done?'on':''}" onclick="toggleSet('${id}',${ei},${s},${ex.rest})">${sv.done?'✓':''}</div>
+      </div>`;
+    }
+    html+=`</div>`;
+  });
+  html+=`<button class="btn btn-a" onclick="go(null)">Done for today</button>`;
+  v.innerHTML=html;
+}
+
+function renderFoot(){
+  const f=document.getElementById("foot");
+  if(current===null){
+    f.innerHTML=`Private to this phone. Nothing is shared.<br>
+      <button class="wipe" onclick="wipe()">Erase all logged data</button>`;
+  } else { f.innerHTML=""; }
+}
+
+/* ---------- HELPERS ---------- */
+function fmt(sec){ const m=Math.floor(sec/60), s=sec%60; return m?`${m}:${String(s).padStart(2,"0")}`:`${s}s`; }
+function go(id){ current=id; window.scrollTo(0,0); render(); }
+
+function ensure(id,ei){
+  if(!DB[id]) DB[id]={};
+  if(!DB[id][ei]) DB[id][ei]={sets:[],ts:null};
+}
+function upd(id,ei,s,field,val){
+  ensure(id,ei);
+  if(!DB[id][ei].sets[s]) DB[id][ei].sets[s]={reps:"",wt:"",done:false};
+  DB[id][ei].sets[s][field]=val;
+  DB[id][ei].ts=Date.now();
+  DB[id][ei].date=todayKey();
+  saveAll(DB);
+}
+function toggleSet(id,ei,s,rest){
+  ensure(id,ei);
+  if(!DB[id][ei].sets[s]) DB[id][ei].sets[s]={reps:"",wt:"",done:false};
+  const now=!DB[id][ei].sets[s].done;
+  DB[id][ei].sets[s].done=now;
+  DB[id][ei].ts=Date.now();
+  DB[id][ei].date=todayKey();
+  saveAll(DB);
+  renderDay(id);
+  if(now) startTimer(rest);
+}
+function wasLoggedToday(id){
+  if(!DB[id]) return false;
+  return Object.values(DB[id]).some(e=>e.date===todayKey() && e.sets && e.sets.some(x=>x&&(x.reps||x.done)));
+}
+function lastSession(id,ei){
+  const e=DB[id]&&DB[id][ei];
+  if(!e||!e.sets) return null;
+  const done=e.sets.filter(x=>x&&(x.reps||x.wt));
+  if(!done.length) return null;
+  const parts=done.map(x=> (x.reps||"—")+(x.wt&&x.wt!=="0"?`@${x.wt}lb`:""));
+  return parts.join(", ");
+}
+
+/* ---------- REST TIMER ---------- */
+let tRemain=0, tInt=null;
+function startTimer(sec){
+  tRemain=sec; showTimer(); paintTimer();
+  clearInterval(tInt);
+  tInt=setInterval(()=>{
+    tRemain--; paintTimer();
+    if(tRemain<=0){ clearInterval(tInt); beep(); hapticEnd(); toast("Rest done"); hideTimerSoon(); }
+  },1000);
+}
+function paintTimer(){ document.getElementById("tdisplay").textContent = tRemain>0?fmt(tRemain):"0:00"; }
+function showTimer(){ document.getElementById("timerbar").classList.add("show"); }
+function hideTimer(){ document.getElementById("timerbar").classList.remove("show"); }
+function hideTimerSoon(){ setTimeout(hideTimer,4000); }
+document.getElementById("tstop").onclick=()=>{ clearInterval(tInt); hideTimer(); };
+document.getElementById("tplus").onclick=()=>{ tRemain+=30; paintTimer(); showTimer(); };
+
+/* ---------- BEEP ---------- */
+let AC=null;
+function beep(){
+  try{
+    AC = AC || new (window.AudioContext||window.webkitAudioContext)();
+    if(AC.state==="suspended") AC.resume();
+    const tones=[0,0.18,0.36];
+    tones.forEach(off=>{
+      const o=AC.createOscillator(), g=AC.createGain();
+      o.type="sine"; o.frequency.value=880;
+      o.connect(g); g.connect(AC.destination);
+      const t=AC.currentTime+off;
+      g.gain.setValueAtTime(0.0001,t);
+      g.gain.exponentialRampToValueAtTime(0.4,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+0.15);
+      o.start(t); o.stop(t+0.16);
+    });
+  }catch(e){}
+}
+function hapticEnd(){ if(navigator.vibrate) navigator.vibrate([120,60,120]); }
+// unlock audio on first touch (iOS requirement)
+document.body.addEventListener("touchend",()=>{
+  try{ AC=AC||new (window.AudioContext||window.webkitAudioContext)(); if(AC.state==="suspended")AC.resume(); }catch(e){}
+},{once:true});
+
+/* ---------- TOAST + WIPE ---------- */
+let toastT=null;
+function toast(msg){
+  const t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show");
+  clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove("show"),1600);
+}
+function wipe(){
+  if(confirm("Erase all logged sets, reps, and weights? This cannot be undone.")){
+    DB={}; saveAll(DB); render(); toast("All data erased");
+  }
+}
+
+/* ---------- INIT ---------- */
+render();
+</script>
+</body>
+</html>
