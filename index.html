@@ -22,6 +22,10 @@
   header{position:sticky;top:0;z-index:20;background:rgba(15,23,41,.92);
     backdrop-filter:blur(8px);border-bottom:1px solid var(--line);
     padding:calc(env(safe-area-inset-top) + 14px) 18px 14px;}
+  .hrow{display:flex;align-items:flex-start;gap:12px;}
+  .menu-btn{background:none;border:none;color:var(--text);font-size:22px;line-height:1;
+    padding:2px 4px;margin-top:1px;cursor:pointer;flex:none;}
+  #hbar{flex:1;min-width:0;}
   .htitle{font-size:20px;font-weight:700;letter-spacing:.2px;}
   .hsub{font-size:12px;color:var(--muted);margin-top:2px;}
   .back{display:inline-flex;align-items:center;gap:6px;color:var(--accent);
@@ -105,16 +109,82 @@
   .overload{background:var(--panel2);border-radius:12px;padding:12px 14px;margin-top:4px;}
   .overload li{font-size:12.5px;color:var(--muted);margin:4px 0;line-height:1.4;}
   .overload b{color:var(--text);}
+  /* drawer / nav */
+  .scrim{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:45;opacity:0;
+    pointer-events:none;transition:opacity .2s;}
+  .scrim.show{opacity:1;pointer-events:auto;}
+  .drawer{position:fixed;top:0;left:0;bottom:0;width:270px;max-width:82%;background:var(--panel);
+    border-right:1px solid var(--line);z-index:50;transform:translateX(-100%);
+    transition:transform .22s ease;padding:calc(env(safe-area-inset-top) + 18px) 14px 18px;
+    display:flex;flex-direction:column;gap:2px;overflow-y:auto;}
+  .drawer.show{transform:translateX(0);}
+  .drawer-h{font-size:18px;font-weight:800;padding:4px 10px 6px;letter-spacing:.3px;}
+  .drawer-sub{font-size:11px;color:var(--muted);padding:0 10px 12px;}
+  .navitem{display:flex;align-items:center;gap:10px;background:none;border:none;color:var(--text);
+    font-size:15px;font-weight:600;text-align:left;padding:13px 10px;border-radius:10px;
+    cursor:pointer;width:100%;}
+  .navitem:active{background:var(--panel2);}
+  .navitem.active{background:var(--panel2);color:var(--accent);}
+  .navitem .ni-ico{width:20px;text-align:center;font-size:16px;flex:none;}
+  .soon-h{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;
+    letter-spacing:.8px;padding:16px 10px 4px;}
+  .soontag{margin-left:auto;font-size:9px;background:var(--panel2);color:var(--muted);
+    padding:2px 8px;border-radius:20px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;}
+  /* calendar */
+  .calhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+  .calhead .m{font-size:17px;font-weight:800;}
+  .calnav{background:var(--panel2);border:1px solid var(--line);color:var(--text);
+    border-radius:9px;width:40px;height:40px;font-size:18px;font-weight:700;cursor:pointer;}
+  .calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:8px;}
+  .caldow{text-align:center;font-size:10px;font-weight:700;color:var(--muted);
+    text-transform:uppercase;padding-bottom:2px;}
+  .calcell{aspect-ratio:1;border-radius:10px;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--muted);}
+  .calcell .num{line-height:1;}
+  .calcell.has{background:var(--panel2);color:var(--text);cursor:pointer;border:1px solid var(--line);}
+  .calcell.has:active{transform:scale(.96);}
+  .calcell.has.sel{border-color:var(--accent);background:rgba(79,140,255,.16);}
+  .calcell.today .num{color:var(--accent);font-weight:800;}
+  .caldot{width:6px;height:6px;border-radius:50%;background:var(--good);margin-top:4px;}
+  .hist-hint{text-align:center;color:var(--muted);font-size:12.5px;padding:22px 12px;line-height:1.55;}
+  .detdate{font-size:16px;font-weight:800;margin-bottom:6px;}
+  .detday{font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;
+    letter-spacing:.6px;margin:14px 0 4px;}
+  .detex{display:flex;justify-content:space-between;gap:12px;padding:8px 0;
+    border-bottom:1px solid var(--line);font-size:13px;}
+  .detex:last-child{border-bottom:none;}
+  .detexn{font-weight:600;}
+  .detexs{color:var(--muted);text-align:right;white-space:nowrap;}
+  /* placeholder */
+  .placeholder{text-align:center;padding:56px 22px;color:var(--muted);}
+  .placeholder .pico{font-size:42px;margin-bottom:14px;}
+  .placeholder h2{color:var(--text);font-size:19px;margin:0 0 8px;}
+  .placeholder p{font-size:13.5px;line-height:1.55;margin:0 auto;max-width:300px;}
 </style>
 </head>
 <body>
 <div class="app">
   <header>
-    <div id="hbar"></div>
+    <div class="hrow">
+      <button class="menu-btn" id="menuBtn" aria-label="Menu">&#9776;</button>
+      <div id="hbar"></div>
+    </div>
   </header>
   <main id="view"></main>
   <div class="footwrap" id="foot"></div>
 </div>
+
+<div class="scrim" id="scrim"></div>
+<nav class="drawer" id="drawer">
+  <div class="drawer-h">Calisthenics</div>
+  <div class="drawer-sub">Strength &amp; mass</div>
+  <button class="navitem" data-tab="train"><span class="ni-ico">&#127947;</span><span>Train</span></button>
+  <button class="navitem" data-tab="history"><span class="ni-ico">&#128197;</span><span>History</span></button>
+  <div class="soon-h">Coming soon</div>
+  <button class="navitem" data-tab="stats"><span class="ni-ico">&#128200;</span><span>Progress / Stats</span><span class="soontag">soon</span></button>
+  <button class="navitem" data-tab="pr"><span class="ni-ico">&#127942;</span><span>Personal Records</span><span class="soontag">soon</span></button>
+  <button class="navitem" data-tab="settings"><span class="ni-ico">&#9881;</span><span>Settings</span><span class="soontag">soon</span></button>
+</nav>
 
 <div class="timerbar" id="timerbar">
   <div>
@@ -205,20 +275,101 @@ const PROGRAM = {
 
 /* ---------- STORAGE ---------- */
 const KEY="calisthenics_log_v1";
+const HKEY="calisthenics_hist_v1";
 function loadAll(){ try{ return JSON.parse(localStorage.getItem(KEY))||{}; }catch(e){ return {}; } }
 function saveAll(d){ try{ localStorage.setItem(KEY, JSON.stringify(d)); }catch(e){ toast("Storage blocked"); } }
+function loadHist(){ try{ return JSON.parse(localStorage.getItem(HKEY))||{}; }catch(e){ return {}; } }
+function saveHist(){ try{ localStorage.setItem(HKEY, JSON.stringify(HIST)); }catch(e){} }
 let DB = loadAll();
-// DB shape: { "d1": { "0": {sets:[{reps,wt,done}], ts}, ... }, ... }
+let HIST = loadHist();
+// DB shape:   { "d1": { "0": {sets:[{reps,wt,done}], ts, date}, ... }, ... }
+// HIST shape: { "2026-7-1": { "d1": {tag, name, exercises:[{n, sets:[...]}], ts} }, ... }
 
 function todayKey(){ const d=new Date(); return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate(); }
 
-/* ---------- ROUTING ---------- */
-let current=null; // day id or null for home
-function render(){ current===null ? renderHome() : renderDay(current); renderFoot(); }
+/* ---------- HISTORY RECORDING ---------- */
+function snapshotDay(dayId){
+  const day=PROGRAM.days.find(d=>d.id===dayId);
+  const dd=DB[dayId];
+  if(!day||!dd) return null;
+  const exercises=[];
+  day.exercises.forEach((ex,ei)=>{
+    const e=dd[ei];
+    if(e && e.sets && e.sets.some(s=>s&&(s.reps||s.wt||s.done))){
+      exercises.push({ n:ex.n, sets:e.sets.map(s=> s?{reps:s.reps||"",wt:s.wt||"",done:!!s.done}:{reps:"",wt:"",done:false}) });
+    }
+  });
+  if(!exercises.length) return null;
+  return { tag:day.tag, name:day.name, exercises:exercises, ts:Date.now() };
+}
+function recordHistory(dayId){
+  const tk=todayKey();
+  const snap=snapshotDay(dayId);
+  if(snap){
+    if(!HIST[tk]) HIST[tk]={};
+    HIST[tk][dayId]=snap;
+  } else if(HIST[tk] && HIST[tk][dayId]){
+    delete HIST[tk][dayId];
+    if(!Object.keys(HIST[tk]).length) delete HIST[tk];
+  }
+  saveHist();
+}
+// Seed history from existing saved sessions (forward-safe: never overwrites real entries)
+function seedHistory(){
+  let changed=false;
+  Object.keys(DB).forEach(dayId=>{
+    const day=PROGRAM.days.find(d=>d.id===dayId);
+    if(!day) return;
+    const dd=DB[dayId];
+    const byDate={};
+    day.exercises.forEach((ex,ei)=>{
+      const e=dd[ei];
+      if(e && e.sets && e.sets.some(s=>s&&(s.reps||s.wt||s.done))){
+        const dk=e.date||todayKey();
+        if(!byDate[dk]) byDate[dk]=[];
+        byDate[dk].push({ n:ex.n, sets:e.sets.map(s=> s?{reps:s.reps||"",wt:s.wt||"",done:!!s.done}:{reps:"",wt:"",done:false}) });
+      }
+    });
+    Object.keys(byDate).forEach(dk=>{
+      if(!HIST[dk]) HIST[dk]={};
+      if(!HIST[dk][dayId]){
+        HIST[dk][dayId]={ tag:day.tag, name:day.name, exercises:byDate[dk], ts:Date.now() };
+        changed=true;
+      }
+    });
+  });
+  if(changed) saveHist();
+}
 
+/* ---------- ROUTING ---------- */
+let activeTab="train"; // train | history | stats | pr | settings
+let current=null;      // within train: day id, or null for the day list
+let histY, histM, selDate=null;
+(function(){ const d=new Date(); histY=d.getFullYear(); histM=d.getMonth(); })();
+
+function render(){
+  if(activeTab==="train"){ current===null ? renderHome() : renderDay(current); }
+  else if(activeTab==="history"){ renderHistory(); }
+  else { renderPlaceholder(activeTab); }
+  renderFoot();
+  syncNav();
+}
+
+/* ---------- DRAWER NAV ---------- */
+const drawerEl=document.getElementById("drawer");
+const scrimEl=document.getElementById("scrim");
+function openDrawer(){ drawerEl.classList.add("show"); scrimEl.classList.add("show"); }
+function closeDrawer(){ drawerEl.classList.remove("show"); scrimEl.classList.remove("show"); }
+document.getElementById("menuBtn").onclick=openDrawer;
+scrimEl.onclick=closeDrawer;
+function goTab(tab){ activeTab=tab; current=null; selDate=null; closeDrawer(); window.scrollTo(0,0); render(); }
+document.querySelectorAll(".navitem[data-tab]").forEach(b=>{ b.onclick=()=>goTab(b.dataset.tab); });
+function syncNav(){ document.querySelectorAll(".navitem[data-tab]").forEach(b=>{ b.classList.toggle("active", b.dataset.tab===activeTab); }); }
+
+/* ---------- TRAIN: HOME ---------- */
 function renderHome(){
   document.getElementById("hbar").innerHTML =
-    '<div class="htitle">Calisthenics</div><div class="hsub">Strength &amp; mass · 4-5 days/week</div>';
+    '<div class="htitle">Train</div><div class="hsub">Strength &amp; mass · 4-5 days/week</div>';
   const v=document.getElementById("view");
   let html='<p class="intro">Tap a day to train. Your sets, reps, and vest weight save on this phone.</p>';
   PROGRAM.days.forEach(day=>{
@@ -247,6 +398,7 @@ function renderHome(){
   v.innerHTML=html;
 }
 
+/* ---------- TRAIN: DAY ---------- */
 function renderDay(id){
   const day=PROGRAM.days.find(d=>d.id===id);
   document.getElementById("hbar").innerHTML =
@@ -288,9 +440,89 @@ function renderDay(id){
   v.innerHTML=html;
 }
 
+/* ---------- HISTORY: CALENDAR ---------- */
+const MONTHS=["January","February","March","April","May","June","July","August","September","October","November","December"];
+const DOW=["S","M","T","W","T","F","S"];
+function histKey(y,m,d){ return y+"-"+(m+1)+"-"+d; }
+function hasWorkout(key){ return !!(HIST[key] && Object.keys(HIST[key]).length); }
+
+function renderHistory(){
+  document.getElementById("hbar").innerHTML =
+    '<div class="htitle">History</div><div class="hsub">Your logged workouts</div>';
+  const v=document.getElementById("view");
+  let html=`<div class="calhead">
+    <button class="calnav" onclick="calShift(-1)">‹</button>
+    <div class="m">${MONTHS[histM]} ${histY}</div>
+    <button class="calnav" onclick="calShift(1)">›</button></div>`;
+  html+=`<div class="calgrid">`;
+  DOW.forEach(d=>{ html+=`<div class="caldow">${d}</div>`; });
+  const first=new Date(histY,histM,1).getDay();
+  const days=new Date(histY,histM+1,0).getDate();
+  for(let i=0;i<first;i++){ html+=`<div class="calcell"></div>`; }
+  const tk=todayKey();
+  for(let d=1;d<=days;d++){
+    const key=histKey(histY,histM,d);
+    const has=hasWorkout(key);
+    const isToday=key===tk;
+    const cls="calcell"+(has?" has":"")+(isToday?" today":"")+(selDate===key?" sel":"");
+    html+=`<div class="${cls}" ${has?`onclick="selectDate('${key}')"`:""}>
+      <span class="num">${d}</span>${has?'<span class="caldot"></span>':''}</div>`;
+  }
+  html+=`</div>`;
+  if(selDate && hasWorkout(selDate)){
+    html+=renderSessionDetail(selDate);
+  } else {
+    const total=Object.keys(HIST).filter(hasWorkout).length;
+    html+=`<div class="hist-hint">${ total
+      ? "Tap a highlighted day to see that workout."
+      : "No workouts logged yet. Train a day and it will show up here." }</div>`;
+  }
+  v.innerHTML=html;
+}
+function calShift(n){
+  histM+=n;
+  if(histM<0){ histM=11; histY--; }
+  if(histM>11){ histM=0; histY++; }
+  selDate=null; render();
+}
+function selectDate(key){ selDate = (selDate===key ? null : key); render(); }
+function renderSessionDetail(key){
+  const p=key.split("-");
+  const dt=new Date(Number(p[0]), Number(p[1])-1, Number(p[2]));
+  const nice=dt.toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric",year:"numeric"});
+  let h=`<div class="card"><div class="detdate">${nice}</div>`;
+  const day=HIST[key];
+  Object.keys(day).forEach(dayId=>{
+    const s=day[dayId];
+    h+=`<div class="detday">${s.name}</div>`;
+    s.exercises.forEach(ex=>{
+      const sets=ex.sets.filter(x=>x&&(x.reps||x.wt||x.done));
+      const str=sets.map(x=> (x.reps||"—") + (x.wt&&x.wt!=="0"?`@${x.wt}lb`:"") ).join(", ");
+      h+=`<div class="detex"><span class="detexn">${ex.n}</span><span class="detexs">${str||"—"}</span></div>`;
+    });
+  });
+  h+=`</div>`;
+  return h;
+}
+
+/* ---------- PLACEHOLDER TABS ---------- */
+const PLACE={
+  stats:{ ico:"📈", name:"Progress / Stats", desc:"Charts and trends over time — training volume, top sets, and personal bests. Coming soon." },
+  pr:{ ico:"🏆", name:"Personal Records", desc:"Your best reps and loads per exercise, tracked automatically as you log. Coming soon." },
+  settings:{ ico:"⚙️", name:"Settings", desc:"Units, rest-timer defaults, and data export / import for backups. Coming soon." }
+};
+function renderPlaceholder(tab){
+  const p=PLACE[tab]||{ico:"🚧",name:"Coming soon",desc:""};
+  document.getElementById("hbar").innerHTML =
+    `<div class="htitle">${p.name}</div><div class="hsub">Coming soon</div>`;
+  document.getElementById("view").innerHTML =
+    `<div class="placeholder"><div class="pico">${p.ico}</div><h2>${p.name}</h2><p>${p.desc}</p></div>`;
+}
+
+/* ---------- FOOTER ---------- */
 function renderFoot(){
   const f=document.getElementById("foot");
-  if(current===null){
+  if(activeTab==="train" && current===null){
     f.innerHTML=`Private to this phone. Nothing is shared.<br>
       <button class="wipe" onclick="wipe()">Erase all logged data</button>`;
   } else { f.innerHTML=""; }
@@ -311,6 +543,7 @@ function upd(id,ei,s,field,val){
   DB[id][ei].ts=Date.now();
   DB[id][ei].date=todayKey();
   saveAll(DB);
+  recordHistory(id);
 }
 function toggleSet(id,ei,s,rest){
   ensure(id,ei);
@@ -320,6 +553,7 @@ function toggleSet(id,ei,s,rest){
   DB[id][ei].ts=Date.now();
   DB[id][ei].date=todayKey();
   saveAll(DB);
+  recordHistory(id);
   renderDay(id);
   if(now) startTimer(rest);
 }
@@ -385,12 +619,13 @@ function toast(msg){
   clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove("show"),1600);
 }
 function wipe(){
-  if(confirm("Erase all logged sets, reps, and weights? This cannot be undone.")){
-    DB={}; saveAll(DB); render(); toast("All data erased");
+  if(confirm("Erase all logged sets, reps, weights, and workout history? This cannot be undone.")){
+    DB={}; saveAll(DB); HIST={}; saveHist(); current=null; selDate=null; render(); toast("All data erased");
   }
 }
 
 /* ---------- INIT ---------- */
+seedHistory();
 render();
 </script>
 </body>
