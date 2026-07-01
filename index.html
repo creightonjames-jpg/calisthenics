@@ -85,6 +85,12 @@
     padding:7px 0;border-bottom:1px solid var(--line);color:var(--muted);}
   .lrow b{color:var(--text);}
   .lstage{color:var(--accent2);font-weight:800;text-align:center;}
+  .ladder-stage{margin-top:12px;}
+  .ladder-stage label{font-size:10px;color:var(--muted);font-weight:700;display:block;
+    margin-bottom:5px;text-transform:uppercase;letter-spacing:.6px;}
+  .stagesel{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--text);
+    border-radius:10px;padding:11px;font-size:14px;font-weight:600;-webkit-appearance:none;appearance:none;}
+  .stagesel:focus{outline:none;border-color:var(--accent);}
   /* rest timer */
   .timerbar{position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--panel);
     border-top:1px solid var(--line);padding:12px 16px calc(12px + env(safe-area-inset-bottom));
@@ -100,9 +106,6 @@
     background:var(--good);color:#06231a;font-weight:700;font-size:13px;padding:10px 18px;
     border-radius:20px;z-index:60;opacity:0;transition:opacity .2s;pointer-events:none;}
   .toast.show{opacity:1;}
-  .quicktimer{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;}
-  .tp{flex:1;min-width:60px;background:var(--panel2);border:1px solid var(--line);color:var(--text);
-    border-radius:10px;padding:10px 6px;font-size:13px;font-weight:700;cursor:pointer;text-align:center;}
   .footwrap{text-align:center;padding:18px 16px 90px;color:var(--muted);font-size:11px;}
   .wipe{background:none;border:none;color:#5a6d8c;font-size:11px;text-decoration:underline;cursor:pointer;margin-top:6px;}
   .intro{font-size:13px;color:var(--muted);line-height:1.5;margin:0 0 14px;}
@@ -154,7 +157,47 @@
     border-bottom:1px solid var(--line);font-size:13px;}
   .detex:last-child{border-bottom:none;}
   .detexn{font-weight:600;}
+  .stg{font-size:10px;font-weight:700;color:var(--accent2);background:rgba(46,117,182,.16);
+    padding:1px 6px;border-radius:8px;margin-left:6px;}
   .detexs{color:var(--muted);text-align:right;white-space:nowrap;}
+  /* progress */
+  .progsel{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--text);
+    border-radius:10px;padding:12px;font-size:15px;font-weight:600;margin-bottom:10px;
+    -webkit-appearance:none;appearance:none;}
+  .progsel:focus{outline:none;border-color:var(--accent);}
+  .metricrow{display:flex;gap:8px;flex-wrap:wrap;}
+  .mbtn{flex:1;min-width:78px;background:var(--panel2);border:1px solid var(--line);color:var(--muted);
+    border-radius:10px;padding:9px 6px;font-size:12.5px;font-weight:700;cursor:pointer;text-align:center;}
+  .mbtn.on{background:rgba(79,140,255,.16);border-color:var(--accent);color:var(--accent);}
+  .chartwrap{background:var(--panel);border:1px solid var(--line);border-radius:16px;
+    padding:16px 14px 12px;margin-top:14px;}
+  .progsum{display:flex;align-items:baseline;gap:10px;margin-bottom:8px;flex-wrap:wrap;}
+  .progsum .big{font-size:30px;font-weight:800;line-height:1;}
+  .progsum .unit{font-size:12.5px;color:var(--muted);font-weight:600;}
+  .progsum .delta{font-size:12.5px;font-weight:700;margin-left:auto;}
+  .delta.up{color:var(--good);} .delta.down{color:var(--warn);} .delta.flat{color:var(--muted);}
+  .chart{width:100%;height:auto;display:block;margin-top:4px;}
+  .ch-line{fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round;}
+  .ch-area{fill:rgba(79,140,255,.12);stroke:none;}
+  .ch-dot{fill:var(--accent);}
+  .ch-grid{stroke:var(--line);stroke-width:1;}
+  .ch-lbl{fill:var(--muted);font-size:9px;}
+  .ch-cap{text-align:center;color:var(--muted);font-size:11px;margin-top:8px;}
+  .prog-note{font-size:12px;color:var(--muted);line-height:1.55;background:var(--panel2);
+    border-radius:12px;padding:12px 14px;margin-top:14px;}
+  .prog-note a{color:var(--accent);cursor:pointer;text-decoration:underline;}
+  .prog-empty{text-align:center;color:var(--muted);font-size:13px;padding:48px 20px;line-height:1.6;}
+  .prog-empty .pico{font-size:38px;margin-bottom:12px;}
+  /* settings */
+  .settings-field{margin-bottom:4px;}
+  .settings-field label{font-size:13px;font-weight:700;display:block;margin-bottom:8px;}
+  .settings-field .hint{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.55;}
+  .bwrow{display:flex;gap:10px;align-items:center;}
+  .bwinput{flex:1;background:var(--panel2);border:1px solid var(--line);color:var(--text);
+    border-radius:10px;padding:12px;font-size:16px;font-weight:600;-moz-appearance:textfield;}
+  .bwinput::-webkit-outer-spin-button,.bwinput::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+  .bwinput:focus{outline:none;border-color:var(--accent);}
+  .bwunit{font-size:14px;color:var(--muted);font-weight:700;}
   /* placeholder */
   .placeholder{text-align:center;padding:56px 22px;color:var(--muted);}
   .placeholder .pico{font-size:42px;margin-bottom:14px;}
@@ -180,10 +223,10 @@
   <div class="drawer-sub">Strength &amp; mass</div>
   <button class="navitem" data-tab="train"><span class="ni-ico">&#127947;</span><span>Train</span></button>
   <button class="navitem" data-tab="history"><span class="ni-ico">&#128197;</span><span>History</span></button>
+  <button class="navitem" data-tab="stats"><span class="ni-ico">&#128200;</span><span>Progress</span></button>
+  <button class="navitem" data-tab="settings"><span class="ni-ico">&#9881;</span><span>Settings</span></button>
   <div class="soon-h">Coming soon</div>
-  <button class="navitem" data-tab="stats"><span class="ni-ico">&#128200;</span><span>Progress / Stats</span><span class="soontag">soon</span></button>
   <button class="navitem" data-tab="pr"><span class="ni-ico">&#127942;</span><span>Personal Records</span><span class="soontag">soon</span></button>
-  <button class="navitem" data-tab="settings"><span class="ni-ico">&#9881;</span><span>Settings</span><span class="soontag">soon</span></button>
 </nav>
 
 <div class="timerbar" id="timerbar">
@@ -199,59 +242,63 @@
 <div class="toast" id="toast"></div>
 
 <script>
-/* ---------- DATA ---------- */
+/* ---------- DATA ----------
+   Each exercise has an optional bodyweight-load coefficient `bw` (fraction of
+   bodyweight the movement loads) and `unit` ("reps" default, or "sec" for holds).
+   These drive the estimated-1RM strength math on the Progress tab. Coefficients
+   are approximate — the SLOPE of the trend is what matters, not the absolute value. */
 const PROGRAM = {
   days: [
     { id:"d1", tag:"Day 1", name:"Push / Pull — Upper A", type:"work",
       desc:"Heavy upper. Low reps, long rest, weighted.",
       exercises:[
-        {n:"Weighted Dips", sets:4, reps:"5-8", rest:120, note:"Add vest once you clear 8 clean reps. Full depth, control the bottom."},
-        {n:"Weighted Pull-Ups", sets:4, reps:"5-8", rest:120, note:"Dead hang to chin over bar. Add vest as reps climb."},
-        {n:"Ring Push-Ups", sets:3, reps:"8-12", rest:90, note:"Turn rings out at the top. Elevate feet to make harder."},
-        {n:"Ring Rows", sets:3, reps:"8-12", rest:90, note:"Lower your feet to make harder. Chest to rings."},
-        {n:"Ring Bicep Curls", sets:3, reps:"10-15", rest:60, note:"Walk feet forward to add difficulty. Keep elbows still."},
-        {n:"Ring Tricep Extensions", sets:3, reps:"10-15", rest:60, note:"Walk feet back to add difficulty. Lock out at the top."}
+        {n:"Weighted Dips", sets:4, reps:"5-8", rest:120, bw:1.0, note:"Add vest once you clear 8 clean reps. Full depth, control the bottom."},
+        {n:"Weighted Pull-Ups", sets:4, reps:"5-8", rest:120, bw:1.0, note:"Dead hang to chin over bar. Add vest as reps climb."},
+        {n:"Ring Push-Ups", sets:3, reps:"8-12", rest:90, bw:0.65, note:"Turn rings out at the top. Elevate feet to make harder."},
+        {n:"Ring Rows", sets:3, reps:"8-12", rest:90, bw:0.6, note:"Lower your feet to make harder. Chest to rings."},
+        {n:"Ring Bicep Curls", sets:3, reps:"10-15", rest:60, bw:0.35, note:"Walk feet forward to add difficulty. Keep elbows still."},
+        {n:"Ring Tricep Extensions", sets:3, reps:"10-15", rest:60, bw:0.45, note:"Walk feet back to add difficulty. Lock out at the top."}
       ]},
     { id:"d2", tag:"Day 2", name:"Legs — Squat Focus", type:"work",
       desc:"Knee-dominant. Quads and single-leg strength.",
       exercises:[
-        {n:"Bulgarian Split Squat", sets:4, reps:"6-10 / leg", rest:120, note:"Rear foot on a bench. Add vest to load. Main strength move."},
-        {n:"Squat Progression", sets:3, reps:"8-12", rest:90, note:"Pick your stage from the ladder. Control the full range.", ladder:"squat"},
-        {n:"Step-Ups", sets:3, reps:"10-12 / leg", rest:75, note:"Knee-height step. Drive through the heel. Add vest."},
-        {n:"Wall Sit", sets:3, reps:"30-45 sec", rest:75, note:"Thighs parallel. Vest on lap to make harder."},
-        {n:"Standing Calf Raises", sets:4, reps:"12-20", rest:60, note:"On a step for full range. One leg at a time as you progress."},
-        {n:"Hanging Knee Raises", sets:3, reps:"10-15", rest:60, note:"Knee raise station. Slow, no swing."}
+        {n:"Bulgarian Split Squat", sets:4, reps:"6-10 / leg", rest:120, bw:0.85, note:"Rear foot on a bench. Add vest to load. Main strength move."},
+        {n:"Squat Progression", sets:3, reps:"8-12", rest:90, bw:0.6, ladder:"squat", note:"Pick your stage from the ladder. Control the full range."},
+        {n:"Step-Ups", sets:3, reps:"10-12 / leg", rest:75, bw:0.7, note:"Knee-height step. Drive through the heel. Add vest."},
+        {n:"Wall Sit", sets:3, reps:"30-45 sec", rest:75, bw:0.6, unit:"sec", note:"Thighs parallel. Vest on lap to make harder."},
+        {n:"Standing Calf Raises", sets:4, reps:"12-20", rest:60, bw:0.5, note:"On a step for full range. One leg at a time as you progress."},
+        {n:"Hanging Knee Raises", sets:3, reps:"10-15", rest:60, bw:0.5, note:"Knee raise station. Slow, no swing."}
       ]},
     { id:"rest", tag:"Day 3", name:"Rest", type:"rest",
       desc:"Walk, mobility, or full rest." },
     { id:"d4", tag:"Day 4", name:"Push / Pull — Upper B", type:"work",
       desc:"Volume upper. Higher reps, shorter rest, new angles.",
       exercises:[
-        {n:"Dips", sets:4, reps:"8-12", rest:90, note:"Bodyweight or light vest. Lean forward slightly for more chest."},
-        {n:"Pull-Ups", sets:4, reps:"8-12", rest:90, note:"Switch grip from Day 1. Try underhand or neutral."},
-        {n:"Pseudo Planche Push-Ups", sets:3, reps:"8-12", rest:75, note:"Hands by hips, lean forward. Shoulders and chest."},
-        {n:"Inverted Row, feet high", sets:3, reps:"10-15", rest:75, note:"Feet elevated. Pull to sternum, pause one second."},
-        {n:"Ring Face Pulls", sets:3, reps:"12-15", rest:60, note:"Pull to forehead, elbows high. Rear delts, upper back."},
-        {n:"Pike Push-Ups", sets:3, reps:"8-12", rest:60, note:"Hips high, head toward floor. Builds shoulders."}
+        {n:"Dips", sets:4, reps:"8-12", rest:90, bw:1.0, note:"Bodyweight or light vest. Lean forward slightly for more chest."},
+        {n:"Pull-Ups", sets:4, reps:"8-12", rest:90, bw:1.0, note:"Switch grip from Day 1. Try underhand or neutral."},
+        {n:"Pseudo Planche Push-Ups", sets:3, reps:"8-12", rest:75, bw:0.8, note:"Hands by hips, lean forward. Shoulders and chest."},
+        {n:"Inverted Row, feet high", sets:3, reps:"10-15", rest:75, bw:0.65, note:"Feet elevated. Pull to sternum, pause one second."},
+        {n:"Ring Face Pulls", sets:3, reps:"12-15", rest:60, bw:0.4, note:"Pull to forehead, elbows high. Rear delts, upper back."},
+        {n:"Pike Push-Ups", sets:3, reps:"8-12", rest:60, bw:0.7, note:"Hips high, head toward floor. Builds shoulders."}
       ]},
     { id:"d5", tag:"Day 5", name:"Legs — Hinge Focus", type:"work",
       desc:"Hip-dominant. Hamstrings, glutes, posterior chain.",
       exercises:[
-        {n:"Nordic Curl Progression", sets:4, reps:"5-8", rest:120, note:"Main hamstring builder. Anchor your feet. Pick your ladder stage.", ladder:"nordic"},
-        {n:"Single-Leg RDL", sets:3, reps:"8-12 / leg", rest:90, note:"Hold vest to chest. Slow hinge, feel the hamstring stretch."},
-        {n:"Ring Hamstring Curls", sets:3, reps:"10-15", rest:75, note:"Heels in rings, hips up, curl rings toward you."},
-        {n:"Glute Bridge", sets:3, reps:"12-20", rest:75, note:"Single leg or vest on hips to load. Squeeze hard at the top."},
-        {n:"Back Extension Hold", sets:3, reps:"20-30 sec", rest:60, note:"Back pad if able, or floor superman holds."},
-        {n:"Hanging Leg Raises", sets:3, reps:"8-12", rest:60, note:"Straight legs if you can. Core and hip flexors."}
+        {n:"Nordic Curl Progression", sets:4, reps:"5-8", rest:120, bw:0.9, ladder:"nordic", note:"Main hamstring builder. Anchor your feet. Pick your ladder stage."},
+        {n:"Single-Leg RDL", sets:3, reps:"8-12 / leg", rest:90, bw:0.85, note:"Hold vest to chest. Slow hinge, feel the hamstring stretch."},
+        {n:"Ring Hamstring Curls", sets:3, reps:"10-15", rest:75, bw:0.5, note:"Heels in rings, hips up, curl rings toward you."},
+        {n:"Glute Bridge", sets:3, reps:"12-20", rest:75, bw:0.6, note:"Single leg or vest on hips to load. Squeeze hard at the top."},
+        {n:"Back Extension Hold", sets:3, reps:"20-30 sec", rest:60, bw:0.5, unit:"sec", note:"Back pad if able, or floor superman holds."},
+        {n:"Hanging Leg Raises", sets:3, reps:"8-12", rest:60, bw:0.5, note:"Straight legs if you can. Core and hip flexors."}
       ]},
     { id:"opt", tag:"Optional", name:"Skill + Core", type:"work",
       desc:"Bonus fifth day. Keep it easy. Skill practice, not fatigue.",
       exercises:[
-        {n:"Ring Support Hold", sets:4, reps:"20-30 sec", rest:90, note:"Arms straight, rings turned out. Base for the muscle-up."},
-        {n:"Ring Muscle-Up Progression", sets:4, reps:"3-5", rest:120, note:"Practice the transition with a band or jump assist."},
-        {n:"Tuck Front Lever Hold", sets:4, reps:"10-15 sec", rest:90, note:"Knees tucked, body horizontal. Pull shoulders down."},
-        {n:"Hollow Body Hold", sets:3, reps:"20-30 sec", rest:60, note:"Lower back pressed to floor. Foundation for skills."},
-        {n:"Plank to Side Plank", sets:3, reps:"30 sec / side", rest:60, note:"Slow and controlled. Brace the whole trunk."}
+        {n:"Ring Support Hold", sets:4, reps:"20-30 sec", rest:90, bw:1.0, unit:"sec", note:"Arms straight, rings turned out. Base for the muscle-up."},
+        {n:"Ring Muscle-Up Progression", sets:4, reps:"3-5", rest:120, bw:1.0, note:"Practice the transition with a band or jump assist."},
+        {n:"Tuck Front Lever Hold", sets:4, reps:"10-15 sec", rest:90, bw:0.7, unit:"sec", note:"Knees tucked, body horizontal. Pull shoulders down."},
+        {n:"Hollow Body Hold", sets:3, reps:"20-30 sec", rest:60, bw:0.4, unit:"sec", note:"Lower back pressed to floor. Foundation for skills."},
+        {n:"Plank to Side Plank", sets:3, reps:"30 sec / side", rest:60, bw:0.5, unit:"sec", note:"Slow and controlled. Brace the whole trunk."}
       ]}
   ],
   ladders:{
@@ -273,17 +320,27 @@ const PROGRAM = {
   }
 };
 
+// name -> { unit, bw, ladder } lookup (fallback for older history snapshots)
+const META={};
+PROGRAM.days.forEach(d=>{ if(d.exercises) d.exercises.forEach(ex=>{
+  META[ex.n]={ unit:ex.unit||"reps", bw:ex.bw||0, ladder:ex.ladder||null };
+});});
+
 /* ---------- STORAGE ---------- */
 const KEY="calisthenics_log_v1";
 const HKEY="calisthenics_hist_v1";
+const SKEY="calisthenics_settings_v1";
 function loadAll(){ try{ return JSON.parse(localStorage.getItem(KEY))||{}; }catch(e){ return {}; } }
 function saveAll(d){ try{ localStorage.setItem(KEY, JSON.stringify(d)); }catch(e){ toast("Storage blocked"); } }
 function loadHist(){ try{ return JSON.parse(localStorage.getItem(HKEY))||{}; }catch(e){ return {}; } }
 function saveHist(){ try{ localStorage.setItem(HKEY, JSON.stringify(HIST)); }catch(e){} }
+function loadSettings(){ try{ return JSON.parse(localStorage.getItem(SKEY))||{}; }catch(e){ return {}; } }
+function saveSettings(){ try{ localStorage.setItem(SKEY, JSON.stringify(SETTINGS)); }catch(e){} }
 let DB = loadAll();
 let HIST = loadHist();
-// DB shape:   { "d1": { "0": {sets:[{reps,wt,done}], ts, date}, ... }, ... }
-// HIST shape: { "2026-7-1": { "d1": {tag, name, exercises:[{n, sets:[...]}], ts} }, ... }
+let SETTINGS = loadSettings();
+// DB shape:   { "d1": { "0": {sets:[{reps,wt,done}], ts, date, stage}, ... }, ... }
+// HIST shape: { "2026-7-1": { "d1": {tag, name, exercises:[{n, unit, bw, ladder, stage, sets:[...]}], ts} }, ... }
 
 function todayKey(){ const d=new Date(); return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate(); }
 
@@ -296,7 +353,10 @@ function snapshotDay(dayId){
   day.exercises.forEach((ex,ei)=>{
     const e=dd[ei];
     if(e && e.sets && e.sets.some(s=>s&&(s.reps||s.wt||s.done))){
-      exercises.push({ n:ex.n, sets:e.sets.map(s=> s?{reps:s.reps||"",wt:s.wt||"",done:!!s.done}:{reps:"",wt:"",done:false}) });
+      exercises.push({
+        n:ex.n, unit:ex.unit||"reps", bw:ex.bw||0, ladder:ex.ladder||null, stage:(e.stage||""),
+        sets:e.sets.map(s=> s?{reps:s.reps||"",wt:s.wt||"",done:!!s.done}:{reps:"",wt:"",done:false})
+      });
     }
   });
   if(!exercises.length) return null;
@@ -327,7 +387,10 @@ function seedHistory(){
       if(e && e.sets && e.sets.some(s=>s&&(s.reps||s.wt||s.done))){
         const dk=e.date||todayKey();
         if(!byDate[dk]) byDate[dk]=[];
-        byDate[dk].push({ n:ex.n, sets:e.sets.map(s=> s?{reps:s.reps||"",wt:s.wt||"",done:!!s.done}:{reps:"",wt:"",done:false}) });
+        byDate[dk].push({
+          n:ex.n, unit:ex.unit||"reps", bw:ex.bw||0, ladder:ex.ladder||null, stage:(e.stage||""),
+          sets:e.sets.map(s=> s?{reps:s.reps||"",wt:s.wt||"",done:!!s.done}:{reps:"",wt:"",done:false})
+        });
       }
     });
     Object.keys(byDate).forEach(dk=>{
@@ -342,14 +405,17 @@ function seedHistory(){
 }
 
 /* ---------- ROUTING ---------- */
-let activeTab="train"; // train | history | stats | pr | settings
+let activeTab="train"; // train | history | stats | settings | pr
 let current=null;      // within train: day id, or null for the day list
 let histY, histM, selDate=null;
+let progEx=null, progMetric=null;
 (function(){ const d=new Date(); histY=d.getFullYear(); histM=d.getMonth(); })();
 
 function render(){
   if(activeTab==="train"){ current===null ? renderHome() : renderDay(current); }
   else if(activeTab==="history"){ renderHistory(); }
+  else if(activeTab==="stats"){ renderProgress(); }
+  else if(activeTab==="settings"){ renderSettings(); }
   else { renderPlaceholder(activeTab); }
   renderFoot();
   syncNav();
@@ -384,7 +450,6 @@ function renderHome(){
         <div class="chev">›</div></div>`;
     }
   });
-  // overload reference
   html+=`<div class="card"><div class="ex-name" style="font-size:15px;margin-bottom:4px;">Progressive overload</div>
     <div class="ex-meta">Make each move harder over time, in this order:</div>
     <ul class="overload">
@@ -408,6 +473,7 @@ function renderDay(id){
   let html="";
   day.exercises.forEach((ex,ei)=>{
     const log = (DB[id]&&DB[id][ei]) ? DB[id][ei] : null;
+    const unitLbl = (ex.unit==="sec") ? "Secs" : "Reps";
     html+=`<div class="card">
       <div class="ex-h"><div class="ex-name">${ex.n}</div><div class="badge">${ex.sets} × ${ex.reps}</div></div>
       <div class="ex-meta">Rest ${fmt(ex.rest)} between sets</div>`;
@@ -416,13 +482,17 @@ function renderDay(id){
       html+=`<details class="ladder"><summary>${L.title}</summary>`;
       L.rows.forEach(r=>{ html+=`<div class="lrow"><span class="lstage">${r[0]}</span><span><b>${r[1]}</b></span><span>${r[2]}</span></div>`; });
       html+=`</details>`;
+      const curStage = (log&&log.stage)||"";
+      html+=`<div class="ladder-stage"><label>Progression stage — this session</label>
+        <select class="stagesel" onchange="updStage('${id}',${ei},this.value)">
+          <option value="">— select stage —</option>`;
+      L.rows.forEach(r=>{ html+=`<option value="${r[0]}" ${curStage===r[0]?"selected":""}>Stage ${r[0]} · ${r[1]}</option>`; });
+      html+=`</select></div>`;
     }
     html+=`<div class="ex-note">${ex.note}</div>`;
-    // last session
     const prev=lastSession(id,ei);
     if(prev){ html+=`<div class="last">Last: <b>${prev}</b></div>`; }
-    // set rows
-    html+=`<div class="fieldhead"><span></span><span>Reps</span><span>Vest</span><span>✓</span></div>`;
+    html+=`<div class="fieldhead"><span></span><span>${unitLbl}</span><span>Vest</span><span>✓</span></div>`;
     for(let s=0;s<ex.sets;s++){
       const sv = log&&log.sets&&log.sets[s] ? log.sets[s] : {reps:"",wt:"",done:false};
       html+=`<div class="setrow">
@@ -445,6 +515,8 @@ const MONTHS=["January","February","March","April","May","June","July","August",
 const DOW=["S","M","T","W","T","F","S"];
 function histKey(y,m,d){ return y+"-"+(m+1)+"-"+d; }
 function hasWorkout(key){ return !!(HIST[key] && Object.keys(HIST[key]).length); }
+function parseKey(dk){ const p=dk.split("-"); return new Date(Number(p[0]),Number(p[1])-1,Number(p[2])); }
+function shortDate(dt){ return (dt.getMonth()+1)+"/"+dt.getDate(); }
 
 function renderHistory(){
   document.getElementById("hbar").innerHTML =
@@ -487,8 +559,7 @@ function calShift(n){
 }
 function selectDate(key){ selDate = (selDate===key ? null : key); render(); }
 function renderSessionDetail(key){
-  const p=key.split("-");
-  const dt=new Date(Number(p[0]), Number(p[1])-1, Number(p[2]));
+  const dt=parseKey(key);
   const nice=dt.toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric",year:"numeric"});
   let h=`<div class="card"><div class="detdate">${nice}</div>`;
   const day=HIST[key];
@@ -498,18 +569,188 @@ function renderSessionDetail(key){
     s.exercises.forEach(ex=>{
       const sets=ex.sets.filter(x=>x&&(x.reps||x.wt||x.done));
       const str=sets.map(x=> (x.reps||"—") + (x.wt&&x.wt!=="0"?`@${x.wt}lb`:"") ).join(", ");
-      h+=`<div class="detex"><span class="detexn">${ex.n}</span><span class="detexs">${str||"—"}</span></div>`;
+      const stg = ex.stage ? `<span class="stg">St ${ex.stage}</span>` : "";
+      h+=`<div class="detex"><span class="detexn">${ex.n}${stg}</span><span class="detexs">${str||"—"}</span></div>`;
     });
   });
   h+=`</div>`;
   return h;
 }
 
+/* ---------- PROGRESS ---------- */
+function exMeta(ex){
+  const m=META[ex.n]||{};
+  return {
+    unit: ex.unit||m.unit||"reps",
+    bw: (ex.bw!=null? ex.bw : (m.bw||0)),
+    ladder: ex.ladder||m.ladder||null,
+    stage: ex.stage||""
+  };
+}
+function e1rmOfSession(ex, bw){
+  const m=exMeta(ex);
+  const stageF = (m.ladder && m.stage) ? (1 + (Number(m.stage)-1)*0.18) : 1;
+  let best=0;
+  ex.sets.forEach(s=>{
+    const reps=Number(s.reps)||0;
+    if(reps<=0) return;
+    const vest=Number(s.wt)||0;
+    const load=vest + bw*m.bw*stageF;
+    const e=load*(1+reps/30);            // Epley estimated 1RM
+    if(e>best) best=e;
+  });
+  return best;
+}
+function totalReps(ex){ return ex.sets.reduce((a,s)=>a+(Number(s.reps)||0),0); }
+function bestReps(ex){ return ex.sets.reduce((mx,s)=>Math.max(mx,Number(s.reps)||0),0); }
+
+function metricValue(ex, metric, bw){
+  switch(metric){
+    case "e1rm": return Math.round(e1rmOfSession(ex,bw));
+    case "volume": return totalReps(ex);
+    case "bestset": return bestReps(ex);
+    case "besthold": return bestReps(ex);   // seconds live in the reps field
+    case "totaltime": return totalReps(ex);
+  }
+  return 0;
+}
+function metricUnitLabel(metric){
+  return { e1rm:"lb · est. 1RM", volume:"total reps", bestset:"reps · best set",
+           besthold:"sec · best hold", totaltime:"sec · total" }[metric] || "";
+}
+function metricsFor(unit, bwSet){
+  if(unit==="sec") return [ {k:"besthold",label:"Best hold"}, {k:"totaltime",label:"Total time"} ];
+  const arr=[];
+  if(bwSet) arr.push({k:"e1rm",label:"Est. 1RM"});
+  arr.push({k:"volume",label:"Total reps"});
+  arr.push({k:"bestset",label:"Best set"});
+  return arr;
+}
+function progExercises(){
+  const inHist={};
+  Object.keys(HIST).forEach(dk=>{ const day=HIST[dk]; Object.keys(day).forEach(id=>{
+    day[id].exercises.forEach(ex=>{ inHist[ex.n]=true; }); }); });
+  const ordered=[];
+  PROGRAM.days.forEach(d=>{ if(d.exercises) d.exercises.forEach(ex=>{
+    if(inHist[ex.n] && ordered.indexOf(ex.n)<0) ordered.push(ex.n); }); });
+  Object.keys(inHist).forEach(n=>{ if(ordered.indexOf(n)<0) ordered.push(n); });
+  return ordered;
+}
+function exerciseSeries(name){
+  const out=[];
+  Object.keys(HIST).forEach(dk=>{
+    const day=HIST[dk];
+    Object.keys(day).forEach(id=>{
+      day[id].exercises.forEach(ex=>{ if(ex.n===name) out.push({ dt:parseKey(dk), ex }); });
+    });
+  });
+  out.sort((a,b)=>a.dt-b.dt);
+  return out;
+}
+function fmtNum(n){ n=Number(n); if(!isFinite(n)) return "0"; return String(Math.round(n)); }
+
+function lineChart(vals, labels){
+  const W=340,H=180,pL=12,pR=14,pT=18,pB=26;
+  const n=vals.length;
+  const plotW=W-pL-pR, plotH=H-pT-pB, baseY=pT+plotH;
+  let mn=Math.min.apply(null,vals), mx=Math.max.apply(null,vals);
+  if(mn===mx){ const pad=Math.abs(mn)*0.1||1; mn-=pad; mx+=pad; }
+  const X=i=> n>1 ? pL + i*(plotW/(n-1)) : pL+plotW/2;
+  const Y=v=> pT + (1-(v-mn)/(mx-mn))*plotH;
+  const pts=vals.map((v,i)=>`${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join(" ");
+  let svg=`<svg class="chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">`;
+  svg+=`<line class="ch-grid" x1="${pL}" y1="${baseY.toFixed(1)}" x2="${(pL+plotW).toFixed(1)}" y2="${baseY.toFixed(1)}"/>`;
+  if(n>1){
+    svg+=`<polygon class="ch-area" points="${X(0).toFixed(1)},${baseY.toFixed(1)} ${pts} ${X(n-1).toFixed(1)},${baseY.toFixed(1)}"/>`;
+    svg+=`<polyline class="ch-line" points="${pts}"/>`;
+  }
+  vals.forEach((v,i)=>{ svg+=`<circle class="ch-dot" cx="${X(i).toFixed(1)}" cy="${Y(v).toFixed(1)}" r="3.2"/>`; });
+  svg+=`<text class="ch-lbl" x="${pL}" y="${(pT-6).toFixed(1)}">${fmtNum(mx)}</text>`;
+  svg+=`<text class="ch-lbl" x="${pL}" y="${(baseY+12).toFixed(1)}">${labels[0]}</text>`;
+  if(n>1) svg+=`<text class="ch-lbl" x="${(pL+plotW).toFixed(1)}" y="${(baseY+12).toFixed(1)}" text-anchor="end">${labels[n-1]}</text>`;
+  svg+=`</svg>`;
+  return svg;
+}
+
+function renderProgress(){
+  document.getElementById("hbar").innerHTML =
+    '<div class="htitle">Progress</div><div class="hsub">Strength over time</div>';
+  const v=document.getElementById("view");
+  const names=progExercises();
+  if(!names.length){
+    v.innerHTML=`<div class="prog-empty"><div class="pico">📈</div>
+      Log a few workouts and your strength-progression charts will appear here, one exercise at a time.</div>`;
+    return;
+  }
+  if(!progEx || names.indexOf(progEx)<0) progEx=names[0];
+  const m=META[progEx]||{unit:"reps",bw:0,ladder:null};
+  const unit=m.unit;
+  const bw=Number(SETTINGS.bw||0);
+  const bwSet=bw>0;
+  const mlist=metricsFor(unit,bwSet);
+  if(!progMetric || !mlist.some(x=>x.k===progMetric)) progMetric=mlist[0].k;
+
+  let html=`<select class="progsel" onchange="setProgEx(this.value)">`;
+  names.forEach(n=>{ html+=`<option ${n===progEx?"selected":""}>${n}</option>`; });
+  html+=`</select><div class="metricrow">`;
+  mlist.forEach(x=>{ html+=`<button class="mbtn ${x.k===progMetric?"on":""}" onclick="setProgMetric('${x.k}')">${x.label}</button>`; });
+  html+=`</div>`;
+
+  const sessions=exerciseSeries(progEx);
+  const vals=[], labels=[];
+  sessions.forEach(s=>{ const val=metricValue(s.ex, progMetric, bw); if(val>0){ vals.push(val); labels.push(shortDate(s.dt)); } });
+
+  if(!vals.length){
+    html+=`<div class="prog-note">No data for this metric on ${progEx} yet.</div>`;
+  } else {
+    const latest=vals[vals.length-1], first=vals[0];
+    let deltaHtml="";
+    if(vals.length>1){
+      const d=latest-first, cls=d>0?"up":(d<0?"down":"flat"), arw=d>0?"▲":(d<0?"▼":"—");
+      deltaHtml=`<span class="delta ${cls}">${arw} ${fmtNum(Math.abs(d))} since ${labels[0]}</span>`;
+    }
+    html+=`<div class="chartwrap">
+      <div class="progsum"><span class="big">${fmtNum(latest)}</span><span class="unit">${metricUnitLabel(progMetric)}</span>${deltaHtml}</div>`;
+    html+=lineChart(vals,labels);
+    html+=`<div class="ch-cap">${labels[0]}${labels.length>1?" → "+labels[labels.length-1]:""} · ${vals.length} session${vals.length>1?"s":""}</div></div>`;
+  }
+  if(unit!=="sec" && !bwSet){
+    html+=`<div class="prog-note">Add your bodyweight in <a onclick="goTab('settings')">Settings</a> to unlock the estimated-1RM strength line — most of the load in these lifts is your own bodyweight.</div>`;
+  }
+  if(m.ladder){
+    html+=`<div class="prog-note">This is a progression exercise. Its estimated-1RM score also climbs when you advance a ladder stage, even if your reps reset — so leveling up reads as progress, not a drop.</div>`;
+  }
+  v.innerHTML=html;
+}
+function setProgEx(v){ progEx=v; render(); }
+function setProgMetric(k){ progMetric=k; render(); }
+
+/* ---------- SETTINGS ---------- */
+function renderSettings(){
+  document.getElementById("hbar").innerHTML =
+    '<div class="htitle">Settings</div><div class="hsub">App preferences</div>';
+  const bw=(SETTINGS.bw!=null && SETTINGS.bw!==0)?SETTINGS.bw:"";
+  document.getElementById("view").innerHTML=`
+    <div class="card"><div class="settings-field">
+      <label>Bodyweight</label>
+      <div class="bwrow">
+        <input class="bwinput" type="number" inputmode="decimal" placeholder="e.g. 175"
+               value="${bw}" oninput="setBW(this.value)">
+        <span class="bwunit">lb</span>
+      </div>
+      <div class="hint">Used to estimate your strength (1RM) on the Progress charts — in these lifts most of the load is your own bodyweight. Update it whenever your weight changes.</div>
+    </div></div>
+    <div class="card"><div class="settings-field">
+      <label>Data</label>
+      <div class="hint">Your logs live only on this phone. Export / import backups are coming soon.</div>
+      <button class="btn btn-g" style="margin-top:12px;" onclick="wipe()">Erase all logged data</button>
+    </div></div>`;
+}
+function setBW(val){ SETTINGS.bw = (val===""?0:Number(val)); saveSettings(); }
+
 /* ---------- PLACEHOLDER TABS ---------- */
 const PLACE={
-  stats:{ ico:"📈", name:"Progress / Stats", desc:"Charts and trends over time — training volume, top sets, and personal bests. Coming soon." },
-  pr:{ ico:"🏆", name:"Personal Records", desc:"Your best reps and loads per exercise, tracked automatically as you log. Coming soon." },
-  settings:{ ico:"⚙️", name:"Settings", desc:"Units, rest-timer defaults, and data export / import for backups. Coming soon." }
+  pr:{ ico:"🏆", name:"Personal Records", desc:"Your best reps and loads per exercise, tracked automatically as you log. Coming soon." }
 };
 function renderPlaceholder(tab){
   const p=PLACE[tab]||{ico:"🚧",name:"Coming soon",desc:""};
@@ -540,6 +781,14 @@ function upd(id,ei,s,field,val){
   ensure(id,ei);
   if(!DB[id][ei].sets[s]) DB[id][ei].sets[s]={reps:"",wt:"",done:false};
   DB[id][ei].sets[s][field]=val;
+  DB[id][ei].ts=Date.now();
+  DB[id][ei].date=todayKey();
+  saveAll(DB);
+  recordHistory(id);
+}
+function updStage(id,ei,val){
+  ensure(id,ei);
+  DB[id][ei].stage=val||"";
   DB[id][ei].ts=Date.now();
   DB[id][ei].date=todayKey();
   saveAll(DB);
@@ -607,7 +856,6 @@ function beep(){
   }catch(e){}
 }
 function hapticEnd(){ if(navigator.vibrate) navigator.vibrate([120,60,120]); }
-// unlock audio on first touch (iOS requirement)
 document.body.addEventListener("touchend",()=>{
   try{ AC=AC||new (window.AudioContext||window.webkitAudioContext)(); if(AC.state==="suspended")AC.resume(); }catch(e){}
 },{once:true});
