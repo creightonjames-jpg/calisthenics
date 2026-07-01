@@ -741,12 +741,58 @@ function renderSettings(){
       <div class="hint">Used to estimate your strength (1RM) on the Progress charts — in these lifts most of the load is your own bodyweight. Update it whenever your weight changes.</div>
     </div></div>
     <div class="card"><div class="settings-field">
-      <label>Data</label>
-      <div class="hint">Your logs live only on this phone. Export / import backups are coming soon.</div>
-      <button class="btn btn-g" style="margin-top:12px;" onclick="wipe()">Erase all logged data</button>
+      <label>Data &amp; backups</label>
+      <div class="hint">Your logs live only on this phone. Export a backup file regularly — clearing Safari website data erases everything, and there's no cloud copy by design. Keep the file somewhere safe (Files, email, iCloud Drive); restore it after a wipe or on a new phone.</div>
+      <button class="btn btn-g" style="margin-top:12px;" onclick="exportData()">Export backup (.json)</button>
+      <button class="btn btn-g" style="margin-top:8px;" onclick="document.getElementById('importFile').click()">Restore from backup…</button>
+      <input id="importFile" type="file" accept="application/json,.json" style="display:none" onchange="importData(this)">
+      <button class="btn btn-g" style="margin-top:8px;color:var(--warn);" onclick="wipe()">Erase all logged data</button>
     </div></div>`;
 }
 function setBW(val){ SETTINGS.bw = (val===""?0:Number(val)); saveSettings(); }
+
+/* ---------- BACKUP: EXPORT / IMPORT ---------- */
+function pad2(n){ return String(n).padStart(2,"0"); }
+function exportData(){
+  const payload={ app:"calisthenics", version:1, exportedAt:new Date().toISOString(),
+    data:{ log:DB, history:HIST, settings:SETTINGS } };
+  const json=JSON.stringify(payload,null,2);
+  const blob=new Blob([json],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const d=new Date();
+  const fn=`calisthenics-backup-${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}.json`;
+  const a=document.createElement("a");
+  a.href=url; a.download=fn;
+  document.body.appendChild(a); a.click();
+  setTimeout(()=>{ try{ document.body.removeChild(a); }catch(e){} URL.revokeObjectURL(url); },1200);
+  toast("Backup downloaded");
+}
+function importData(input){
+  const file=input.files && input.files[0];
+  if(!file){ return; }
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const obj=JSON.parse(e.target.result);
+      const d=(obj && obj.data) ? obj.data : obj;   // tolerate a raw dump too
+      if(!d || (typeof d.log!=="object" && typeof d.history!=="object")){
+        toast("Not a valid backup"); input.value=""; return;
+      }
+      if(!confirm("Restore this backup? It replaces the logs, history, and settings on this phone.")){
+        input.value=""; return;
+      }
+      DB = d.log || {};
+      HIST = d.history || {};
+      SETTINGS = d.settings || {};
+      saveAll(DB); saveHist(); saveSettings();
+      current=null; selDate=null;
+      render();
+      toast("Backup restored");
+    }catch(err){ toast("Couldn't read that file"); }
+    input.value="";
+  };
+  reader.readAsText(file);
+}
 
 /* ---------- PLACEHOLDER TABS ---------- */
 const PLACE={
