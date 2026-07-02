@@ -46,6 +46,10 @@
     background:var(--panel2);color:var(--muted);margin-left:6px;}
   .pill.done{background:rgba(62,203,143,.16);color:var(--good);}
   .ex-h{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+  .ex-hl{display:flex;align-items:center;gap:11px;min-width:0;}
+  .ex-ico{width:42px;height:42px;flex:none;color:var(--accent);background:var(--panel2);
+    border:1px solid var(--line);border-radius:11px;padding:5px;}
+  .ex-ico svg{width:100%;height:100%;display:block;}
   .ex-name{font-size:16px;font-weight:700;line-height:1.3;}
   .ex-meta{font-size:12px;color:var(--muted);margin-top:5px;line-height:1.5;}
   .ex-note{font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.5;
@@ -252,8 +256,8 @@ const PROGRAM = {
     { id:"d1", tag:"Day 1", name:"Push / Pull — Upper A", type:"work",
       desc:"Heavy upper. Low reps, long rest, weighted.",
       exercises:[
-        {n:"Weighted Dips", sets:4, reps:"5-8", rest:120, bw:1.0, note:"Add vest once you clear 8 clean reps. Full depth, control the bottom."},
-        {n:"Weighted Pull-Ups", sets:4, reps:"5-8", rest:120, bw:1.0, note:"Dead hang to chin over bar. Add vest as reps climb."},
+        {n:"Weighted Dips", sets:4, reps:"5-8", rest:120, bw:1.0, img:"dip", note:"Add vest once you clear 8 clean reps. Full depth, control the bottom."},
+        {n:"Weighted Pull-Ups", sets:4, reps:"5-8", rest:120, bw:1.0, img:"pullup", note:"Dead hang to chin over bar. Add vest as reps climb."},
         {n:"Ring Push-Ups", sets:3, reps:"8-12", rest:90, bw:0.65, note:"Turn rings out at the top. Elevate feet to make harder."},
         {n:"Ring Rows", sets:3, reps:"8-12", rest:90, bw:0.6, note:"Lower your feet to make harder. Chest to rings."},
         {n:"Ring Bicep Curls", sets:3, reps:"10-15", rest:60, bw:0.35, note:"Walk feet forward to add difficulty. Keep elbows still."},
@@ -262,10 +266,10 @@ const PROGRAM = {
     { id:"d2", tag:"Day 2", name:"Legs — Squat Focus", type:"work",
       desc:"Knee-dominant. Quads and single-leg strength.",
       exercises:[
-        {n:"Bulgarian Split Squat", sets:4, reps:"6-10 / leg", rest:120, bw:0.85, note:"Rear foot on a bench. Add vest to load. Main strength move."},
-        {n:"Squat Progression", sets:3, reps:"8-12", rest:90, bw:0.6, ladder:"squat", note:"Pick your stage from the ladder. Control the full range."},
+        {n:"Bulgarian Split Squat", sets:4, reps:"6-10 / leg", rest:120, bw:0.85, img:"squat", note:"Rear foot on a bench. Add vest to load. Main strength move."},
+        {n:"Squat Progression", sets:3, reps:"8-12", rest:90, bw:0.6, ladder:"squat", img:"squat", note:"Pick your stage from the ladder. Control the full range."},
         {n:"Step-Ups", sets:3, reps:"10-12 / leg", rest:75, bw:0.7, note:"Knee-height step. Drive through the heel. Add vest."},
-        {n:"Wall Sit", sets:3, reps:"30-45 sec", rest:75, bw:0.6, unit:"sec", note:"Thighs parallel. Vest on lap to make harder."},
+        {n:"Wall Sit", sets:3, reps:"30-45 sec", rest:75, bw:0.6, unit:"sec", img:"squat", note:"Thighs parallel. Vest on lap to make harder."},
         {n:"Standing Calf Raises", sets:4, reps:"12-20", rest:60, bw:0.5, note:"On a step for full range. One leg at a time as you progress."},
         {n:"Hanging Knee Raises", sets:3, reps:"10-15", rest:60, bw:0.5, note:"Knee raise station. Slow, no swing."}
       ]},
@@ -274,8 +278,8 @@ const PROGRAM = {
     { id:"d4", tag:"Day 4", name:"Push / Pull — Upper B", type:"work",
       desc:"Volume upper. Higher reps, shorter rest, new angles.",
       exercises:[
-        {n:"Dips", sets:4, reps:"8-12", rest:90, bw:1.0, note:"Bodyweight or light vest. Lean forward slightly for more chest."},
-        {n:"Pull-Ups", sets:4, reps:"8-12", rest:90, bw:1.0, note:"Switch grip from Day 1. Try underhand or neutral."},
+        {n:"Dips", sets:4, reps:"8-12", rest:90, bw:1.0, img:"dip", note:"Bodyweight or light vest. Lean forward slightly for more chest."},
+        {n:"Pull-Ups", sets:4, reps:"8-12", rest:90, bw:1.0, img:"pullup", note:"Switch grip from Day 1. Try underhand or neutral."},
         {n:"Pseudo Planche Push-Ups", sets:3, reps:"8-12", rest:75, bw:0.8, note:"Hands by hips, lean forward. Shoulders and chest."},
         {n:"Inverted Row, feet high", sets:3, reps:"10-15", rest:75, bw:0.65, note:"Feet elevated. Pull to sternum, pause one second."},
         {n:"Ring Face Pulls", sets:3, reps:"12-15", rest:60, bw:0.4, note:"Pull to forehead, elbows high. Rear delts, upper back."},
@@ -325,6 +329,13 @@ const META={};
 PROGRAM.days.forEach(d=>{ if(d.exercises) d.exercises.forEach(ex=>{
   META[ex.n]={ unit:ex.unit||"reps", bw:ex.bw||0, ladder:ex.ladder||null };
 });});
+
+// Line-art movement icons (schematic cues, shared across similar movements). Preview set.
+const ICONS = {
+  dip: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 30h15M38 30h15"/><circle cx="32" cy="14" r="5"/><path d="M32 19v15"/><path d="M32 23l-11 7M32 23l11 7"/><path d="M32 34l-6 9M32 34l6 9"/><path d="M26 43l3 9M38 43l-3 9"/></svg>`,
+  pullup: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12h48"/><path d="M24 12l2 10M40 12l-2 10"/><circle cx="32" cy="27" r="5"/><path d="M32 32v13"/><path d="M32 45l-5 10M32 45l5 10"/></svg>`,
+  squat: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="25" cy="14" r="5"/><path d="M25 19l6 13"/><path d="M25 22l12 5"/><path d="M31 32l-8 8 3 13M31 32l9 8"/><path d="M19 53h10"/></svg>`
+};
 
 /* ---------- STORAGE ---------- */
 const KEY="calisthenics_log_v1";
@@ -475,7 +486,7 @@ function renderDay(id){
     const log = (DB[id]&&DB[id][ei]) ? DB[id][ei] : null;
     const unitLbl = (ex.unit==="sec") ? "Secs" : "Reps";
     html+=`<div class="card">
-      <div class="ex-h"><div class="ex-name">${ex.n}</div><div class="badge">${ex.sets} × ${ex.reps}</div></div>
+      <div class="ex-h"><div class="ex-hl">${(ex.img&&ICONS[ex.img])?`<span class="ex-ico">${ICONS[ex.img]}</span>`:""}<div class="ex-name">${ex.n}</div></div><div class="badge">${ex.sets} × ${ex.reps}</div></div>
       <div class="ex-meta">Rest ${fmt(ex.rest)} between sets</div>`;
     if(ex.ladder){
       const L=PROGRAM.ladders[ex.ladder];
