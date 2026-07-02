@@ -330,11 +330,36 @@ PROGRAM.days.forEach(d=>{ if(d.exercises) d.exercises.forEach(ex=>{
   META[ex.n]={ unit:ex.unit||"reps", bw:ex.bw||0, ladder:ex.ladder||null };
 });});
 
-// Line-art movement icons (schematic cues, shared across similar movements). Preview set.
+// Line-art movement icons (schematic cues, grouped by movement pattern).
+const IB = '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">';
 const ICONS = {
-  dip: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 30h15M38 30h15"/><circle cx="32" cy="14" r="5"/><path d="M32 19v15"/><path d="M32 23l-11 7M32 23l11 7"/><path d="M32 34l-6 9M32 34l6 9"/><path d="M26 43l3 9M38 43l-3 9"/></svg>`,
-  pullup: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 12h48"/><path d="M24 12l2 10M40 12l-2 10"/><circle cx="32" cy="27" r="5"/><path d="M32 32v13"/><path d="M32 45l-5 10M32 45l5 10"/></svg>`,
-  squat: `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="25" cy="14" r="5"/><path d="M25 19l6 13"/><path d="M25 22l12 5"/><path d="M31 32l-8 8 3 13M31 32l9 8"/><path d="M19 53h10"/></svg>`
+  dip: IB+'<path d="M11 30h15M38 30h15"/><circle cx="32" cy="14" r="5"/><path d="M32 19v15"/><path d="M32 23l-11 7M32 23l11 7"/><path d="M32 34l-6 9M32 34l6 9"/><path d="M26 43l3 9M38 43l-3 9"/></svg>',
+  pullup: IB+'<path d="M8 12h48"/><path d="M24 12l2 10M40 12l-2 10"/><circle cx="32" cy="27" r="5"/><path d="M32 32v13"/><path d="M32 45l-5 10M32 45l5 10"/></svg>',
+  pushup: IB+'<path d="M6 52h52"/><circle cx="16" cy="25" r="5"/><path d="M20 28L46 41l10 6"/><path d="M23 30l-3 12 6 10"/></svg>',
+  row: IB+'<path d="M8 54h20"/><path d="M12 54L38 32"/><circle cx="43" cy="28" r="5"/><path d="M38 32l12 -10"/><path d="M46 18h12"/></svg>',
+  curl: IB+'<circle cx="32" cy="12" r="5"/><path d="M32 17v20"/><path d="M32 37l-6 13M32 37l6 13"/><path d="M32 22L25 31l7 -4"/></svg>',
+  extension: IB+'<circle cx="30" cy="12" r="5"/><path d="M30 17v20"/><path d="M30 37l-6 13M30 37l6 13"/><path d="M30 21l11 6l5 11"/></svg>',
+  squat: IB+'<circle cx="25" cy="14" r="5"/><path d="M25 19l6 13"/><path d="M25 22l12 5"/><path d="M31 32l-8 8 3 13M31 32l9 8"/><path d="M19 53h10"/></svg>',
+  lunge: IB+'<circle cx="28" cy="12" r="5"/><path d="M28 17l2 15"/><path d="M30 32L22 42v12"/><path d="M30 32l12 12l6 8"/><path d="M16 54h12M44 52h10"/></svg>',
+  calf: IB+'<circle cx="32" cy="13" r="5"/><path d="M32 18v22"/><path d="M32 24l-7 5M32 24l7 5"/><path d="M32 40l-5 8M32 40l5 8"/><path d="M25 48l3 4M39 48l-3 4"/><path d="M22 54h20"/></svg>',
+  hang: IB+'<path d="M8 12h48"/><path d="M26 12v10M38 12v10"/><circle cx="32" cy="26" r="5"/><path d="M32 31v6"/><path d="M32 37l16 2"/><path d="M48 39l3 -7"/></svg>',
+  hinge: IB+'<circle cx="15" cy="20" r="5"/><path d="M19 22l25 7"/><path d="M44 29l3 23"/><path d="M20 24l-2 12"/><path d="M40 52h12"/></svg>',
+  bridge: IB+'<path d="M6 50h52"/><circle cx="14" cy="46" r="4"/><path d="M18 48h8"/><path d="M26 48L36 33"/><path d="M36 33l8 15"/></svg>',
+  plank: IB+'<path d="M6 50h52"/><circle cx="14" cy="33" r="5"/><path d="M18 36L52 46"/><path d="M19 37l-4 11h8"/></svg>',
+  lever: IB+'<path d="M10 12h44"/><path d="M26 12l5 16M38 12l-4 16"/><circle cx="37" cy="24" r="4"/><path d="M31 28L8 31"/><path d="M8 31l4 -3M8 31l4 3"/></svg>'
+};
+// exercise name -> icon key
+const EXMAP = {
+  "Weighted Dips":"dip", "Weighted Pull-Ups":"pullup", "Ring Push-Ups":"pushup", "Ring Rows":"row",
+  "Ring Bicep Curls":"curl", "Ring Tricep Extensions":"extension",
+  "Bulgarian Split Squat":"lunge", "Squat Progression":"squat", "Step-Ups":"lunge", "Wall Sit":"squat",
+  "Standing Calf Raises":"calf", "Hanging Knee Raises":"hang",
+  "Dips":"dip", "Pull-Ups":"pullup", "Pseudo Planche Push-Ups":"pushup", "Inverted Row, feet high":"row",
+  "Ring Face Pulls":"row", "Pike Push-Ups":"pushup",
+  "Nordic Curl Progression":"hinge", "Single-Leg RDL":"hinge", "Ring Hamstring Curls":"bridge",
+  "Glute Bridge":"bridge", "Back Extension Hold":"hinge", "Hanging Leg Raises":"hang",
+  "Ring Support Hold":"dip", "Ring Muscle-Up Progression":"pullup", "Tuck Front Lever Hold":"lever",
+  "Hollow Body Hold":"plank", "Plank to Side Plank":"plank"
 };
 
 /* ---------- STORAGE ---------- */
@@ -485,8 +510,9 @@ function renderDay(id){
   day.exercises.forEach((ex,ei)=>{
     const log = (DB[id]&&DB[id][ei]) ? DB[id][ei] : null;
     const unitLbl = (ex.unit==="sec") ? "Secs" : "Reps";
+    const ic = ICONS[EXMAP[ex.n]] || "";
     html+=`<div class="card">
-      <div class="ex-h"><div class="ex-hl">${(ex.img&&ICONS[ex.img])?`<span class="ex-ico">${ICONS[ex.img]}</span>`:""}<div class="ex-name">${ex.n}</div></div><div class="badge">${ex.sets} × ${ex.reps}</div></div>
+      <div class="ex-h"><div class="ex-hl">${ic?`<span class="ex-ico">${ic}</span>`:""}<div class="ex-name">${ex.n}</div></div><div class="badge">${ex.sets} × ${ex.reps}</div></div>
       <div class="ex-meta">Rest ${fmt(ex.rest)} between sets</div>`;
     if(ex.ladder){
       const L=PROGRAM.ladders[ex.ladder];
