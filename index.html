@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#0f1729">
+<meta name="theme-color" content="#0d0d10">
 <title>Calisthenics</title>
 <style>
   :root{
-    --bg:#0f1729; --panel:#182338; --panel2:#1f2d47; --line:#2c3d5c;
-    --text:#e8eef7; --muted:#8ba0c0; --accent:#4f8cff; --accent2:#2E75B6;
-    --good:#3ecb8f; --warn:#f0a03c;
+    --bg:#0d0d10; --panel:#18181c; --panel2:#222228; --line:#2e2e36;
+    --text:#f4f4f6; --muted:#9a9aa6; --accent:#ff7d1a; --accent2:#ff9c45;
+    --good:#ff7d1a; --warn:#ffb03a;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
   html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
@@ -207,6 +207,28 @@
   .placeholder .pico{font-size:42px;margin-bottom:14px;}
   .placeholder h2{color:var(--text);font-size:19px;margin:0 0 8px;}
   .placeholder p{font-size:13.5px;line-height:1.55;margin:0 auto;max-width:300px;}
+  /* ---- Ember theme polish (glow + warmth) ---- */
+  body{background:radial-gradient(135% 55% at 50% -8%, rgba(255,125,26,.12), rgba(13,13,16,0) 55%), var(--bg);}
+  header{background:rgba(13,13,16,.9);}
+  .card{box-shadow:0 1px 0 rgba(255,255,255,.02) inset;}
+  .badge{background:rgba(255,125,26,.14);color:var(--accent2);}
+  .pill.done{background:rgba(255,125,26,.18);color:var(--accent);}
+  .daynum{text-shadow:0 0 8px rgba(255,125,26,.35);}
+  .btn-a{background:linear-gradient(135deg,#ff9a3c,#ff6a00);box-shadow:0 10px 28px rgba(255,110,0,.34);}
+  .setcheck.on{color:#241200;box-shadow:0 0 14px rgba(255,125,26,.55);}
+  .ex-ico{box-shadow:0 0 0 1px rgba(255,125,26,.14),0 4px 16px rgba(255,125,26,.12);}
+  .calcell.has.sel{background:rgba(255,125,26,.16);border-color:var(--accent);}
+  .calcell.today .num{text-shadow:0 0 10px rgba(255,125,26,.65);}
+  .caldot{box-shadow:0 0 7px rgba(255,125,26,.75);}
+  .mbtn.on{background:rgba(255,125,26,.16);}
+  .stg{background:rgba(255,125,26,.16);color:var(--accent2);}
+  .ch-area{fill:rgba(255,125,26,.14);}
+  .ch-line{filter:drop-shadow(0 0 5px rgba(255,125,26,.55));}
+  .ch-dot{filter:drop-shadow(0 0 4px rgba(255,125,26,.7));}
+  .progsum .big{text-shadow:0 0 16px rgba(255,125,26,.42);}
+  .toast{color:#2a1400;box-shadow:0 6px 20px rgba(255,125,26,.4);}
+  .navitem.active{box-shadow:inset 0 0 0 1px rgba(255,125,26,.25);}
+  .calnav:active,.tp:active{border-color:var(--accent);}
 </style>
 </head>
 <body>
@@ -266,6 +288,7 @@ const PROGRAM = {
     { id:"d2", tag:"Day 2", name:"Legs — Squat Focus", type:"work",
       desc:"Knee-dominant. Quads and single-leg strength.",
       exercises:[
+        {n:"Box Jumps", sets:4, reps:"3-5", rest:120, bw:0.7, note:"Explosive power — do these first, while fresh. Swing the arms, land soft with bent knees on a knee-height box. Step down, never jump down."},
         {n:"Bulgarian Split Squat", sets:4, reps:"6-10 / leg", rest:120, bw:0.85, img:"squat", note:"Rear foot on a bench. Add vest to load. Main strength move."},
         {n:"Squat Progression", sets:3, reps:"8-12", rest:90, bw:0.6, ladder:"squat", img:"squat", note:"Pick your stage from the ladder. Control the full range."},
         {n:"Step-Ups", sets:3, reps:"10-12 / leg", rest:75, bw:0.7, note:"Knee-height step. Drive through the heel. Add vest."},
@@ -346,13 +369,14 @@ const ICONS = {
   hinge: IB+'<circle cx="15" cy="20" r="5"/><path d="M19 22l25 7"/><path d="M44 29l3 23"/><path d="M20 24l-2 12"/><path d="M40 52h12"/></svg>',
   bridge: IB+'<path d="M6 50h52"/><circle cx="14" cy="46" r="4"/><path d="M18 48h8"/><path d="M26 48L36 33"/><path d="M36 33l8 15"/></svg>',
   plank: IB+'<path d="M6 50h52"/><circle cx="14" cy="33" r="5"/><path d="M18 36L52 46"/><path d="M19 37l-4 11h8"/></svg>',
-  lever: IB+'<path d="M10 12h44"/><path d="M26 12l5 16M38 12l-4 16"/><circle cx="37" cy="24" r="4"/><path d="M31 28L8 31"/><path d="M8 31l4 -3M8 31l4 3"/></svg>'
+  lever: IB+'<path d="M10 12h44"/><path d="M26 12l5 16M38 12l-4 16"/><circle cx="37" cy="24" r="4"/><path d="M31 28L8 31"/><path d="M8 31l4 -3M8 31l4 3"/></svg>',
+  jump: IB+'<path d="M40 40h18v14H40z"/><circle cx="19" cy="15" r="5"/><path d="M19 20l5 13"/><path d="M20 23l-9 3M20 23l9 -3"/><path d="M24 33l-7 8M24 33l9 6"/></svg>'
 };
 // exercise name -> icon key
 const EXMAP = {
   "Weighted Dips":"dip", "Weighted Pull-Ups":"pullup", "Ring Push-Ups":"pushup", "Ring Rows":"row",
   "Ring Bicep Curls":"curl", "Ring Tricep Extensions":"extension",
-  "Bulgarian Split Squat":"lunge", "Squat Progression":"squat", "Step-Ups":"lunge", "Wall Sit":"squat",
+  "Box Jumps":"jump", "Bulgarian Split Squat":"lunge", "Squat Progression":"squat", "Step-Ups":"lunge", "Wall Sit":"squat",
   "Standing Calf Raises":"calf", "Hanging Knee Raises":"hang",
   "Dips":"dip", "Pull-Ups":"pullup", "Pseudo Planche Push-Ups":"pushup", "Inverted Row, feet high":"row",
   "Ring Face Pulls":"row", "Pike Push-Ups":"pushup",
