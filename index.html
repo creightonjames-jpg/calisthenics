@@ -525,6 +525,7 @@ function renderHome(){
 
 /* ---------- TRAIN: DAY ---------- */
 function renderDay(id){
+  freshenDay(id);
   const day=PROGRAM.days.find(d=>d.id===id);
   document.getElementById("hbar").innerHTML =
     `<button class="back" onclick="go(null)">‹ Days</button>
@@ -917,13 +918,37 @@ function wasLoggedToday(id){
   if(!DB[id]) return false;
   return Object.values(DB[id]).some(e=>e.date===todayKey() && e.sets && e.sets.some(x=>x&&(x.reps||x.done)));
 }
+// Start a fresh session when returning to a day on a later date. The previous
+// session is already saved in HIST, so clearing the working inputs loses nothing.
+function freshenDay(id){
+  const dd=DB[id];
+  if(!dd) return;
+  const tk=todayKey();
+  const entries=Object.values(dd).filter(e=>e&&e.date);
+  if(!entries.length) return;
+  const hasToday=entries.some(e=>e.date===tk);
+  const hasStale=entries.some(e=>e.date!==tk);
+  if(hasStale && !hasToday){ delete DB[id]; saveAll(DB); }
+}
+// "Last:" reads the most recent PRIOR session from history (never today's).
 function lastSession(id,ei){
-  const e=DB[id]&&DB[id][ei];
-  if(!e||!e.sets) return null;
-  const done=e.sets.filter(x=>x&&(x.reps||x.wt));
-  if(!done.length) return null;
-  const parts=done.map(x=> (x.reps||"—")+(x.wt&&x.wt!=="0"?`@${x.wt}lb`:""));
-  return parts.join(", ");
+  const day=PROGRAM.days.find(d=>d.id===id);
+  if(!day||!day.exercises[ei]) return null;
+  const name=day.exercises[ei].n;
+  const tk=todayKey();
+  const dates=Object.keys(HIST).filter(dk=>dk!==tk && HIST[dk] && HIST[dk][id])
+    .sort((a,b)=>parseKey(b)-parseKey(a));
+  for(let i=0;i<dates.length;i++){
+    const snap=HIST[dates[i]][id];
+    const ex=snap.exercises.find(e=>e.n===name);
+    if(ex){
+      const done=ex.sets.filter(x=>x&&(x.reps||x.wt));
+      if(done.length){
+        return done.map(x=> (x.reps||"—")+(x.wt&&x.wt!=="0"?`@${x.wt}lb`:"") ).join(", ");
+      }
+    }
+  }
+  return null;
 }
 
 /* ---------- REST TIMER ---------- */
