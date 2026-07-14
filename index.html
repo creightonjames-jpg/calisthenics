@@ -237,6 +237,70 @@
   .detrow{border-bottom:1px solid var(--line);padding:6px 0;}
   .detrow:last-child{border-bottom:none;}
   .detnote{font-size:12px;color:var(--muted);font-style:italic;line-height:1.45;padding-top:4px;}
+  /* assisted / negative load */
+  .field.wt{padding-right:44px;}
+  .field.assist{color:var(--accent2);}
+  .signbtn{position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:9px;font-weight:800;
+    color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:3px 6px;
+    cursor:pointer;text-transform:uppercase;letter-spacing:.4px;line-height:1;}
+  .signbtn.on{color:var(--accent);border-color:var(--accent);background:rgba(255,125,26,.14);}
+  /* exercise actions */
+  .ex-actions{display:flex;gap:8px;margin-top:12px;}
+  .exact{font-size:11.5px;font-weight:700;color:var(--muted);background:var(--panel2);border:1px solid var(--line);
+    border-radius:9px;padding:7px 11px;cursor:pointer;}
+  .exact.on{color:var(--accent);border-color:var(--accent);background:rgba(255,125,26,.12);}
+  /* supersets */
+  .card.ss{border-color:rgba(255,125,26,.5);}
+  .card.ss-a{margin-bottom:0;border-bottom:none;border-bottom-left-radius:0;border-bottom-right-radius:0;}
+  .card.ss-b{border-top-left-radius:0;border-top-right-radius:0;}
+  .ss-tag{display:inline-block;font-size:9px;font-weight:800;letter-spacing:1px;color:var(--accent);
+    background:rgba(255,125,26,.14);padding:3px 9px;border-radius:8px;text-transform:uppercase;margin-bottom:10px;}
+  .ss-link{font-size:11px;color:var(--accent);font-weight:700;margin-bottom:10px;letter-spacing:.3px;}
+  /* hero */
+  .hero{padding:6px 0 4px;text-align:center;}
+  .hero-title{font-size:26px;font-weight:800;letter-spacing:.3px;text-shadow:0 0 18px rgba(255,125,26,.4);}
+  .hero-tag{font-size:13px;color:var(--muted);margin-top:3px;}
+  .hero-ring{width:190px;height:190px;margin:18px auto 6px;position:relative;}
+  .hero-ring svg{width:100%;height:100%;transform:rotate(-90deg);}
+  .hero-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .hero-num .n{font-size:52px;font-weight:800;line-height:1;text-shadow:0 0 22px rgba(255,125,26,.6);}
+  .hero-num .l{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:1.4px;margin-top:6px;}
+  .hero-streak{font-size:14px;font-weight:700;color:var(--accent2);margin-top:6px;}
+  .hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0 4px;}
+  .hstat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:left;}
+  .hstat .v{font-size:22px;font-weight:800;}
+  .hstat .k{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-top:3px;}
+  .hero-cont{font-size:12.5px;color:var(--muted);margin-top:16px;line-height:1.5;}
+  /* library + swap list */
+  .searchbar{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:11px;color:var(--text);
+    font-size:15px;padding:12px 14px;margin-bottom:10px;}
+  .searchbar:focus{outline:none;border-color:var(--accent);}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
+  .chip{font-size:12px;font-weight:700;color:var(--muted);background:var(--panel2);border:1px solid var(--line);
+    border-radius:20px;padding:7px 13px;cursor:pointer;}
+  .chip.on{color:var(--accent);border-color:var(--accent);background:rgba(255,125,26,.12);}
+  .exrow{display:flex;align-items:center;gap:11px;padding:11px 8px;border-radius:12px;cursor:pointer;border-bottom:1px solid var(--line);}
+  .exrow:last-child{border-bottom:none;}
+  .exrow:active{background:var(--panel2);}
+  .exrow .ex-ico{width:38px;height:38px;}
+  .er-txt{min-width:0;flex:1;}
+  .er-n{font-size:14px;font-weight:700;}
+  .er-c{font-size:11.5px;color:var(--muted);line-height:1.35;margin-top:1px;}
+  .ertag{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--accent2);
+    background:rgba(255,125,26,.14);padding:3px 8px;border-radius:8px;flex:none;}
+  .libcount{font-size:11.5px;color:var(--muted);margin:2px 0 6px;}
+  /* modal */
+  .modal{position:fixed;inset:0;z-index:70;display:none;}
+  .modal.show{display:block;}
+  .modal-bg{position:absolute;inset:0;background:rgba(0,0,0,.6);}
+  .modal-sheet{position:absolute;left:0;right:0;bottom:0;max-width:520px;margin:0 auto;background:var(--panel);
+    border-top-left-radius:20px;border-top-right-radius:20px;border:1px solid var(--line);border-bottom:none;
+    max-height:84vh;display:flex;flex-direction:column;padding:18px 16px calc(18px + env(safe-area-inset-bottom));}
+  .modal-h{font-size:16px;font-weight:800;}
+  .modal-sub{font-size:12px;color:var(--muted);margin:3px 0 12px;line-height:1.4;}
+  .modal-list{overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch;}
+  .modal-x{position:absolute;right:14px;top:14px;background:var(--panel2);border:1px solid var(--line);color:var(--text);
+    border-radius:9px;width:32px;height:32px;font-size:15px;cursor:pointer;}
 </style>
 </head>
 <body>
@@ -255,7 +319,9 @@
 <nav class="drawer" id="drawer">
   <div class="drawer-h">Calisthenics</div>
   <div class="drawer-sub">Strength &amp; mass</div>
+  <button class="navitem" data-tab="home"><span class="ni-ico">&#127968;</span><span>Home</span></button>
   <button class="navitem" data-tab="train"><span class="ni-ico">&#127947;</span><span>Train</span></button>
+  <button class="navitem" data-tab="library"><span class="ni-ico">&#128218;</span><span>Exercise Library</span></button>
   <button class="navitem" data-tab="history"><span class="ni-ico">&#128197;</span><span>History</span></button>
   <button class="navitem" data-tab="stats"><span class="ni-ico">&#128200;</span><span>Progress</span></button>
   <button class="navitem" data-tab="settings"><span class="ni-ico">&#9881;</span><span>Settings</span></button>
@@ -274,6 +340,7 @@
   </div>
 </div>
 <div class="toast" id="toast"></div>
+<div class="modal" id="modal"><div class="modal-bg" onclick="closeModal()"></div><div class="modal-sheet" id="modalSheet"></div></div>
 
 <script>
 /* ---------- DATA ----------
@@ -394,6 +461,67 @@ const EXMAP = {
   "Hollow Body Hold":"plank", "Plank to Side Plank":"plank"
 };
 
+// default bodyweight-load coefficient per movement pattern (for swapped-in exercises)
+const bwByIcon={dip:1,pullup:1,pushup:0.65,row:0.6,curl:0.35,extension:0.45,squat:0.6,lunge:0.85,calf:0.5,hang:0.5,hinge:0.85,bridge:0.6,plank:0.5,lever:0.8,jump:0.7};
+
+// Curated calisthenics exercise library (browse + swap source). ic = movement-pattern icon.
+const LIBRARY=[
+  {n:"Push-Up", cat:"Push", ic:"pushup", cue:"Hands under shoulders, body in a straight line, full lockout."},
+  {n:"Incline Push-Up", cat:"Push", ic:"pushup", cue:"Hands elevated. Easier — great for building reps."},
+  {n:"Decline Push-Up", cat:"Push", ic:"pushup", cue:"Feet elevated. Shifts load to upper chest and shoulders."},
+  {n:"Diamond Push-Up", cat:"Push", ic:"pushup", cue:"Hands together under the chest. Triceps focus."},
+  {n:"Ring Push-Up", cat:"Push", ic:"pushup", cue:"Turn the rings out at the top. Unstable = harder."},
+  {n:"Pseudo Planche Push-Up", cat:"Push", ic:"pushup", cue:"Hands by hips, lean forward. Shoulders and chest."},
+  {n:"Pike Push-Up", cat:"Push", ic:"pushup", cue:"Hips high, head toward the floor. Vertical press."},
+  {n:"Handstand Push-Up", cat:"Push", ic:"pushup", cue:"Against a wall. Advanced vertical pressing."},
+  {n:"Dip", cat:"Push", ic:"dip", cue:"Bars or rings. Full depth, control the bottom."},
+  {n:"Bench Dip", cat:"Push", ic:"dip", cue:"Hands on a bench behind you. Triceps."},
+  {n:"Pull-Up", cat:"Pull", ic:"pullup", cue:"Overhand, dead hang to chin over the bar."},
+  {n:"Chin-Up", cat:"Pull", ic:"pullup", cue:"Underhand grip. More biceps."},
+  {n:"Neutral-Grip Pull-Up", cat:"Pull", ic:"pullup", cue:"Palms facing each other. Elbow-friendly."},
+  {n:"Archer Pull-Up", cat:"Pull", ic:"pullup", cue:"Pull to one side, other arm straight. One-arm progression."},
+  {n:"Scapular Pull-Up", cat:"Pull", ic:"pullup", cue:"Just the shrug at the bottom. Builds the hang."},
+  {n:"Ring Row", cat:"Pull", ic:"row", cue:"Chest to rings. Lower your feet to make it harder."},
+  {n:"Inverted Row", cat:"Pull", ic:"row", cue:"Under a bar, body straight, pull to the sternum."},
+  {n:"Ring Face Pull", cat:"Pull", ic:"row", cue:"Pull to the forehead, elbows high. Rear delts."},
+  {n:"Ring Bicep Curl", cat:"Pull", ic:"curl", cue:"Walk feet forward to load. Keep elbows still."},
+  {n:"Ring Tricep Extension", cat:"Push", ic:"extension", cue:"Walk feet back to load. Lock out at the top."},
+  {n:"Bodyweight Squat", cat:"Legs", ic:"squat", cue:"Full depth, knees tracking over the toes."},
+  {n:"Bulgarian Split Squat", cat:"Legs", ic:"lunge", cue:"Rear foot on a bench. Add a vest to load."},
+  {n:"Reverse Lunge", cat:"Legs", ic:"lunge", cue:"Step back, drop the back knee. Knee-friendly."},
+  {n:"Walking Lunge", cat:"Legs", ic:"lunge", cue:"Long strides. Add a vest to progress."},
+  {n:"Step-Up", cat:"Legs", ic:"lunge", cue:"Knee-height step. Drive through the heel."},
+  {n:"Pistol Squat", cat:"Legs", ic:"squat", cue:"One-leg squat. Hold a ring for balance."},
+  {n:"Shrimp Squat", cat:"Legs", ic:"squat", cue:"Advanced single-leg squat holding the rear foot."},
+  {n:"Wall Sit", cat:"Legs", ic:"squat", unit:"sec", cue:"Thighs parallel. Vest on the lap to load."},
+  {n:"Nordic Curl", cat:"Legs", ic:"hinge", cue:"Anchor the feet, lower slow. Hamstring builder."},
+  {n:"Single-Leg RDL", cat:"Legs", ic:"hinge", cue:"Hinge on one leg. Feel the hamstring stretch."},
+  {n:"Glute Bridge", cat:"Legs", ic:"bridge", cue:"Squeeze hard at the top."},
+  {n:"Single-Leg Glute Bridge", cat:"Legs", ic:"bridge", cue:"One leg at a time. More glute."},
+  {n:"Ring Hamstring Curl", cat:"Legs", ic:"bridge", cue:"Heels in rings, hips up, curl toward you."},
+  {n:"Standing Calf Raise", cat:"Legs", ic:"calf", cue:"Full range on a step. One leg to progress."},
+  {n:"Box Jump", cat:"Legs", ic:"jump", cue:"Explosive. Land soft. Step down, don't jump down."},
+  {n:"Broad Jump", cat:"Legs", ic:"jump", cue:"Jump for distance. Stick the landing."},
+  {n:"Plank", cat:"Core", ic:"plank", unit:"sec", cue:"Forearms, brace hard, straight line head to heel."},
+  {n:"Side Plank", cat:"Core", ic:"plank", unit:"sec", cue:"Stack the hips. Don't let them sag."},
+  {n:"Hollow Body Hold", cat:"Core", ic:"plank", unit:"sec", cue:"Low back pressed to the floor."},
+  {n:"Ab Wheel Rollout", cat:"Core", ic:"plank", cue:"Roll out slow, brace. Don't arch the back."},
+  {n:"Russian Twist", cat:"Core", ic:"plank", cue:"Rotate side to side. Optional load."},
+  {n:"Hanging Knee Raise", cat:"Core", ic:"hang", cue:"Slow and controlled, no swing."},
+  {n:"Hanging Leg Raise", cat:"Core", ic:"hang", cue:"Straight legs if you can. Core and hip flexors."},
+  {n:"Toes-to-Bar", cat:"Core", ic:"hang", cue:"Touch the toes to the bar. Explosive core."},
+  {n:"L-Sit", cat:"Core", ic:"lever", unit:"sec", cue:"Legs straight out, hold. Rings or floor."},
+  {n:"Dragon Flag", cat:"Core", ic:"lever", cue:"Advanced. Lower the whole body slow and straight."},
+  {n:"Tuck Front Lever Hold", cat:"Skill", ic:"lever", unit:"sec", cue:"Knees tucked, body horizontal under the bar."},
+  {n:"Front Lever Hold", cat:"Skill", ic:"lever", unit:"sec", cue:"Straight body under the bar. Advanced."},
+  {n:"Back Lever Hold", cat:"Skill", ic:"lever", unit:"sec", cue:"Face-down horizontal hold."},
+  {n:"Ring Support Hold", cat:"Skill", ic:"dip", unit:"sec", cue:"Arms straight, rings turned out."},
+  {n:"Ring Muscle-Up", cat:"Skill", ic:"pullup", cue:"Pull high, fast transition through the rings."},
+  {n:"Bar Muscle-Up", cat:"Skill", ic:"pullup", cue:"Explosive pull to transition over the bar."},
+  {n:"Skin-the-Cat", cat:"Skill", ic:"hang", cue:"Rings. Slow shoulder rotation. Mobility and control."},
+  {n:"Handstand Hold", cat:"Skill", ic:"plank", unit:"sec", cue:"Wall or free. Stack shoulders over hands."}
+];
+
 /* ---------- STORAGE ---------- */
 const KEY="calisthenics_log_v1";
 const HKEY="calisthenics_hist_v1";
@@ -407,6 +535,24 @@ function saveSettings(){ try{ localStorage.setItem(SKEY, JSON.stringify(SETTINGS
 let DB = loadAll();
 let HIST = loadHist();
 let SETTINGS = loadSettings();
+const SWKEY="calisthenics_swaps_v1", SSKEY="calisthenics_super_v1";
+function loadJSON(k){ try{ return JSON.parse(localStorage.getItem(k))||{}; }catch(e){ return {}; } }
+function saveJSON(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+let SWAPS=loadJSON(SWKEY), SUPER=loadJSON(SSKEY);
+function saveSwaps(){ saveJSON(SWKEY,SWAPS); }
+function saveSuper(){ saveJSON(SSKEY,SUPER); }
+// resolve the exercise at a slot, applying any persisted swap
+function exAt(dayId,ei){
+  const day=PROGRAM.days.find(d=>d.id===dayId);
+  const base=day.exercises[ei];
+  const sw=SWAPS[dayId+":"+ei];
+  if(!sw) return base;
+  const m=Object.assign({},base,sw);
+  m.ladder=null; m.unit=sw.unit||"reps";
+  return m;
+}
+function isSupersetFirst(id,ei){ return !!(SUPER[id] && SUPER[id][ei]); }
+function isSupersetSecond(id,ei){ return !!(SUPER[id] && SUPER[id][ei-1]); }
 // DB shape:   { "d1": { "0": {sets:[{reps,wt,done}], ts, date, stage}, ... }, ... }
 // HIST shape: { "2026-7-1": { "d1": {tag, name, exercises:[{n, unit, bw, ladder, stage, sets:[...]}], ts} }, ... }
 
@@ -418,12 +564,13 @@ function snapshotDay(dayId){
   const dd=DB[dayId];
   if(!day||!dd) return null;
   const exercises=[];
-  day.exercises.forEach((ex,ei)=>{
+  day.exercises.forEach((_,ei)=>{
+    const ex=exAt(dayId,ei);
     const e=dd[ei];
     if(e && ((e.sets && e.sets.some(s=>s&&(s.reps||s.wt||s.done))) || (e.userNote && e.userNote.trim()))){
       exercises.push({
         n:ex.n, unit:ex.unit||"reps", bw:ex.bw||0, ladder:ex.ladder||null, stage:(e.stage||""), un:(e.userNote||""),
-        sets:(e.sets||[]).map(s=> s?{reps:s.reps||"",wt:s.wt||"",done:!!s.done}:{reps:"",wt:"",done:false})
+        sets:(e.sets||[]).map(s=> s?{reps:s.reps||"",wt:s.wt||"",done:!!s.done,asst:!!s.asst}:{reps:"",wt:"",done:false})
       });
     }
   });
@@ -450,14 +597,15 @@ function seedHistory(){
     if(!day) return;
     const dd=DB[dayId];
     const byDate={};
-    day.exercises.forEach((ex,ei)=>{
+    day.exercises.forEach((_,ei)=>{
+      const ex=exAt(dayId,ei);
       const e=dd[ei];
       if(e && ((e.sets && e.sets.some(s=>s&&(s.reps||s.wt||s.done))) || (e.userNote && e.userNote.trim()))){
         const dk=e.date||todayKey();
         if(!byDate[dk]) byDate[dk]=[];
         byDate[dk].push({
           n:ex.n, unit:ex.unit||"reps", bw:ex.bw||0, ladder:ex.ladder||null, stage:(e.stage||""), un:(e.userNote||""),
-          sets:(e.sets||[]).map(s=> s?{reps:s.reps||"",wt:s.wt||"",done:!!s.done}:{reps:"",wt:"",done:false})
+          sets:(e.sets||[]).map(s=> s?{reps:s.reps||"",wt:s.wt||"",done:!!s.done,asst:!!s.asst}:{reps:"",wt:"",done:false})
         });
       }
     });
@@ -473,14 +621,16 @@ function seedHistory(){
 }
 
 /* ---------- ROUTING ---------- */
-let activeTab="train"; // train | history | stats | settings | pr
+let activeTab="home"; // home | train | library | history | stats | settings | pr
 let current=null;      // within train: day id, or null for the day list
 let histY, histM, selDate=null;
 let progEx=null, progMetric=null;
 (function(){ const d=new Date(); histY=d.getFullYear(); histM=d.getMonth(); })();
 
 function render(){
-  if(activeTab==="train"){ current===null ? renderHome() : renderDay(current); }
+  if(activeTab==="home"){ renderHero(); }
+  else if(activeTab==="train"){ current===null ? renderTrain() : renderDay(current); }
+  else if(activeTab==="library"){ renderLibrary(); }
   else if(activeTab==="history"){ renderHistory(); }
   else if(activeTab==="stats"){ renderProgress(); }
   else if(activeTab==="settings"){ renderSettings(); }
@@ -500,8 +650,8 @@ function goTab(tab){ activeTab=tab; current=null; selDate=null; closeDrawer(); w
 document.querySelectorAll(".navitem[data-tab]").forEach(b=>{ b.onclick=()=>goTab(b.dataset.tab); });
 function syncNav(){ document.querySelectorAll(".navitem[data-tab]").forEach(b=>{ b.classList.toggle("active", b.dataset.tab===activeTab); }); }
 
-/* ---------- TRAIN: HOME ---------- */
-function renderHome(){
+/* ---------- TRAIN: DAY LIST ---------- */
+function renderTrain(){
   document.getElementById("hbar").innerHTML =
     '<div class="htitle">Train</div><div class="hsub">Strength &amp; mass · 4-5 days/week</div>';
   const v=document.getElementById("view");
@@ -531,6 +681,125 @@ function renderHome(){
   v.innerHTML=html;
 }
 
+/* ---------- HOME: HERO ---------- */
+function mondayOf(d){ const x=new Date(d); const day=(x.getDay()+6)%7; x.setDate(x.getDate()-day); x.setHours(0,0,0,0); return x.getTime(); }
+function renderHero(){
+  document.getElementById("hbar").innerHTML =
+    '<div class="htitle">Calisthenics</div><div class="hsub">Strength &amp; mass</div>';
+  const dates=Object.keys(HIST).filter(hasWorkout);
+  const total=dates.length;
+  const mNow=mondayOf(new Date());
+  const thisWeek=dates.filter(k=>mondayOf(parseKey(k))===mNow).length;
+  const weeks=new Set(dates.map(k=>mondayOf(parseKey(k))));
+  let streak=0, cur=mNow;
+  if(!weeks.has(cur)) cur-=7*864e5;
+  while(weeks.has(cur)){ streak++; cur-=7*864e5; }
+  const last = dates.length ? dates.slice().sort((a,b)=>parseKey(b)-parseKey(a))[0] : null;
+  const lastTxt = last ? (last===todayKey()?"Today":shortDate(parseKey(last))) : "—";
+  const target=5, r=80, C=2*Math.PI*r, frac=Math.min(thisWeek/target,1), off=C*(1-frac);
+  document.getElementById("view").innerHTML=`<div class="hero">
+    <div class="hero-title">&#128293; Calisthenics</div>
+    <div class="hero-tag">Strength &amp; mass · 4-5 days/week</div>
+    <div class="hero-ring">
+      <svg viewBox="0 0 190 190">
+        <circle cx="95" cy="95" r="80" fill="none" stroke="var(--panel2)" stroke-width="13"/>
+        <circle cx="95" cy="95" r="80" fill="none" stroke="var(--accent)" stroke-width="13" stroke-linecap="round"
+          stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}" style="filter:drop-shadow(0 0 8px rgba(255,125,26,.6));"/>
+      </svg>
+      <div class="hero-num"><div class="n">${thisWeek}</div><div class="l">of ${target} this week</div></div>
+    </div>
+    <div class="hero-streak">&#128293; ${streak} week${streak===1?"":"s"} streak</div>
+    <div class="hero-stats">
+      <div class="hstat"><div class="v">${total}</div><div class="k">Total workouts</div></div>
+      <div class="hstat"><div class="v">${lastTxt}</div><div class="k">Last trained</div></div>
+    </div>
+    <button class="btn btn-a" onclick="goTab('train')">Start training</button>
+    <button class="btn btn-g" onclick="goTab('library')">Browse exercise library</button>
+    <div class="hero-cont">${total? "Keep the fire going — pick today's day and log it." : "Log your first workout to light the streak."}</div>
+  </div>`;
+}
+
+/* ---------- EXERCISE LIBRARY ---------- */
+let libQuery="", libCat="All";
+const LIBCATS=["All","Push","Pull","Legs","Core","Skill"];
+function renderLibrary(){
+  document.getElementById("hbar").innerHTML =
+    '<div class="htitle">Exercise Library</div><div class="hsub">'+LIBRARY.length+' calisthenics movements</div>';
+  let html=`<input class="searchbar" placeholder="Search exercises…" value="${esc(libQuery)}" oninput="onLibSearch(this.value)">`;
+  html+=`<div class="chips">`;
+  LIBCATS.forEach(c=>{ html+=`<button class="chip ${c===libCat?'on':''}" onclick="setLibCat('${c}')">${c}</button>`; });
+  html+=`</div><div class="libcount" id="libCount"></div><div class="card" style="padding:4px 8px;">`;
+  LIBRARY.forEach(it=>{
+    const ic=ICONS[it.ic]||"";
+    html+=`<div class="exrow libitem" data-name="${esc(it.n)}" data-cat="${it.cat}">
+      <span class="ex-ico">${ic}</span>
+      <div class="er-txt"><div class="er-n">${it.n}</div><div class="er-c">${it.cue}</div></div>
+      <span class="ertag">${it.cat}</span></div>`;
+  });
+  html+=`</div>`;
+  document.getElementById("view").innerHTML=html;
+  applyLibFilter();
+}
+function onLibSearch(v){ libQuery=v; applyLibFilter(); }
+function setLibCat(c){ libCat=c; renderLibrary(); }
+function applyLibFilter(){
+  const q=(libQuery||"").trim().toLowerCase(); let count=0;
+  document.querySelectorAll("#view .libitem").forEach(el=>{
+    const okC=libCat==="All"||el.dataset.cat===libCat;
+    const okQ=!q||el.dataset.name.toLowerCase().indexOf(q)>-1;
+    const show=okC&&okQ; el.style.display=show?"":"none"; if(show) count++;
+  });
+  const c=document.getElementById("libCount"); if(c) c.textContent=count+" shown";
+}
+
+/* ---------- SWAP MODAL ---------- */
+let swapCtx=null, swapQuery="";
+function openSwap(dayId,ei){
+  swapCtx={dayId,ei}; swapQuery="";
+  const cur=exAt(dayId,ei);
+  const orig=PROGRAM.days.find(d=>d.id===dayId).exercises[ei].n;
+  let html=`<button class="modal-x" onclick="closeModal()">&#10005;</button>
+    <div class="modal-h">Swap exercise</div>
+    <div class="modal-sub">Replacing <b style="color:var(--text)">${cur.n}</b> for this slot. The swap persists to your plan.</div>
+    <input class="searchbar" placeholder="Search exercises…" oninput="onSwapSearch(this.value)">`;
+  if(SWAPS[dayId+":"+ei]){ html+=`<button class="btn btn-g" style="margin:0 0 10px;" onclick="resetSwap()">&#8634; Reset to original — ${esc(orig)}</button>`; }
+  html+=`<div class="modal-list" id="swapList"></div>`;
+  document.getElementById("modalSheet").innerHTML=html;
+  document.getElementById("modal").classList.add("show");
+  buildSwapList();
+}
+function swapPreferIcon(){ const cur=exAt(swapCtx.dayId,swapCtx.ei); return cur.ic || EXMAP[cur.n] || ""; }
+function buildSwapList(){
+  const q=(swapQuery||"").trim().toLowerCase(); const pref=swapPreferIcon();
+  const items=LIBRARY.map((it,idx)=>({it,idx}))
+    .filter(o=>!q||o.it.n.toLowerCase().indexOf(q)>-1)
+    .sort((a,b)=>{ const ap=a.it.ic===pref?0:1, bp=b.it.ic===pref?0:1; return ap!==bp?ap-bp:a.it.n.localeCompare(b.it.n); });
+  let h="";
+  items.forEach(o=>{ const ic=ICONS[o.it.ic]||"";
+    h+=`<div class="exrow" onclick="doSwap(${o.idx})"><span class="ex-ico">${ic}</span>
+      <div class="er-txt"><div class="er-n">${o.it.n}</div><div class="er-c">${o.it.cue}</div></div>
+      <span class="ertag">${o.it.cat}</span></div>`; });
+  const el=document.getElementById("swapList"); if(el) el.innerHTML=h||`<div class="hist-hint">No matches.</div>`;
+}
+function onSwapSearch(v){ swapQuery=v; buildSwapList(); }
+function doSwap(idx){
+  const it=LIBRARY[idx], {dayId,ei}=swapCtx;
+  SWAPS[dayId+":"+ei]={ n:it.n, ic:it.ic, note:it.cue, unit:it.unit||"reps", bw:(bwByIcon[it.ic]||0.6) };
+  saveSwaps(); closeModal(); renderDay(dayId); toast("Swapped to "+it.n);
+}
+function resetSwap(){ const {dayId,ei}=swapCtx; delete SWAPS[dayId+":"+ei]; saveSwaps(); closeModal(); renderDay(dayId); toast("Reset to original"); }
+function closeModal(){ document.getElementById("modal").classList.remove("show"); }
+
+/* ---------- SUPERSETS ---------- */
+function toggleSuperset(id,ei){
+  const day=PROGRAM.days.find(d=>d.id===id);
+  if(ei>=day.exercises.length-1){ toast("Nothing after this to pair with"); return; }
+  if(!SUPER[id]) SUPER[id]={};
+  if(SUPER[id][ei]) delete SUPER[id][ei]; else SUPER[id][ei]=true;
+  if(!Object.keys(SUPER[id]).length) delete SUPER[id];
+  saveSuper(); renderDay(id);
+}
+
 /* ---------- TRAIN: DAY ---------- */
 function renderDay(id){
   freshenDay(id);
@@ -540,12 +809,18 @@ function renderDay(id){
      <div class="htitle">${day.name}</div><div class="hsub">${day.tag} · ${day.desc}</div>`;
   const v=document.getElementById("view");
   let html="";
-  day.exercises.forEach((ex,ei)=>{
+  const total=day.exercises.length;
+  day.exercises.forEach((_,ei)=>{
+    const ex=exAt(id,ei);
     const log = (DB[id]&&DB[id][ei]) ? DB[id][ei] : null;
     const unitLbl = (ex.unit==="sec") ? "Secs" : "Reps";
-    const ic = ICONS[EXMAP[ex.n]] || "";
-    html+=`<div class="card">
-      <div class="ex-h"><div class="ex-hl">${ic?`<span class="ex-ico">${ic}</span>`:""}<div class="ex-name">${ex.n}</div></div><div class="badge">${ex.sets} × ${ex.reps}</div></div>
+    const ic = ICONS[ex.ic||EXMAP[ex.n]] || "";
+    const ssFirst=isSupersetFirst(id,ei), ssSecond=isSupersetSecond(id,ei);
+    let cls="card"; if(ssFirst) cls+=" ss ss-a"; else if(ssSecond) cls+=" ss ss-b";
+    html+=`<div class="${cls}">`;
+    if(ssFirst) html+=`<div class="ss-tag">Superset · no rest between</div>`;
+    if(ssSecond) html+=`<div class="ss-link">↳ superset with the exercise above</div>`;
+    html+=`<div class="ex-h"><div class="ex-hl">${ic?`<span class="ex-ico">${ic}</span>`:""}<div class="ex-name">${ex.n}</div></div><div class="badge">${ex.sets} × ${ex.reps}</div></div>
       <div class="ex-meta">Rest ${fmt(ex.rest)} between sets</div>`;
     if(ex.ladder){
       const L=PROGRAM.ladders[ex.ladder];
@@ -562,18 +837,21 @@ function renderDay(id){
     html+=`<div class="ex-note">${ex.note}</div>`;
     const prev=lastSession(id,ei);
     if(prev){ html+=`<div class="last">Last: <b>${prev}</b></div>`; }
-    html+=`<div class="fieldhead"><span></span><span>${unitLbl}</span><span>Vest</span><span>✓</span></div>`;
+    html+=`<div class="fieldhead"><span></span><span>${unitLbl}</span><span>Load</span><span>✓</span></div>`;
     for(let s=0;s<ex.sets;s++){
       const sv = log&&log.sets&&log.sets[s] ? log.sets[s] : {reps:"",wt:"",done:false};
       html+=`<div class="setrow">
         <div class="setlbl">${s+1}</div>
         <div class="fieldwrap"><input class="field" type="number" inputmode="numeric" placeholder="—"
            value="${sv.reps}" oninput="upd('${id}',${ei},${s},'reps',this.value)"></div>
-        <div class="fieldwrap"><input class="field" type="number" inputmode="numeric" placeholder="0"
-           value="${sv.wt}" oninput="upd('${id}',${ei},${s},'wt',this.value)"><span class="funit">lb</span></div>
+        <div class="fieldwrap"><input class="field wt${sv.asst?' assist':''}" type="number" inputmode="numeric" placeholder="0"
+           value="${sv.wt}" oninput="upd('${id}',${ei},${s},'wt',this.value)"><button class="signbtn${sv.asst?' on':''}" onclick="toggleSign('${id}',${ei},${s})">${sv.asst?'assist':'lb'}</button></div>
         <div class="setcheck ${sv.done?'on':''}" onclick="toggleSet('${id}',${ei},${s},${ex.rest})">${sv.done?'✓':''}</div>
       </div>`;
     }
+    html+=`<div class="ex-actions"><button class="exact" onclick="openSwap('${id}',${ei})">⇄ Swap</button>`;
+    if(ei<total-1 && !ssSecond){ html+=`<button class="exact${ssFirst?' on':''}" onclick="toggleSuperset('${id}',${ei})">⛓ Superset</button>`; }
+    html+=`</div>`;
     const un=(log&&log.userNote)?esc(log.userNote):"";
     html+=`<textarea class="exnote-in" placeholder="Notes — e.g. felt a pull in pec on rep 3 of set 2" oninput="updNote('${id}',${ei},this.value)">${un}</textarea>`;
     html+=`</div>`;
@@ -640,7 +918,7 @@ function renderSessionDetail(key){
     h+=`<div class="detday">${s.name}</div>`;
     s.exercises.forEach(ex=>{
       const sets=ex.sets.filter(x=>x&&(x.reps||x.wt||x.done));
-      const str=sets.map(x=> (x.reps||"—") + (x.wt&&x.wt!=="0"?`@${x.wt}lb`:"") ).join(", ");
+      const str=sets.map(x=> (x.reps||"—") + fmtLoad(x) ).join(", ");
       const stg = ex.stage ? `<span class="stg">St ${ex.stage}</span>` : "";
       h+=`<div class="detrow"><div class="detex"><span class="detexn">${ex.n}${stg}</span><span class="detexs">${str||"—"}</span></div>`;
       if(ex.un){ h+=`<div class="detnote">“${esc(ex.un)}”</div>`; }
@@ -668,7 +946,7 @@ function e1rmOfSession(ex, bw){
   ex.sets.forEach(s=>{
     const reps=Number(s.reps)||0;
     if(reps<=0) return;
-    const vest=Number(s.wt)||0;
+    const vest=loadOf(s);
     const load=vest + bw*m.bw*stageF;
     const e=load*(1+reps/30);            // Epley estimated 1RM
     if(e>best) best=e;
@@ -892,6 +1170,15 @@ function renderFoot(){
 /* ---------- HELPERS ---------- */
 function fmt(sec){ const m=Math.floor(sec/60), s=sec%60; return m?`${m}:${String(s).padStart(2,"0")}`:`${s}s`; }
 function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function loadOf(s){ let w=Number(s.wt)||0; return (s.asst||w<0)? -Math.abs(w): w; }
+function fmtLoad(x){ let w=Number(x.wt)||0; const a=x.asst||w<0; w=Math.abs(w); if(!w) return ""; return a? " −"+w+" assist" : " @"+w+"lb"; }
+function toggleSign(id,ei,s){
+  ensure(id,ei);
+  if(!DB[id][ei].sets[s]) DB[id][ei].sets[s]={reps:"",wt:"",done:false};
+  DB[id][ei].sets[s].asst=!DB[id][ei].sets[s].asst;
+  DB[id][ei].ts=Date.now(); DB[id][ei].date=todayKey();
+  saveAll(DB); recordHistory(id); renderDay(id);
+}
 function go(id){ current=id; window.scrollTo(0,0); render(); }
 
 function ensure(id,ei){
@@ -933,7 +1220,7 @@ function toggleSet(id,ei,s,rest){
   saveAll(DB);
   recordHistory(id);
   renderDay(id);
-  if(now) startTimer(rest);
+  if(now){ if(isSupersetFirst(id,ei)){ toast("Superset — straight to the next exercise"); } else { startTimer(rest); } }
 }
 function wasLoggedToday(id){
   if(!DB[id]) return false;
@@ -955,7 +1242,7 @@ function freshenDay(id){
 function lastSession(id,ei){
   const day=PROGRAM.days.find(d=>d.id===id);
   if(!day||!day.exercises[ei]) return null;
-  const name=day.exercises[ei].n;
+  const name=exAt(id,ei).n;
   const tk=todayKey();
   const dates=Object.keys(HIST).filter(dk=>dk!==tk && HIST[dk] && HIST[dk][id])
     .sort((a,b)=>parseKey(b)-parseKey(a));
@@ -965,7 +1252,7 @@ function lastSession(id,ei){
     if(ex){
       const done=ex.sets.filter(x=>x&&(x.reps||x.wt));
       if(done.length){
-        return done.map(x=> (x.reps||"—")+(x.wt&&x.wt!=="0"?`@${x.wt}lb`:"") ).join(", ");
+        return done.map(x=> (x.reps||"—")+fmtLoad(x) ).join(", ");
       }
     }
   }
