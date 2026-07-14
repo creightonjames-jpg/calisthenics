@@ -229,6 +229,14 @@
   .toast{color:#2a1400;box-shadow:0 6px 20px rgba(255,125,26,.4);}
   .navitem.active{box-shadow:inset 0 0 0 1px rgba(255,125,26,.25);}
   .calnav:active,.tp:active{border-color:var(--accent);}
+  /* per-exercise session notes */
+  .exnote-in{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:10px;color:var(--text);font-size:13px;padding:10px 12px;margin-top:12px;resize:vertical;min-height:42px;font-family:inherit;line-height:1.45;}
+  .exnote-in:focus{outline:none;border-color:var(--accent);}
+  .exnote-in::placeholder{color:#6a6a72;}
+  .detex{border-bottom:none;padding:6px 0 0;}
+  .detrow{border-bottom:1px solid var(--line);padding:6px 0;}
+  .detrow:last-child{border-bottom:none;}
+  .detnote{font-size:12px;color:var(--muted);font-style:italic;line-height:1.45;padding-top:4px;}
 </style>
 </head>
 <body>
@@ -412,10 +420,10 @@ function snapshotDay(dayId){
   const exercises=[];
   day.exercises.forEach((ex,ei)=>{
     const e=dd[ei];
-    if(e && e.sets && e.sets.some(s=>s&&(s.reps||s.wt||s.done))){
+    if(e && ((e.sets && e.sets.some(s=>s&&(s.reps||s.wt||s.done))) || (e.userNote && e.userNote.trim()))){
       exercises.push({
-        n:ex.n, unit:ex.unit||"reps", bw:ex.bw||0, ladder:ex.ladder||null, stage:(e.stage||""),
-        sets:e.sets.map(s=> s?{reps:s.reps||"",wt:s.wt||"",done:!!s.done}:{reps:"",wt:"",done:false})
+        n:ex.n, unit:ex.unit||"reps", bw:ex.bw||0, ladder:ex.ladder||null, stage:(e.stage||""), un:(e.userNote||""),
+        sets:(e.sets||[]).map(s=> s?{reps:s.reps||"",wt:s.wt||"",done:!!s.done}:{reps:"",wt:"",done:false})
       });
     }
   });
@@ -444,12 +452,12 @@ function seedHistory(){
     const byDate={};
     day.exercises.forEach((ex,ei)=>{
       const e=dd[ei];
-      if(e && e.sets && e.sets.some(s=>s&&(s.reps||s.wt||s.done))){
+      if(e && ((e.sets && e.sets.some(s=>s&&(s.reps||s.wt||s.done))) || (e.userNote && e.userNote.trim()))){
         const dk=e.date||todayKey();
         if(!byDate[dk]) byDate[dk]=[];
         byDate[dk].push({
-          n:ex.n, unit:ex.unit||"reps", bw:ex.bw||0, ladder:ex.ladder||null, stage:(e.stage||""),
-          sets:e.sets.map(s=> s?{reps:s.reps||"",wt:s.wt||"",done:!!s.done}:{reps:"",wt:"",done:false})
+          n:ex.n, unit:ex.unit||"reps", bw:ex.bw||0, ladder:ex.ladder||null, stage:(e.stage||""), un:(e.userNote||""),
+          sets:(e.sets||[]).map(s=> s?{reps:s.reps||"",wt:s.wt||"",done:!!s.done}:{reps:"",wt:"",done:false})
         });
       }
     });
@@ -566,6 +574,8 @@ function renderDay(id){
         <div class="setcheck ${sv.done?'on':''}" onclick="toggleSet('${id}',${ei},${s},${ex.rest})">${sv.done?'✓':''}</div>
       </div>`;
     }
+    const un=(log&&log.userNote)?esc(log.userNote):"";
+    html+=`<textarea class="exnote-in" placeholder="Notes — e.g. felt a pull in pec on rep 3 of set 2" oninput="updNote('${id}',${ei},this.value)">${un}</textarea>`;
     html+=`</div>`;
   });
   html+=`<button class="btn btn-a" onclick="go(null)">Done for today</button>`;
@@ -632,7 +642,9 @@ function renderSessionDetail(key){
       const sets=ex.sets.filter(x=>x&&(x.reps||x.wt||x.done));
       const str=sets.map(x=> (x.reps||"—") + (x.wt&&x.wt!=="0"?`@${x.wt}lb`:"") ).join(", ");
       const stg = ex.stage ? `<span class="stg">St ${ex.stage}</span>` : "";
-      h+=`<div class="detex"><span class="detexn">${ex.n}${stg}</span><span class="detexs">${str||"—"}</span></div>`;
+      h+=`<div class="detrow"><div class="detex"><span class="detexn">${ex.n}${stg}</span><span class="detexs">${str||"—"}</span></div>`;
+      if(ex.un){ h+=`<div class="detnote">“${esc(ex.un)}”</div>`; }
+      h+=`</div>`;
     });
   });
   h+=`</div>`;
@@ -879,6 +891,7 @@ function renderFoot(){
 
 /* ---------- HELPERS ---------- */
 function fmt(sec){ const m=Math.floor(sec/60), s=sec%60; return m?`${m}:${String(s).padStart(2,"0")}`:`${s}s`; }
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
 function go(id){ current=id; window.scrollTo(0,0); render(); }
 
 function ensure(id,ei){
@@ -889,6 +902,14 @@ function upd(id,ei,s,field,val){
   ensure(id,ei);
   if(!DB[id][ei].sets[s]) DB[id][ei].sets[s]={reps:"",wt:"",done:false};
   DB[id][ei].sets[s][field]=val;
+  DB[id][ei].ts=Date.now();
+  DB[id][ei].date=todayKey();
+  saveAll(DB);
+  recordHistory(id);
+}
+function updNote(id,ei,val){
+  ensure(id,ei);
+  DB[id][ei].userNote=val;
   DB[id][ei].ts=Date.now();
   DB[id][ei].date=todayKey();
   saveAll(DB);
