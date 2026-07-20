@@ -464,62 +464,207 @@ const EXMAP = {
 // default bodyweight-load coefficient per movement pattern (for swapped-in exercises)
 const bwByIcon={dip:1,pullup:1,pushup:0.65,row:0.6,curl:0.35,extension:0.45,squat:0.6,lunge:0.85,calf:0.5,hang:0.5,hinge:0.85,bridge:0.6,plank:0.5,lever:0.8,jump:0.7};
 
-// Curated calisthenics exercise library (browse + swap source). ic = movement-pattern icon.
+// Exercise library — categorized by primary muscle group. ic = movement-pattern icon.
 const LIBRARY=[
-  {n:"Push-Up", cat:"Push", ic:"pushup", cue:"Hands under shoulders, body in a straight line, full lockout."},
-  {n:"Incline Push-Up", cat:"Push", ic:"pushup", cue:"Hands elevated. Easier — great for building reps."},
-  {n:"Decline Push-Up", cat:"Push", ic:"pushup", cue:"Feet elevated. Shifts load to upper chest and shoulders."},
-  {n:"Diamond Push-Up", cat:"Push", ic:"pushup", cue:"Hands together under the chest. Triceps focus."},
-  {n:"Ring Push-Up", cat:"Push", ic:"pushup", cue:"Turn the rings out at the top. Unstable = harder."},
-  {n:"Pseudo Planche Push-Up", cat:"Push", ic:"pushup", cue:"Hands by hips, lean forward. Shoulders and chest."},
-  {n:"Pike Push-Up", cat:"Push", ic:"pushup", cue:"Hips high, head toward the floor. Vertical press."},
-  {n:"Handstand Push-Up", cat:"Push", ic:"pushup", cue:"Against a wall. Advanced vertical pressing."},
-  {n:"Dip", cat:"Push", ic:"dip", cue:"Bars or rings. Full depth, control the bottom."},
-  {n:"Bench Dip", cat:"Push", ic:"dip", cue:"Hands on a bench behind you. Triceps."},
-  {n:"Pull-Up", cat:"Pull", ic:"pullup", cue:"Overhand, dead hang to chin over the bar."},
-  {n:"Chin-Up", cat:"Pull", ic:"pullup", cue:"Underhand grip. More biceps."},
-  {n:"Neutral-Grip Pull-Up", cat:"Pull", ic:"pullup", cue:"Palms facing each other. Elbow-friendly."},
-  {n:"Archer Pull-Up", cat:"Pull", ic:"pullup", cue:"Pull to one side, other arm straight. One-arm progression."},
-  {n:"Scapular Pull-Up", cat:"Pull", ic:"pullup", cue:"Just the shrug at the bottom. Builds the hang."},
-  {n:"Ring Row", cat:"Pull", ic:"row", cue:"Chest to rings. Lower your feet to make it harder."},
-  {n:"Inverted Row", cat:"Pull", ic:"row", cue:"Under a bar, body straight, pull to the sternum."},
-  {n:"Ring Face Pull", cat:"Pull", ic:"row", cue:"Pull to the forehead, elbows high. Rear delts."},
-  {n:"Ring Bicep Curl", cat:"Pull", ic:"curl", cue:"Walk feet forward to load. Keep elbows still."},
-  {n:"Ring Tricep Extension", cat:"Push", ic:"extension", cue:"Walk feet back to load. Lock out at the top."},
-  {n:"Bodyweight Squat", cat:"Legs", ic:"squat", cue:"Full depth, knees tracking over the toes."},
-  {n:"Bulgarian Split Squat", cat:"Legs", ic:"lunge", cue:"Rear foot on a bench. Add a vest to load."},
-  {n:"Reverse Lunge", cat:"Legs", ic:"lunge", cue:"Step back, drop the back knee. Knee-friendly."},
-  {n:"Walking Lunge", cat:"Legs", ic:"lunge", cue:"Long strides. Add a vest to progress."},
-  {n:"Step-Up", cat:"Legs", ic:"lunge", cue:"Knee-height step. Drive through the heel."},
-  {n:"Pistol Squat", cat:"Legs", ic:"squat", cue:"One-leg squat. Hold a ring for balance."},
-  {n:"Shrimp Squat", cat:"Legs", ic:"squat", cue:"Advanced single-leg squat holding the rear foot."},
-  {n:"Wall Sit", cat:"Legs", ic:"squat", unit:"sec", cue:"Thighs parallel. Vest on the lap to load."},
-  {n:"Nordic Curl", cat:"Legs", ic:"hinge", cue:"Anchor the feet, lower slow. Hamstring builder."},
-  {n:"Single-Leg RDL", cat:"Legs", ic:"hinge", cue:"Hinge on one leg. Feel the hamstring stretch."},
-  {n:"Glute Bridge", cat:"Legs", ic:"bridge", cue:"Squeeze hard at the top."},
-  {n:"Single-Leg Glute Bridge", cat:"Legs", ic:"bridge", cue:"One leg at a time. More glute."},
-  {n:"Ring Hamstring Curl", cat:"Legs", ic:"bridge", cue:"Heels in rings, hips up, curl toward you."},
-  {n:"Standing Calf Raise", cat:"Legs", ic:"calf", cue:"Full range on a step. One leg to progress."},
-  {n:"Box Jump", cat:"Legs", ic:"jump", cue:"Explosive. Land soft. Step down, don't jump down."},
-  {n:"Broad Jump", cat:"Legs", ic:"jump", cue:"Jump for distance. Stick the landing."},
-  {n:"Plank", cat:"Core", ic:"plank", unit:"sec", cue:"Forearms, brace hard, straight line head to heel."},
-  {n:"Side Plank", cat:"Core", ic:"plank", unit:"sec", cue:"Stack the hips. Don't let them sag."},
+  {n:"Wall Push-Up", cat:"Chest", ic:"pushup", cue:"Hands on a wall. The easiest press — build volume."},
+  {n:"Incline Push-Up", cat:"Chest", ic:"pushup", cue:"Hands elevated. Easier than the floor."},
+  {n:"Knee Push-Up", cat:"Chest", ic:"pushup", cue:"From the knees. Keep hips locked in line."},
+  {n:"Push-Up", cat:"Chest", ic:"pushup", cue:"Straight line head to heel, full lockout."},
+  {n:"Wide Push-Up", cat:"Chest", ic:"pushup", cue:"Hands wide of shoulders. More chest."},
+  {n:"Narrow Push-Up", cat:"Chest", ic:"pushup", cue:"Hands inside shoulders. Chest and triceps."},
+  {n:"Decline Push-Up", cat:"Chest", ic:"pushup", cue:"Feet elevated. Upper chest and shoulders."},
+  {n:"Archer Push-Up", cat:"Chest", ic:"pushup", cue:"Slide to one side, other arm straight."},
+  {n:"Typewriter Push-Up", cat:"Chest", ic:"pushup", cue:"Glide side to side at the bottom."},
+  {n:"Hindu Push-Up", cat:"Chest", ic:"pushup", cue:"Sweep from down-dog through to up-dog."},
+  {n:"Dive Bomber Push-Up", cat:"Chest", ic:"pushup", cue:"Like Hindu, but reverse back through."},
+  {n:"Ring Push-Up", cat:"Chest", ic:"pushup", cue:"Turn the rings out at the top."},
+  {n:"One-Arm Push-Up Progression", cat:"Chest", ic:"pushup", cue:"Archer or assisted. Wide feet, brace hard."},
+  {n:"One-Arm Push-Up", cat:"Chest", ic:"pushup", cue:"Full one-arm. Hips square, no twist."},
+  {n:"Parallel Bar Dip", cat:"Chest", ic:"dip", cue:"Full depth. Lean forward for chest."},
+  {n:"Ring Dip", cat:"Chest", ic:"dip", cue:"Rings turned out at lockout. Unstable = harder."},
+  {n:"Bulgarian Ring Dip", cat:"Chest", ic:"dip", cue:"Rings wide, elbows out. Advanced."},
+  {n:"Korean Dip", cat:"Chest", ic:"dip", cue:"Bar behind you. Shoulders and chest, advanced."},
+  {n:"Straight Bar Dip", cat:"Chest", ic:"dip", cue:"Both hands one bar. Lean over the bar."},
+  {n:"Russian Dip", cat:"Chest", ic:"dip", cue:"Forearm dip to press-out. Muscle-up builder."},
+  {n:"Pike Push-Up", cat:"Shoulders", ic:"pushup", cue:"Hips high, head to floor. Vertical press."},
+  {n:"Elevated Pike Push-Up", cat:"Shoulders", ic:"pushup", cue:"Feet up in pike. Nearly a handstand press."},
+  {n:"Wall Handstand Hold", cat:"Shoulders", ic:"plank", unit:"sec", cue:"Belly or back to wall. Stack and hold."},
+  {n:"Wall Handstand Push-Up", cat:"Shoulders", ic:"pushup", cue:"Partial to full range against the wall."},
+  {n:"Freestanding Handstand Push-Up", cat:"Shoulders", ic:"pushup", cue:"No wall. Elite pressing and balance."},
+  {n:"Deficit Handstand Push-Up", cat:"Shoulders", ic:"pushup", cue:"Hands elevated for extra range."},
+  {n:"Planche Lean", cat:"Shoulders", ic:"plank", unit:"sec", cue:"Shoulders past hands, arms straight. Lean far."},
+  {n:"Pseudo-Planche Push-Up", cat:"Shoulders", ic:"pushup", cue:"Hands by hips, lean forward."},
+  {n:"Diamond Push-Up", cat:"Arms", ic:"pushup", cue:"Hands together under the chest. Triceps."},
+  {n:"Close-Grip Push-Up", cat:"Arms", ic:"pushup", cue:"Elbows tight to the ribs."},
+  {n:"Triceps Push-Up", cat:"Arms", ic:"pushup", cue:"Lower onto forearms, press back up."},
+  {n:"Bench Dip", cat:"Arms", ic:"dip", cue:"Hands on a bench behind you."},
+  {n:"Chair Dip", cat:"Arms", ic:"dip", cue:"Same as bench dip — use a sturdy chair."},
+  {n:"Ring Bicep Curl", cat:"Arms", ic:"curl", cue:"Walk feet forward to load. Elbows still."},
+  {n:"Ring Tricep Extension", cat:"Arms", ic:"extension", cue:"Walk feet back to load. Lock out."},
+  {n:"Scapular Pull-Up", cat:"Back", ic:"pullup", cue:"Just the shrug at the bottom. Builds the hang."},
+  {n:"Dead Hang", cat:"Back", ic:"hang", unit:"sec", cue:"Relax into the hang. Grip and shoulders."},
+  {n:"Australian Pull-Up", cat:"Back", ic:"row", cue:"Low bar row. Chest to bar, body straight."},
+  {n:"Ring Row", cat:"Back", ic:"row", cue:"Chest to rings. Lower feet to make harder."},
+  {n:"Table Row", cat:"Back", ic:"row", cue:"Under a sturdy table. Anywhere row."},
+  {n:"Negative Pull-Up", cat:"Back", ic:"pullup", cue:"Jump up, lower slow — 3-5 seconds down."},
+  {n:"Band-Assisted Pull-Up", cat:"Back", ic:"pullup", cue:"Band under a foot or knee. Log as assist."},
+  {n:"Pull-Up", cat:"Back", ic:"pullup", cue:"Overhand. Dead hang to chin over bar."},
+  {n:"Chin-Up", cat:"Back", ic:"pullup", cue:"Underhand grip. More biceps."},
+  {n:"Neutral-Grip Pull-Up", cat:"Back", ic:"pullup", cue:"Palms facing. Elbow-friendly."},
+  {n:"Wide-Grip Pull-Up", cat:"Back", ic:"pullup", cue:"Hands wide. Lats and upper back."},
+  {n:"Close-Grip Pull-Up", cat:"Back", ic:"pullup", cue:"Hands close. Deeper elbow drive."},
+  {n:"Commando Pull-Up", cat:"Back", ic:"pullup", cue:"Grip along the bar, head to alternate sides."},
+  {n:"Archer Pull-Up", cat:"Back", ic:"pullup", cue:"Pull to one side, other arm straight."},
+  {n:"Typewriter Pull-Up", cat:"Back", ic:"pullup", cue:"Glide side to side at the top."},
+  {n:"Towel Pull-Up", cat:"Back", ic:"pullup", cue:"Grip towels over the bar. Brutal grip work."},
+  {n:"L-Sit Pull-Up", cat:"Back", ic:"pullup", cue:"Hold an L with the legs while pulling."},
+  {n:"Knees-to-Elbows Pull-Up", cat:"Back", ic:"pullup", cue:"Pull and bring knees to the elbows."},
+  {n:"Explosive Pull-Up", cat:"Back", ic:"pullup", cue:"Pull as fast as possible, chest high."},
+  {n:"Clapping Pull-Up", cat:"Back", ic:"pullup", cue:"Explode, release, clap, re-catch."},
+  {n:"One-Arm Pull-Up Progression", cat:"Back", ic:"pullup", cue:"Archer / assisted one-arm work."},
+  {n:"One-Arm Pull-Up", cat:"Back", ic:"pullup", cue:"The full OAP. Elite pulling."},
+  {n:"Ring Face Pull", cat:"Back", ic:"row", cue:"Pull to forehead, elbows high. Rear delts."},
+  {n:"Crunch", cat:"Core", ic:"plank", cue:"Curl the ribs to the hips. Short range."},
+  {n:"Bicycle Crunch", cat:"Core", ic:"plank", cue:"Opposite elbow to knee, slow turns."},
+  {n:"Sit-Up", cat:"Core", ic:"plank", cue:"Full sit-up, controlled down."},
+  {n:"Jackknife Sit-Up", cat:"Core", ic:"plank", cue:"Fold hands to feet in one V motion."},
+  {n:"Reverse Crunch", cat:"Core", ic:"plank", cue:"Curl hips off the floor, knees to chest."},
+  {n:"Frog Crunch", cat:"Core", ic:"plank", cue:"Soles together, crunch over the knees."},
+  {n:"Lying Leg Raise", cat:"Core", ic:"plank", cue:"Legs straight, low back pressed down."},
+  {n:"V-Up", cat:"Core", ic:"plank", cue:"Hands meet feet at the top of a V."},
+  {n:"Toe Touch", cat:"Core", ic:"plank", cue:"Legs vertical, reach for the toes."},
+  {n:"Flutter Kicks", cat:"Core", ic:"plank", cue:"Small fast kicks, back pinned down."},
+  {n:"Scissor Kicks", cat:"Core", ic:"plank", cue:"Cross the legs over and under."},
+  {n:"Hanging Knee Raise", cat:"Core", ic:"hang", cue:"Slow, no swing."},
+  {n:"Hanging Leg Raise", cat:"Core", ic:"hang", cue:"Straight legs to horizontal or higher."},
+  {n:"Toes-to-Bar", cat:"Core", ic:"hang", cue:"Touch the toes to the bar."},
   {n:"Hollow Body Hold", cat:"Core", ic:"plank", unit:"sec", cue:"Low back pressed to the floor."},
-  {n:"Ab Wheel Rollout", cat:"Core", ic:"plank", cue:"Roll out slow, brace. Don't arch the back."},
-  {n:"Russian Twist", cat:"Core", ic:"plank", cue:"Rotate side to side. Optional load."},
-  {n:"Hanging Knee Raise", cat:"Core", ic:"hang", cue:"Slow and controlled, no swing."},
-  {n:"Hanging Leg Raise", cat:"Core", ic:"hang", cue:"Straight legs if you can. Core and hip flexors."},
-  {n:"Toes-to-Bar", cat:"Core", ic:"hang", cue:"Touch the toes to the bar. Explosive core."},
-  {n:"L-Sit", cat:"Core", ic:"lever", unit:"sec", cue:"Legs straight out, hold. Rings or floor."},
-  {n:"Dragon Flag", cat:"Core", ic:"lever", cue:"Advanced. Lower the whole body slow and straight."},
-  {n:"Tuck Front Lever Hold", cat:"Skill", ic:"lever", unit:"sec", cue:"Knees tucked, body horizontal under the bar."},
-  {n:"Front Lever Hold", cat:"Skill", ic:"lever", unit:"sec", cue:"Straight body under the bar. Advanced."},
-  {n:"Back Lever Hold", cat:"Skill", ic:"lever", unit:"sec", cue:"Face-down horizontal hold."},
+  {n:"Hollow Body Rock", cat:"Core", ic:"plank", cue:"Rock the hollow shape without breaking it."},
+  {n:"Dead Bug", cat:"Core", ic:"plank", cue:"Opposite arm and leg lower slowly."},
+  {n:"Bird-Dog", cat:"Core", ic:"plank", cue:"Opposite arm and leg reach, level hips."},
+  {n:"Plank", cat:"Core", ic:"plank", unit:"sec", cue:"High or forearm. Brace everything."},
+  {n:"RKC Plank", cat:"Core", ic:"plank", unit:"sec", cue:"Max-tension plank. Squeeze fists, glutes."},
+  {n:"Side Plank", cat:"Core", ic:"plank", unit:"sec", cue:"Stack the hips, don't sag."},
+  {n:"Side Plank Leg Lift", cat:"Core", ic:"plank", cue:"Raise the top leg while holding."},
+  {n:"Plank Reach-Out", cat:"Core", ic:"plank", cue:"Reach one arm far forward, stay level."},
+  {n:"Plank Shoulder Taps", cat:"Core", ic:"plank", cue:"Tap opposite shoulder, hips quiet."},
+  {n:"Ab Wheel Rollout", cat:"Core", ic:"plank", cue:"Roll out slow, brace. Don't arch."},
+  {n:"Back Extension", cat:"Core", ic:"hinge", cue:"Floor or Roman chair. Squeeze up, slow down."},
+  {n:"Superman Hold", cat:"Core", ic:"hinge", unit:"sec", cue:"Arms and legs off the floor, hold."},
+  {n:"Superman Pull", cat:"Core", ic:"hinge", cue:"From superman, pull the elbows to the ribs."},
+  {n:"Russian Twist", cat:"Core", ic:"plank", cue:"Rotate side to side, feet down or up."},
+  {n:"Standing Torso Twist", cat:"Core", ic:"plank", cue:"Controlled standing rotations."},
+  {n:"Woodchopper", cat:"Core", ic:"plank", cue:"Diagonal chop, hips drive the turn."},
+  {n:"Side Bend", cat:"Core", ic:"plank", cue:"Lateral flexion, slow and strict."},
+  {n:"Air Squat", cat:"Quads", ic:"squat", cue:"Full depth, knees over toes."},
+  {n:"Box Squat", cat:"Quads", ic:"squat", cue:"Sit back to a box, stand without rocking."},
+  {n:"Chair Squat", cat:"Quads", ic:"squat", cue:"Tap the chair, don't rest."},
+  {n:"Goblet-Pattern Squat", cat:"Quads", ic:"squat", cue:"Hands forward as counterweight. Deep."},
+  {n:"Narrow-Stance Squat", cat:"Quads", ic:"squat", cue:"Feet together. Quad-dominant."},
+  {n:"Sumo Squat", cat:"Quads", ic:"squat", cue:"Wide stance, toes out. Adductors too."},
+  {n:"Jump Squat", cat:"Quads", ic:"jump", cue:"Explode up, land soft."},
+  {n:"Tuck Jump Squat", cat:"Quads", ic:"jump", cue:"Knees to chest at the top."},
+  {n:"Cossack Squat", cat:"Quads", ic:"lunge", cue:"Shift side to side, one leg straight."},
+  {n:"Side-to-Side Squat", cat:"Quads", ic:"lunge", cue:"Rock between legs, stay low."},
+  {n:"Split Squat", cat:"Quads", ic:"lunge", cue:"Static lunge stance, drop straight down."},
+  {n:"Bulgarian Split Squat", cat:"Quads", ic:"lunge", cue:"Rear foot on a bench. Add vest to load."},
+  {n:"Pistol Squat Progression", cat:"Quads", ic:"squat", cue:"To a box, or band/ring assisted."},
+  {n:"Pistol Squat", cat:"Quads", ic:"squat", cue:"Full one-leg squat."},
+  {n:"Shrimp Squat", cat:"Quads", ic:"squat", cue:"Hold the rear foot, knee to floor."},
+  {n:"Shrimp Squat Jump", cat:"Quads", ic:"jump", cue:"Explosive shrimp. Very advanced."},
+  {n:"Sissy Squat", cat:"Quads", ic:"squat", cue:"Knees travel far forward, lean back."},
+  {n:"Reverse Nordic Curl", cat:"Quads", ic:"squat", cue:"Kneel, lean back with straight hips."},
+  {n:"Wall Sit", cat:"Quads", ic:"squat", unit:"sec", cue:"Thighs parallel. Vest on lap to load."},
+  {n:"Forward Lunge", cat:"Quads", ic:"lunge", cue:"Step forward, drop the back knee."},
+  {n:"Reverse Lunge", cat:"Quads", ic:"lunge", cue:"Step back. Knee-friendly."},
+  {n:"Walking Lunge", cat:"Quads", ic:"lunge", cue:"Long strides, continuous."},
+  {n:"Lateral Lunge", cat:"Quads", ic:"lunge", cue:"Step wide, sit into one hip."},
+  {n:"Curtsy Lunge", cat:"Quads", ic:"lunge", cue:"Step behind and across. Glute medius."},
+  {n:"Jumping Lunge", cat:"Quads", ic:"jump", cue:"Switch legs mid-air each rep."},
+  {n:"Skater Lunge", cat:"Quads", ic:"jump", cue:"Bound side to side, stick each landing."},
+  {n:"Step-Up", cat:"Quads", ic:"lunge", cue:"Drive through the heel. Raise the box over time."},
+  {n:"Good Morning", cat:"Glutes/Hams", ic:"hinge", cue:"Hands behind head, hinge flat-backed."},
+  {n:"Single-Leg RDL", cat:"Glutes/Hams", ic:"hinge", cue:"Slow hinge on one leg."},
+  {n:"Nordic Curl Negative", cat:"Glutes/Hams", ic:"hinge", cue:"Lower as slow as possible."},
+  {n:"Nordic Curl", cat:"Glutes/Hams", ic:"hinge", cue:"Anchor the feet. The hamstring builder."},
+  {n:"Glute Bridge", cat:"Glutes/Hams", ic:"bridge", cue:"Squeeze hard at the top."},
+  {n:"Single-Leg Glute Bridge", cat:"Glutes/Hams", ic:"bridge", cue:"One leg. Hips level."},
+  {n:"Hip Thrust", cat:"Glutes/Hams", ic:"bridge", cue:"Shoulders on a bench, full lockout."},
+  {n:"Table Top Bridge", cat:"Glutes/Hams", ic:"bridge", cue:"Flat table shape, push the hips up."},
+  {n:"Ring Hamstring Curl", cat:"Glutes/Hams", ic:"bridge", cue:"Heels in rings, hips up, curl in."},
+  {n:"Warrior III", cat:"Glutes/Hams", ic:"hinge", unit:"sec", cue:"Single-leg hinge, arms reaching. Balance."},
+  {n:"Calf Raise", cat:"Calves", ic:"calf", cue:"Full range on a step."},
+  {n:"Single-Leg Calf Raise", cat:"Calves", ic:"calf", cue:"One leg. Add vest to progress."},
+  {n:"Bent-Knee Calf Raise", cat:"Calves", ic:"calf", cue:"Knees bent — hits the soleus."},
+  {n:"Donkey Calf Raise", cat:"Calves", ic:"calf", cue:"Hinged over. Big stretch at the bottom."},
+  {n:"Jumping Jack", cat:"Full Body", ic:"jump", cue:"Classic conditioning."},
+  {n:"Star Jump", cat:"Full Body", ic:"jump", cue:"Explode into a star shape."},
+  {n:"High Knees", cat:"Full Body", ic:"jump", cue:"Sprint in place, knees to hip height."},
+  {n:"Butt Kicks", cat:"Full Body", ic:"jump", cue:"Fast heels to glutes."},
+  {n:"Burpee (No Push-Up)", cat:"Full Body", ic:"jump", cue:"Squat, kick back, jump up."},
+  {n:"Burpee", cat:"Full Body", ic:"jump", cue:"Full burpee with the push-up."},
+  {n:"Tuck-Jump Burpee", cat:"Full Body", ic:"jump", cue:"Finish each burpee with a tuck jump."},
+  {n:"Box Jump", cat:"Full Body", ic:"jump", cue:"Land soft. Step down, don't jump down."},
+  {n:"Tuck Jump", cat:"Full Body", ic:"jump", cue:"Knees to chest, quiet landings."},
+  {n:"Broad Jump", cat:"Full Body", ic:"jump", cue:"Jump for distance, stick it."},
+  {n:"Mountain Climber", cat:"Full Body", ic:"plank", cue:"Fast knees under a still torso."},
+  {n:"Cross-Body Mountain Climber", cat:"Full Body", ic:"plank", cue:"Knee to opposite elbow."},
+  {n:"Bear Crawl", cat:"Full Body", ic:"plank", cue:"Knees an inch off the floor, crawl."},
+  {n:"Crab Walk", cat:"Full Body", ic:"bridge", cue:"Hips up, walk on hands and feet."},
+  {n:"Sprint Drill", cat:"Full Body", ic:"jump", cue:"Short max-effort sprints."},
+  {n:"Shuttle Run", cat:"Full Body", ic:"jump", cue:"Down-and-back touches, fast turns."},
+  {n:"Arm Circles", cat:"Mobility", ic:"extension", cue:"Small to large, both directions."},
+  {n:"Shoulder Dislocates", cat:"Mobility", ic:"extension", cue:"Band or stick, wide grip, over and back."},
+  {n:"Hip Circles", cat:"Mobility", ic:"squat", cue:"Big slow circles each way."},
+  {n:"Leg Swings", cat:"Mobility", ic:"lunge", cue:"Front-back and side-to-side."},
+  {n:"Hamstring Sweeps", cat:"Mobility", ic:"hinge", cue:"Heel out, sweep the floor as you hinge."},
+  {n:"Deep Squat Hold", cat:"Mobility", ic:"squat", unit:"sec", cue:"Sit in the bottom, chest up."},
+  {n:"Spinal Wave", cat:"Mobility", ic:"plank", cue:"Segment through the spine slowly."},
+  {n:"Cat-Cow", cat:"Mobility", ic:"plank", cue:"Arch and round with the breath."},
+  {n:"Thoracic Rotation", cat:"Mobility", ic:"plank", cue:"Thread the needle, open to the ceiling."},
+  {n:"Lunging Hip Flexor Stretch", cat:"Mobility", ic:"lunge", unit:"sec", cue:"Tall lunge, squeeze the rear glute."},
+  {n:"World's Greatest Stretch", cat:"Mobility", ic:"lunge", cue:"Lunge, elbow drop, reach to the sky."},
+  {n:"Front Split Progression", cat:"Mobility", ic:"lunge", unit:"sec", cue:"Work toward the front split."},
+  {n:"Middle Split Progression", cat:"Mobility", ic:"squat", unit:"sec", cue:"Work toward the middle split."},
+  {n:"Full Bridge", cat:"Mobility", ic:"bridge", unit:"sec", cue:"Full backbend. Push tall through the shoulders."},
+  {n:"Crow Pose", cat:"Skill", ic:"plank", unit:"sec", cue:"Knees on elbows, lean and balance."},
+  {n:"Frog Stand", cat:"Skill", ic:"plank", unit:"sec", cue:"Crow with bent arms. Planche base."},
+  {n:"Handstand Hold", cat:"Skill", ic:"plank", unit:"sec", cue:"Freestanding. Stack and breathe."},
+  {n:"Handstand Walk", cat:"Skill", ic:"plank", cue:"Small controlled steps on the hands."},
+  {n:"Handstand Pirouette", cat:"Skill", ic:"plank", cue:"Turn the handstand in quarter steps."},
+  {n:"One-Hand Handstand", cat:"Skill", ic:"plank", unit:"sec", cue:"Elite balance work."},
+  {n:"L-Sit", cat:"Skill", ic:"lever", unit:"sec", cue:"Legs straight out. Floor, parallettes, or rings."},
+  {n:"V-Sit", cat:"Skill", ic:"lever", unit:"sec", cue:"L-sit with the legs lifted higher."},
+  {n:"Tuck Front Lever", cat:"Skill", ic:"lever", unit:"sec", cue:"Knees tucked, body horizontal."},
+  {n:"Advanced Tuck Front Lever", cat:"Skill", ic:"lever", unit:"sec", cue:"Open the hips, flat back."},
+  {n:"Straddle Front Lever", cat:"Skill", ic:"lever", unit:"sec", cue:"Legs wide to shorten the lever."},
+  {n:"Front Lever", cat:"Skill", ic:"lever", unit:"sec", cue:"Full body horizontal under the bar."},
+  {n:"Tuck Back Lever", cat:"Skill", ic:"lever", unit:"sec", cue:"Face-down tuck under the bar."},
+  {n:"Straddle Back Lever", cat:"Skill", ic:"lever", unit:"sec", cue:"Open to straddle, face down."},
+  {n:"Back Lever", cat:"Skill", ic:"lever", unit:"sec", cue:"Full face-down horizontal hold."},
+  {n:"Human Flag Progression", cat:"Skill", ic:"lever", unit:"sec", cue:"Tuck and straddle flags on a pole."},
+  {n:"Human Flag", cat:"Skill", ic:"lever", unit:"sec", cue:"Full sideways body hold."},
+  {n:"Tuck Planche", cat:"Skill", ic:"plank", unit:"sec", cue:"Knees tucked, feet off the floor."},
+  {n:"Straddle Planche", cat:"Skill", ic:"plank", unit:"sec", cue:"Legs wide, horizontal hold."},
+  {n:"Full Planche", cat:"Skill", ic:"plank", unit:"sec", cue:"Full body parallel to the floor."},
+  {n:"Planche Push-Up", cat:"Skill", ic:"pushup", cue:"Push-ups in the planche. Elite."},
+  {n:"90-Degree Push-Up", cat:"Skill", ic:"pushup", cue:"Lower to 90°, press to handstand."},
   {n:"Ring Support Hold", cat:"Skill", ic:"dip", unit:"sec", cue:"Arms straight, rings turned out."},
-  {n:"Ring Muscle-Up", cat:"Skill", ic:"pullup", cue:"Pull high, fast transition through the rings."},
-  {n:"Bar Muscle-Up", cat:"Skill", ic:"pullup", cue:"Explosive pull to transition over the bar."},
-  {n:"Skin-the-Cat", cat:"Skill", ic:"hang", cue:"Rings. Slow shoulder rotation. Mobility and control."},
-  {n:"Handstand Hold", cat:"Skill", ic:"plank", unit:"sec", cue:"Wall or free. Stack shoulders over hands."}
+  {n:"Ring Muscle-Up", cat:"Skill", ic:"pullup", cue:"Pull high, fast transition."},
+  {n:"Bar Muscle-Up", cat:"Skill", ic:"pullup", cue:"Explosive pull over the bar."},
+  {n:"Swing-Up Muscle-Up", cat:"Skill", ic:"pullup", cue:"Use the swing to learn the transition."},
+  {n:"Slow-Tempo Muscle-Up", cat:"Skill", ic:"pullup", cue:"Strict and slow. No kip."},
+  {n:"Muscle-Up to Front Lever", cat:"Skill", ic:"lever", cue:"Chain the two. Advanced combo."},
+  {n:"Impossible Dip", cat:"Skill", ic:"dip", cue:"Straight-arm swing-through dip. Elite."},
+  {n:"Dragon Flag Progression", cat:"Skill", ic:"lever", cue:"Tuck and single-leg dragon flags."},
+  {n:"Dragon Flag", cat:"Skill", ic:"lever", cue:"Lower the whole body straight and slow."},
+  {n:"Skin-the-Cat", cat:"Skill", ic:"hang", cue:"Slow shoulder rotation through the rings."},
+  {n:"Shoulder Stand", cat:"Skill", ic:"plank", unit:"sec", cue:"On rings or floor. Body vertical."},
+  {n:"Elbow Lever", cat:"Skill", ic:"lever", unit:"sec", cue:"Balance the body on the elbows."},
+  {n:"Side Lever", cat:"Skill", ic:"lever", unit:"sec", cue:"Human flag shape on floor supports."},
+  {n:"Iron Cross", cat:"Skill", ic:"lever", unit:"sec", cue:"Rings out to a cross. Elite."},
+  {n:"Victorian Cross", cat:"Skill", ic:"lever", unit:"sec", cue:"Horizontal cross on parallel bars."},
+  {n:"Manna", cat:"Skill", ic:"lever", unit:"sec", cue:"V-sit rotated past vertical. Elite."}
 ];
 
 /* ---------- STORAGE ---------- */
@@ -541,15 +686,44 @@ function saveJSON(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(
 let SWAPS=loadJSON(SWKEY), SUPER=loadJSON(SSKEY);
 function saveSwaps(){ saveJSON(SWKEY,SWAPS); }
 function saveSuper(){ saveJSON(SSKEY,SUPER); }
-// resolve the exercise at a slot, applying any persisted swap
+
+/* ---------- EDITABLE PLAN ----------
+   The plan (days + exercises) is editable. On first modification, the built-in
+   PROGRAM is copied into localStorage and becomes the source of truth. */
+const PKEY="calisthenics_plan_v1";
+let PLAN=loadJSON(PKEY);
+function days(){ return (PLAN && PLAN.days && PLAN.days.length) ? PLAN.days : PROGRAM.days; }
+function dayById(id){ return days().find(d=>d.id===id); }
+function savePlan(){ saveJSON(PKEY,PLAN); }
+function materializePlan(){
+  if(PLAN && PLAN.days && PLAN.days.length) return;
+  PLAN={ days: JSON.parse(JSON.stringify(PROGRAM.days)) };
+  // bake any existing swaps into the plan, then retire the overlay
+  Object.keys(SWAPS).forEach(k=>{
+    const p=k.split(":"), d=PLAN.days.find(x=>x.id===p[0]);
+    if(d && d.exercises && d.exercises[+p[1]]){
+      d.exercises[+p[1]]=Object.assign({},d.exercises[+p[1]],SWAPS[k],{ladder:null});
+    }
+  });
+  SWAPS={}; saveSwaps();
+  savePlan();
+}
+// resolve the exercise at a slot (legacy swap overlay applies only pre-materialization)
 function exAt(dayId,ei){
-  const day=PROGRAM.days.find(d=>d.id===dayId);
+  const day=dayById(dayId);
   const base=day.exercises[ei];
   const sw=SWAPS[dayId+":"+ei];
   if(!sw) return base;
   const m=Object.assign({},base,sw);
   m.ladder=null; m.unit=sw.unit||"reps";
   return m;
+}
+// structural edits invalidate today's working inputs for that day (history is safe)
+function clearDayWork(id){
+  delete DB[id]; saveAll(DB);
+  delete SUPER[id]; saveSuper();
+  Object.keys(SWAPS).forEach(k=>{ if(k.indexOf(id+":")===0) delete SWAPS[k]; });
+  saveSwaps();
 }
 function isSupersetFirst(id,ei){ return !!(SUPER[id] && SUPER[id][ei]); }
 function isSupersetSecond(id,ei){ return !!(SUPER[id] && SUPER[id][ei-1]); }
@@ -560,7 +734,7 @@ function todayKey(){ const d=new Date(); return d.getFullYear()+"-"+(d.getMonth(
 
 /* ---------- HISTORY RECORDING ---------- */
 function snapshotDay(dayId){
-  const day=PROGRAM.days.find(d=>d.id===dayId);
+  const day=dayById(dayId);
   const dd=DB[dayId];
   if(!day||!dd) return null;
   const exercises=[];
@@ -593,7 +767,7 @@ function recordHistory(dayId){
 function seedHistory(){
   let changed=false;
   Object.keys(DB).forEach(dayId=>{
-    const day=PROGRAM.days.find(d=>d.id===dayId);
+    const day=dayById(dayId);
     if(!day) return;
     const dd=DB[dayId];
     const byDate={};
@@ -646,7 +820,7 @@ function openDrawer(){ drawerEl.classList.add("show"); scrimEl.classList.add("sh
 function closeDrawer(){ drawerEl.classList.remove("show"); scrimEl.classList.remove("show"); }
 document.getElementById("menuBtn").onclick=openDrawer;
 scrimEl.onclick=closeDrawer;
-function goTab(tab){ activeTab=tab; current=null; selDate=null; closeDrawer(); window.scrollTo(0,0); render(); }
+function goTab(tab){ activeTab=tab; current=null; selDate=null; editMode=false; closeDrawer(); window.scrollTo(0,0); render(); }
 document.querySelectorAll(".navitem[data-tab]").forEach(b=>{ b.onclick=()=>goTab(b.dataset.tab); });
 function syncNav(){ document.querySelectorAll(".navitem[data-tab]").forEach(b=>{ b.classList.toggle("active", b.dataset.tab===activeTab); }); }
 
@@ -656,18 +830,19 @@ function renderTrain(){
     '<div class="htitle">Train</div><div class="hsub">Strength &amp; mass · 4-5 days/week</div>';
   const v=document.getElementById("view");
   let html='<p class="intro">Tap a day to train. Your sets, reps, and vest weight save on this phone.</p>';
-  PROGRAM.days.forEach(day=>{
+  days().forEach(day=>{
     if(day.type==="rest"){
       html+=`<div class="card daycard rest"><div><div class="daynum">${day.tag}</div>
-        <div class="dayname">${day.name}</div><div class="daydesc">${day.desc}</div></div></div>`;
+        <div class="dayname">${esc(day.name)}</div><div class="daydesc">${esc(day.desc||"")}</div></div></div>`;
     } else {
       const logged = wasLoggedToday(day.id);
       html+=`<div class="card daycard" onclick="go('${day.id}')">
         <div><div class="daynum">${day.tag}${logged?'<span class="pill done">logged today</span>':''}</div>
-        <div class="dayname">${day.name}</div><div class="daydesc">${day.desc}</div></div>
+        <div class="dayname">${esc(day.name)}</div><div class="daydesc">${esc(day.desc||"")}</div></div>
         <div class="chev">›</div></div>`;
     }
   });
+  html+=`<button class="btn btn-g" onclick="newWorkout()">+ New custom workout</button>`;
   html+=`<div class="card"><div class="ex-name" style="font-size:15px;margin-bottom:4px;">Progressive overload</div>
     <div class="ex-meta">Make each move harder over time, in this order:</div>
     <ul class="overload">
@@ -721,7 +896,7 @@ function renderHero(){
 
 /* ---------- EXERCISE LIBRARY ---------- */
 let libQuery="", libCat="All";
-const LIBCATS=["All","Push","Pull","Legs","Core","Skill"];
+const LIBCATS=["All","Chest","Shoulders","Arms","Back","Core","Quads","Glutes/Hams","Calves","Full Body","Mobility","Skill"];
 function renderLibrary(){
   document.getElementById("hbar").innerHTML =
     '<div class="htitle">Exercise Library</div><div class="hsub">'+LIBRARY.length+' calisthenics movements</div>';
@@ -752,47 +927,131 @@ function applyLibFilter(){
   const c=document.getElementById("libCount"); if(c) c.textContent=count+" shown";
 }
 
-/* ---------- SWAP MODAL ---------- */
+/* ---------- SWAP / ADD MODAL ---------- */
 let swapCtx=null, swapQuery="";
+function openAdd(dayId){
+  swapCtx={dayId, ei:-1, mode:"add"}; swapQuery="";
+  let html=`<button class="modal-x" onclick="closeModal()">&#10005;</button>
+    <div class="modal-h">Add exercise</div>
+    <div class="modal-sub">Pick from the library — it's added to the end of this workout.</div>
+    <input class="searchbar" placeholder="Search exercises…" oninput="onSwapSearch(this.value)">
+    <div class="modal-list" id="swapList"></div>`;
+  document.getElementById("modalSheet").innerHTML=html;
+  document.getElementById("modal").classList.add("show");
+  buildSwapList();
+}
 function openSwap(dayId,ei){
-  swapCtx={dayId,ei}; swapQuery="";
+  swapCtx={dayId,ei,mode:"swap"}; swapQuery="";
   const cur=exAt(dayId,ei);
-  const orig=PROGRAM.days.find(d=>d.id===dayId).exercises[ei].n;
+  const origDay=PROGRAM.days.find(d=>d.id===dayId);
+  const orig=(origDay&&origDay.exercises&&origDay.exercises[ei])?origDay.exercises[ei].n:null;
   let html=`<button class="modal-x" onclick="closeModal()">&#10005;</button>
     <div class="modal-h">Swap exercise</div>
     <div class="modal-sub">Replacing <b style="color:var(--text)">${cur.n}</b> for this slot. The swap persists to your plan.</div>
     <input class="searchbar" placeholder="Search exercises…" oninput="onSwapSearch(this.value)">`;
-  if(SWAPS[dayId+":"+ei]){ html+=`<button class="btn btn-g" style="margin:0 0 10px;" onclick="resetSwap()">&#8634; Reset to original — ${esc(orig)}</button>`; }
+  if(orig && orig!==cur.n){ html+=`<button class="btn btn-g" style="margin:0 0 10px;" onclick="resetSwap()">&#8634; Reset to original — ${esc(orig)}</button>`; }
   html+=`<div class="modal-list" id="swapList"></div>`;
   document.getElementById("modalSheet").innerHTML=html;
   document.getElementById("modal").classList.add("show");
   buildSwapList();
 }
-function swapPreferIcon(){ const cur=exAt(swapCtx.dayId,swapCtx.ei); return cur.ic || EXMAP[cur.n] || ""; }
+function swapPreferIcon(){ if(swapCtx.ei<0) return ""; const cur=exAt(swapCtx.dayId,swapCtx.ei); return cur.ic || EXMAP[cur.n] || ""; }
 function buildSwapList(){
   const q=(swapQuery||"").trim().toLowerCase(); const pref=swapPreferIcon();
   const items=LIBRARY.map((it,idx)=>({it,idx}))
-    .filter(o=>!q||o.it.n.toLowerCase().indexOf(q)>-1)
+    .filter(o=>!q||o.it.n.toLowerCase().indexOf(q)>-1||o.it.cat.toLowerCase().indexOf(q)>-1)
     .sort((a,b)=>{ const ap=a.it.ic===pref?0:1, bp=b.it.ic===pref?0:1; return ap!==bp?ap-bp:a.it.n.localeCompare(b.it.n); });
   let h="";
   items.forEach(o=>{ const ic=ICONS[o.it.ic]||"";
-    h+=`<div class="exrow" onclick="doSwap(${o.idx})"><span class="ex-ico">${ic}</span>
+    h+=`<div class="exrow" onclick="pickFromLib(${o.idx})"><span class="ex-ico">${ic}</span>
       <div class="er-txt"><div class="er-n">${o.it.n}</div><div class="er-c">${o.it.cue}</div></div>
       <span class="ertag">${o.it.cat}</span></div>`; });
   const el=document.getElementById("swapList"); if(el) el.innerHTML=h||`<div class="hist-hint">No matches.</div>`;
 }
 function onSwapSearch(v){ swapQuery=v; buildSwapList(); }
-function doSwap(idx){
-  const it=LIBRARY[idx], {dayId,ei}=swapCtx;
-  SWAPS[dayId+":"+ei]={ n:it.n, ic:it.ic, note:it.cue, unit:it.unit||"reps", bw:(bwByIcon[it.ic]||0.6) };
-  saveSwaps(); closeModal(); renderDay(dayId); toast("Swapped to "+it.n);
+function libToPlanEx(it){
+  return { n:it.n, sets:3, reps:(it.unit==="sec"?"20-30 sec":"8-12"), rest:90,
+    bw:(bwByIcon[it.ic]||0.6), ic:it.ic, unit:it.unit||"reps", note:it.cue };
 }
-function resetSwap(){ const {dayId,ei}=swapCtx; delete SWAPS[dayId+":"+ei]; saveSwaps(); closeModal(); renderDay(dayId); toast("Reset to original"); }
+function pickFromLib(idx){
+  const it=LIBRARY[idx], dayId=swapCtx.dayId;
+  materializePlan();
+  const d=PLAN.days.find(x=>x.id===dayId);
+  if(swapCtx.mode==="add"){
+    d.exercises.push(libToPlanEx(it));
+    savePlan(); closeModal(); renderDay(dayId); toast("Added "+it.n);
+  } else {
+    const old=d.exercises[swapCtx.ei];
+    d.exercises[swapCtx.ei]=Object.assign(libToPlanEx(it), {sets:old.sets||3, rest:old.rest||90});
+    savePlan(); closeModal(); renderDay(dayId); toast("Swapped to "+it.n);
+  }
+}
+function resetSwap(){
+  const {dayId,ei}=swapCtx;
+  materializePlan();
+  const d=PLAN.days.find(x=>x.id===dayId);
+  const od=PROGRAM.days.find(x=>x.id===dayId);
+  if(od && od.exercises && od.exercises[ei]){ d.exercises[ei]=JSON.parse(JSON.stringify(od.exercises[ei])); savePlan(); }
+  delete SWAPS[dayId+":"+ei]; saveSwaps();
+  closeModal(); renderDay(dayId); toast("Reset to original");
+}
 function closeModal(){ document.getElementById("modal").classList.remove("show"); }
+
+/* ---------- WORKOUT EDITING ---------- */
+let editMode=false;
+function toggleEditMode(){ editMode=!editMode; renderDay(current); }
+function removeEx(id,ei){
+  const d=dayById(id);
+  if(!confirm("Remove "+exAt(id,ei).n+" from this workout? Today's unlogged inputs for this day will be cleared (history is safe).")) return;
+  materializePlan();
+  PLAN.days.find(x=>x.id===id).exercises.splice(ei,1);
+  clearDayWork(id); savePlan(); renderDay(id);
+}
+function moveEx(id,ei,dir){
+  materializePlan();
+  const arr=PLAN.days.find(x=>x.id===id).exercises;
+  const j=ei+dir; if(j<0||j>=arr.length) return;
+  const t=arr[ei]; arr[ei]=arr[j]; arr[j]=t;
+  clearDayWork(id); savePlan(); renderDay(id);
+}
+function editField(id,ei,f,v){
+  materializePlan();
+  const ex=PLAN.days.find(x=>x.id===id).exercises[ei];
+  if(f==="sets"){ ex.sets=Math.max(1,Math.min(10,Number(v)||1)); }
+  else if(f==="rest"){ ex.rest=Math.max(0,Number(v)||0); }
+  else if(f==="reps"){ ex.reps=v||"8-12"; }
+  savePlan(); renderDay(id);
+}
+function newWorkout(){
+  const name=prompt("Name your workout (e.g. Grip & Core Friday):");
+  if(!name||!name.trim()) return;
+  materializePlan();
+  const id="c"+Date.now().toString(36);
+  PLAN.days.push({ id:id, tag:"Custom", name:name.trim(), type:"work", custom:true,
+    desc:"Custom workout", exercises:[] });
+  savePlan(); editMode=true; go(id);
+}
+function deleteWorkout(id){
+  const d=dayById(id);
+  if(!confirm("Delete the workout \""+d.name+"\"? Its logged history stays in the calendar.")) return;
+  materializePlan();
+  PLAN.days=PLAN.days.filter(x=>x.id!==id);
+  clearDayWork(id); savePlan();
+  editMode=false; current=null; render(); toast("Workout deleted");
+}
+function resetDayToDefault(id){
+  const od=PROGRAM.days.find(x=>x.id===id);
+  if(!od){ toast("No default for a custom workout"); return; }
+  if(!confirm("Reset this day to the original program?")) return;
+  materializePlan();
+  const i=PLAN.days.findIndex(x=>x.id===id);
+  PLAN.days[i]=JSON.parse(JSON.stringify(od));
+  clearDayWork(id); savePlan(); renderDay(id); toast("Day reset to default");
+}
 
 /* ---------- SUPERSETS ---------- */
 function toggleSuperset(id,ei){
-  const day=PROGRAM.days.find(d=>d.id===id);
+  const day=dayById(id);
   if(ei>=day.exercises.length-1){ toast("Nothing after this to pair with"); return; }
   if(!SUPER[id]) SUPER[id]={};
   if(SUPER[id][ei]) delete SUPER[id][ei]; else SUPER[id][ei]=true;
@@ -803,13 +1062,16 @@ function toggleSuperset(id,ei){
 /* ---------- TRAIN: DAY ---------- */
 function renderDay(id){
   freshenDay(id);
-  const day=PROGRAM.days.find(d=>d.id===id);
+  const day=dayById(id);
+  if(!day){ current=null; render(); return; }
   document.getElementById("hbar").innerHTML =
     `<button class="back" onclick="go(null)">‹ Days</button>
-     <div class="htitle">${day.name}</div><div class="hsub">${day.tag} · ${day.desc}</div>`;
+     <div class="htitle">${esc(day.name)}</div><div class="hsub">${day.tag} · ${esc(day.desc||"")}</div>`;
   const v=document.getElementById("view");
-  let html="";
+  let html=`<div class="ex-actions" style="margin:0 0 12px;">
+    <button class="exact ${editMode?'on':''}" onclick="toggleEditMode()">${editMode?'✓ Done editing':'✎ Edit workout'}</button></div>`;
   const total=day.exercises.length;
+  if(!total){ html+=`<div class="hist-hint">Empty workout — add your first exercise.</div>`; }
   day.exercises.forEach((_,ei)=>{
     const ex=exAt(id,ei);
     const log = (DB[id]&&DB[id][ei]) ? DB[id][ei] : null;
@@ -820,8 +1082,23 @@ function renderDay(id){
     html+=`<div class="${cls}">`;
     if(ssFirst) html+=`<div class="ss-tag">Superset · no rest between</div>`;
     if(ssSecond) html+=`<div class="ss-link">↳ superset with the exercise above</div>`;
-    html+=`<div class="ex-h"><div class="ex-hl">${ic?`<span class="ex-ico">${ic}</span>`:""}<div class="ex-name">${ex.n}</div></div><div class="badge">${ex.sets} × ${ex.reps}</div></div>
+    html+=`<div class="ex-h"><div class="ex-hl">${ic?`<span class="ex-ico">${ic}</span>`:""}<div class="ex-name">${esc(ex.n)}</div></div><div class="badge">${ex.sets} × ${esc(String(ex.reps))}</div></div>
       <div class="ex-meta">Rest ${fmt(ex.rest)} between sets</div>`;
+    if(editMode){
+      html+=`<div class="ex-actions">
+        <button class="exact" onclick="moveEx('${id}',${ei},-1)" ${ei===0?'disabled style="opacity:.4"':''}>↑</button>
+        <button class="exact" onclick="moveEx('${id}',${ei},1)" ${ei===total-1?'disabled style="opacity:.4"':''}>↓</button>
+        <button class="exact" onclick="openSwap('${id}',${ei})">⇄ Swap</button>
+        <button class="exact" style="color:var(--warn);" onclick="removeEx('${id}',${ei})">✕ Remove</button></div>
+      <div class="fieldhead" style="grid-template-columns:1fr 1fr 1fr;"><span>Sets</span><span>Rep range</span><span>Rest (sec)</span></div>
+      <div class="setrow" style="grid-template-columns:1fr 1fr 1fr;">
+        <input class="field" type="number" inputmode="numeric" value="${ex.sets}" onchange="editField('${id}',${ei},'sets',this.value)">
+        <input class="field" type="text" value="${esc(String(ex.reps))}" onchange="editField('${id}',${ei},'reps',this.value)">
+        <input class="field" type="number" inputmode="numeric" value="${ex.rest}" onchange="editField('${id}',${ei},'rest',this.value)">
+      </div>`;
+      html+=`</div>`;
+      return;
+    }
     if(ex.ladder){
       const L=PROGRAM.ladders[ex.ladder];
       html+=`<details class="ladder"><summary>${L.title}</summary>`;
@@ -856,7 +1133,14 @@ function renderDay(id){
     html+=`<textarea class="exnote-in" placeholder="Notes — e.g. felt a pull in pec on rep 3 of set 2" oninput="updNote('${id}',${ei},this.value)">${un}</textarea>`;
     html+=`</div>`;
   });
-  html+=`<button class="btn btn-a" onclick="go(null)">Done for today</button>`;
+  if(editMode){
+    html+=`<button class="btn btn-a" onclick="openAdd('${id}')">+ Add exercise</button>`;
+    if(day.custom){ html+=`<button class="btn btn-g" style="color:var(--warn);" onclick="deleteWorkout('${id}')">Delete this workout</button>`; }
+    else if(PROGRAM.days.some(x=>x.id===id)){ html+=`<button class="btn btn-g" onclick="resetDayToDefault('${id}')">Reset day to default program</button>`; }
+    html+=`<button class="btn btn-g" onclick="toggleEditMode()">Done editing</button>`;
+  } else {
+    html+=`<button class="btn btn-a" onclick="go(null)">Done for today</button>`;
+  }
   v.innerHTML=html;
 }
 
@@ -1106,8 +1390,8 @@ function setBW(val){ SETTINGS.bw = (val===""?0:Number(val)); saveSettings(); }
 /* ---------- BACKUP: EXPORT / IMPORT ---------- */
 function pad2(n){ return String(n).padStart(2,"0"); }
 function exportData(){
-  const payload={ app:"calisthenics", version:1, exportedAt:new Date().toISOString(),
-    data:{ log:DB, history:HIST, settings:SETTINGS } };
+  const payload={ app:"calisthenics", version:2, exportedAt:new Date().toISOString(),
+    data:{ log:DB, history:HIST, settings:SETTINGS, plan:PLAN, super:SUPER, swaps:SWAPS } };
   const json=JSON.stringify(payload,null,2);
   const blob=new Blob([json],{type:"application/json"});
   const url=URL.createObjectURL(blob);
@@ -1136,7 +1420,10 @@ function importData(input){
       DB = d.log || {};
       HIST = d.history || {};
       SETTINGS = d.settings || {};
-      saveAll(DB); saveHist(); saveSettings();
+      PLAN = d.plan || {};
+      SUPER = d.super || {};
+      SWAPS = d.swaps || {};
+      saveAll(DB); saveHist(); saveSettings(); savePlan(); saveSuper(); saveSwaps();
       current=null; selDate=null;
       render();
       toast("Backup restored");
@@ -1179,7 +1466,7 @@ function toggleSign(id,ei,s){
   DB[id][ei].ts=Date.now(); DB[id][ei].date=todayKey();
   saveAll(DB); recordHistory(id); renderDay(id);
 }
-function go(id){ current=id; window.scrollTo(0,0); render(); }
+function go(id){ if(id===null) editMode=false; current=id; window.scrollTo(0,0); render(); }
 
 function ensure(id,ei){
   if(!DB[id]) DB[id]={};
@@ -1240,7 +1527,7 @@ function freshenDay(id){
 }
 // "Last:" reads the most recent PRIOR session from history (never today's).
 function lastSession(id,ei){
-  const day=PROGRAM.days.find(d=>d.id===id);
+  const day=dayById(id);
   if(!day||!day.exercises[ei]) return null;
   const name=exAt(id,ei).n;
   const tk=todayKey();
