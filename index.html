@@ -237,6 +237,12 @@
   .detrow{border-bottom:1px solid var(--line);padding:6px 0;}
   .detrow:last-child{border-bottom:none;}
   .detnote{font-size:12px;color:var(--muted);font-style:italic;line-height:1.45;padding-top:4px;}
+  /* program bar */
+  .progbar{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--panel);
+    border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:14px;cursor:pointer;}
+  .progbar-k{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;}
+  .progbar-v{font-size:15px;font-weight:800;margin-top:2px;}
+  .progbar-x{font-size:12.5px;font-weight:700;color:var(--accent);flex:none;}
   /* assisted / negative load */
   .field.wt{padding-right:44px;}
   .field.assist{color:var(--accent2);}
@@ -422,11 +428,87 @@ const PROGRAM = {
   }
 };
 
-// name -> { unit, bw, ladder } lookup (fallback for older history snapshots)
+/* ---------- 6-DAY PPL PROGRAM ----------
+   Push / Pull / Squat / Push / Pull / Hinge — hypertrophy + strength.
+   Equipment: rings, dip bar, pull-up bar, resistance bands, optional weighted vest.
+   Strength days: low reps, long rest, add the vest. Volume days: higher reps,
+   shorter rest, chase near-failure. Core folded into every day. Distinct day IDs
+   (p1-p6) so its logs stay separate from the classic program. */
+const PPL6_DAYS=[
+  { id:"p1", tag:"Day 1", name:"Push · Strength", type:"work",
+    desc:"Heavy pressing. Low reps, long rest, vest.",
+    exercises:[
+      {n:"Weighted Dips", sets:5, reps:"4-6", rest:150, bw:1.0, ic:"dip", note:"Add the vest. Full depth, control the bottom, leave 1 rep in the tank."},
+      {n:"Ring Dips", sets:4, reps:"6-10", rest:105, bw:1.0, ic:"dip", note:"Rings turned out at lockout. Unstable = more chest and stabilizer work."},
+      {n:"Pseudo-Planche Push-Ups", sets:4, reps:"6-10", rest:90, bw:0.8, ic:"pushup", note:"Hands by the hips, lean forward. Straight-arm shoulder strength."},
+      {n:"Pike Push-Ups", sets:3, reps:"8-12", rest:75, bw:0.7, ic:"pushup", note:"Hips high, head to floor. Elevate the feet to progress toward HSPU."},
+      {n:"Ring Tricep Extensions", sets:3, reps:"10-15", rest:60, bw:0.45, ic:"extension", note:"Walk the feet back to load. Lock out hard at the top."},
+      {n:"Hollow Body Hold", sets:3, reps:"20-40 sec", rest:45, bw:0.4, unit:"sec", ic:"plank", note:"Low back pressed to the floor. Anti-extension core."}
+    ]},
+  { id:"p2", tag:"Day 2", name:"Pull · Strength", type:"work",
+    desc:"Heavy pulling. Low reps, long rest, vest.",
+    exercises:[
+      {n:"Weighted Pull-Ups", sets:5, reps:"4-6", rest:150, bw:1.0, ic:"pullup", note:"Add the vest. Dead hang to chin over the bar. Band-assist if needed (log as assist)."},
+      {n:"Ring Rows (feet elevated)", sets:4, reps:"6-10", rest:105, bw:0.65, ic:"row", note:"Feet up, body straight, pull to the sternum, pause 1 second."},
+      {n:"Archer Pull-Ups", sets:3, reps:"4-6 / side", rest:105, bw:1.0, ic:"pullup", note:"Pull to one side, other arm straight. One-arm pull-up progression."},
+      {n:"Ring Bicep Curls", sets:3, reps:"8-12", rest:60, bw:0.4, ic:"curl", note:"Walk the feet forward to load. Keep the elbows still."},
+      {n:"Ring Face Pulls", sets:3, reps:"12-15", rest:60, bw:0.4, ic:"row", note:"Elbows high, pull to the forehead. Rear delts and shoulder health."},
+      {n:"Hanging Leg Raises", sets:3, reps:"8-12", rest:60, bw:0.5, ic:"hang", note:"Straight legs if you can. No swing — control the lower."}
+    ]},
+  { id:"p3", tag:"Day 3", name:"Squat · Legs", type:"work",
+    desc:"Knee-dominant. Quads and single-leg strength.",
+    exercises:[
+      {n:"Bulgarian Split Squat", sets:4, reps:"6-10 / leg", rest:120, bw:0.85, ic:"lunge", note:"Rear foot on a bench. Hold the vest to load. Main strength move."},
+      {n:"Squat Progression", sets:4, reps:"6-12", rest:120, bw:0.6, ladder:"squat", ic:"squat", note:"Pick your ladder stage. Work toward the full pistol."},
+      {n:"Step-Ups", sets:3, reps:"10-12 / leg", rest:75, bw:0.7, ic:"lunge", note:"Knee-height box. Drive through the heel. Add the vest."},
+      {n:"Wall Sit", sets:3, reps:"30-60 sec", rest:60, bw:0.6, unit:"sec", ic:"squat", note:"Thighs parallel. Vest on the lap to make it harder."},
+      {n:"Single-Leg Calf Raise", sets:4, reps:"10-15 / leg", rest:45, bw:0.5, ic:"calf", note:"Full range on a step. Add the vest to progress."},
+      {n:"Hanging Knee Raises", sets:3, reps:"10-15", rest:45, bw:0.5, ic:"hang", note:"Slow and controlled. Hang from the pull-up bar."}
+    ]},
+  { id:"p4", tag:"Day 4", name:"Push · Volume", type:"work",
+    desc:"Hypertrophy. Higher reps, shorter rest, near failure.",
+    exercises:[
+      {n:"Ring Push-Ups", sets:4, reps:"10-15", rest:75, bw:0.65, ic:"pushup", note:"Turn the rings out at the top. Elevate the feet to progress. Chase the pump."},
+      {n:"Dips", sets:4, reps:"8-12", rest:75, bw:1.0, ic:"dip", note:"Bodyweight or light vest. Lean forward for chest, controlled full range."},
+      {n:"Elevated Pike Push-Ups", sets:3, reps:"8-12", rest:75, bw:0.75, ic:"pushup", note:"Feet up on a box. Near-vertical press for the shoulders."},
+      {n:"Planche Lean", sets:4, reps:"15-30 sec", rest:60, bw:0.8, unit:"sec", ic:"plank", note:"Shoulders past the hands, arms straight. Lean as far as you can hold."},
+      {n:"Band Triceps Extension", sets:3, reps:"12-20", rest:45, bw:0.45, ic:"extension", note:"Anchor a band overhead or use the rings. Squeeze the lockout."},
+      {n:"Plank Shoulder Taps", sets:3, reps:"30-45 sec", rest:45, bw:0.5, unit:"sec", ic:"plank", note:"Tap the opposite shoulder, keep the hips quiet. Anti-rotation."}
+    ]},
+  { id:"p5", tag:"Day 5", name:"Pull · Volume", type:"work",
+    desc:"Hypertrophy. Higher reps, shorter rest, near failure.",
+    exercises:[
+      {n:"Pull-Ups", sets:4, reps:"8-12", rest:90, bw:1.0, ic:"pullup", note:"Vary the grip week to week. Full range, no kipping."},
+      {n:"Ring Rows", sets:4, reps:"10-15", rest:60, bw:0.6, ic:"row", note:"Lower the feet to make it harder. Squeeze the shoulder blades."},
+      {n:"Chin-Ups", sets:3, reps:"8-12", rest:75, bw:1.0, ic:"pullup", note:"Underhand grip to bias the biceps. Slow negatives."},
+      {n:"Ring Bicep Curls", sets:3, reps:"10-15", rest:45, bw:0.4, ic:"curl", note:"Walk the feet forward to load. Control the lowering."},
+      {n:"Ring Face Pulls", sets:3, reps:"15-20", rest:45, bw:0.4, ic:"row", note:"High elbows. Rear delts and upper back — big for posture."},
+      {n:"Scapular Pull-Ups", sets:3, reps:"8-12", rest:45, bw:1.0, ic:"pullup", note:"Just the shrug at the bottom. Builds the hang and shoulder health."}
+    ]},
+  { id:"p6", tag:"Day 6", name:"Hinge · Legs", type:"work",
+    desc:"Hip-dominant. Hamstrings, glutes, posterior chain.",
+    exercises:[
+      {n:"Nordic Curl Progression", sets:4, reps:"5-8", rest:120, bw:0.9, ladder:"nordic", ic:"hinge", note:"Anchor the feet; band-assist to start. Lower as slow as you can."},
+      {n:"Single-Leg RDL", sets:4, reps:"8-12 / leg", rest:90, bw:0.85, ic:"hinge", note:"Hinge on one leg, hold the vest to the chest. Feel the hamstring stretch."},
+      {n:"Ring Hamstring Curls", sets:3, reps:"10-15", rest:75, bw:0.5, ic:"bridge", note:"Heels in the rings, hips up, curl the rings toward you."},
+      {n:"Hip Thrust", sets:3, reps:"10-15", rest:75, bw:0.6, ic:"bridge", note:"Shoulders on a bench. Single-leg or vest on the hips. Full lockout, squeeze."},
+      {n:"Back Extension Hold", sets:3, reps:"20-40 sec", rest:45, bw:0.5, unit:"sec", ic:"hinge", note:"Superman on the floor or a Roman chair. Squeeze the glutes."},
+      {n:"Standing Calf Raise", sets:4, reps:"12-20", rest:45, bw:0.5, ic:"calf", note:"Bent-knee reps bias the soleus. Full range every rep."}
+    ]},
+  { id:"prest", tag:"Day 7", name:"Rest", type:"rest", desc:"Full rest, a walk, or easy mobility." }
+];
+
+// Selectable programs. Distinct day IDs keep each program's logs separate.
+const PROGRAMS={
+  classic:{ id:"classic", name:"Strength & Mass", desc:"4-5 days/week · the original split", days:PROGRAM.days, ladders:PROGRAM.ladders },
+  ppl6:{ id:"ppl6", name:"6-Day PPL", desc:"Push · Pull · Squat · Push · Pull · Hinge", days:PPL6_DAYS, ladders:PROGRAM.ladders }
+};
+
+// name -> { unit, bw, ladder } lookup (fallback for older history snapshots), across all programs
 const META={};
-PROGRAM.days.forEach(d=>{ if(d.exercises) d.exercises.forEach(ex=>{
-  META[ex.n]={ unit:ex.unit||"reps", bw:ex.bw||0, ladder:ex.ladder||null };
-});});
+Object.keys(PROGRAMS).forEach(pid=>{ PROGRAMS[pid].days.forEach(d=>{ if(d.exercises) d.exercises.forEach(ex=>{
+  if(!META[ex.n]) META[ex.n]={ unit:ex.unit||"reps", bw:ex.bw||0, ladder:ex.ladder||null };
+}); }); });
 
 // Line-art movement icons (schematic cues, grouped by movement pattern).
 const IB = '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">';
@@ -687,26 +769,59 @@ let SWAPS=loadJSON(SWKEY), SUPER=loadJSON(SSKEY);
 function saveSwaps(){ saveJSON(SWKEY,SWAPS); }
 function saveSuper(){ saveJSON(SSKEY,SUPER); }
 
-/* ---------- EDITABLE PLAN ----------
-   The plan (days + exercises) is editable. On first modification, the built-in
-   PROGRAM is copied into localStorage and becomes the source of truth. */
-const PKEY="calisthenics_plan_v1";
-let PLAN=loadJSON(PKEY);
-function days(){ return (PLAN && PLAN.days && PLAN.days.length) ? PLAN.days : PROGRAM.days; }
+/* ---------- PROGRAMS + EDITABLE PLANS ----------
+   Multiple selectable programs. Each program's per-user customizations are stored
+   under PLANS[programId]. On first edit of the active program, its built-in days
+   are copied in and become the source of truth for that program. */
+const PLANSKEY="calisthenics_plans_v1";
+let PLANS=loadJSON(PLANSKEY);
+// migrate the old single-plan (classic) storage if present
+(function(){ const old=loadJSON("calisthenics_plan_v1"); if(old && old.days && old.days.length && !PLANS.classic){ PLANS.classic=old; saveJSON(PLANSKEY,PLANS); } })();
+function progId(){ return (PROGRAMS[SETTINGS.programId] ? SETTINGS.programId : "classic"); }
+function activeProgram(){ return PROGRAMS[progId()]; }
+function savePlans(){ saveJSON(PLANSKEY,PLANS); }
+function days(){ const p=PLANS[progId()]; return (p && p.days && p.days.length) ? p.days : activeProgram().days; }
 function dayById(id){ return days().find(d=>d.id===id); }
-function savePlan(){ saveJSON(PKEY,PLAN); }
+function builtinDays(){ return activeProgram().days; }
+function ladders(){ return activeProgram().ladders || PROGRAM.ladders || {}; }
 function materializePlan(){
-  if(PLAN && PLAN.days && PLAN.days.length) return;
-  PLAN={ days: JSON.parse(JSON.stringify(PROGRAM.days)) };
-  // bake any existing swaps into the plan, then retire the overlay
-  Object.keys(SWAPS).forEach(k=>{
-    const p=k.split(":"), d=PLAN.days.find(x=>x.id===p[0]);
-    if(d && d.exercises && d.exercises[+p[1]]){
-      d.exercises[+p[1]]=Object.assign({},d.exercises[+p[1]],SWAPS[k],{ladder:null});
-    }
+  const id=progId();
+  if(PLANS[id] && PLANS[id].days && PLANS[id].days.length) return;
+  PLANS[id]={ days: JSON.parse(JSON.stringify(activeProgram().days)) };
+  // legacy: bake any classic swap overlay into the classic plan, then retire it
+  if(id==="classic"){
+    Object.keys(SWAPS).forEach(k=>{
+      const p=k.split(":"), d=PLANS[id].days.find(x=>x.id===p[0]);
+      if(d && d.exercises && d.exercises[+p[1]]){
+        d.exercises[+p[1]]=Object.assign({},d.exercises[+p[1]],SWAPS[k],{ladder:null});
+      }
+    });
+    SWAPS={}; saveSwaps();
+  }
+  savePlans();
+}
+function planDay(id){ materializePlan(); return PLANS[progId()].days.find(d=>d.id===id); }
+function planDays(){ materializePlan(); return PLANS[progId()].days; }
+function switchProgram(id){
+  if(!PROGRAMS[id]) return;
+  SETTINGS.programId=id; saveSettings();
+  current=null; editMode=false; closeModal(); window.scrollTo(0,0); render();
+  toast(PROGRAMS[id].name+" selected");
+}
+function openPrograms(){
+  let html=`<button class="modal-x" onclick="closeModal()">&#10005;</button>
+    <div class="modal-h">Choose a program</div>
+    <div class="modal-sub">Each program keeps its own plan and logs. Switch any time.</div><div class="modal-list">`;
+  Object.keys(PROGRAMS).forEach(id=>{
+    const p=PROGRAMS[id], on=id===progId();
+    const nd=(PLANS[id]&&PLANS[id].days?PLANS[id].days:p.days).filter(d=>d.type!=="rest").length;
+    html+=`<div class="exrow" onclick="switchProgram('${id}')" style="${on?'border:1px solid var(--accent);border-radius:12px;':''}">
+      <div class="er-txt"><div class="er-n">${esc(p.name)}${on?' ✓':''}</div><div class="er-c">${esc(p.desc)} · ${nd} training days</div></div>
+      ${on?'<span class="ertag">Active</span>':''}</div>`;
   });
-  SWAPS={}; saveSwaps();
-  savePlan();
+  html+=`</div>`;
+  document.getElementById("modalSheet").innerHTML=html;
+  document.getElementById("modal").classList.add("show");
 }
 // resolve the exercise at a slot (legacy swap overlay applies only pre-materialization)
 function exAt(dayId,ei){
@@ -826,10 +941,14 @@ function syncNav(){ document.querySelectorAll(".navitem[data-tab]").forEach(b=>{
 
 /* ---------- TRAIN: DAY LIST ---------- */
 function renderTrain(){
+  const prog=activeProgram();
   document.getElementById("hbar").innerHTML =
-    '<div class="htitle">Train</div><div class="hsub">Strength &amp; mass · 4-5 days/week</div>';
+    `<div class="htitle">Train</div><div class="hsub">${esc(prog.name)} · ${esc(prog.desc)}</div>`;
   const v=document.getElementById("view");
-  let html='<p class="intro">Tap a day to train. Your sets, reps, and vest weight save on this phone.</p>';
+  let html=`<div class="progbar" onclick="openPrograms()">
+    <div><div class="progbar-k">Program</div><div class="progbar-v">${esc(prog.name)}</div></div>
+    <span class="progbar-x">Change ›</span></div>`;
+  html+='<p class="intro">Tap a day to train. Your sets, reps, and vest weight save on this phone.</p>';
   days().forEach(day=>{
     if(day.type==="rest"){
       html+=`<div class="card daycard rest"><div><div class="daynum">${day.tag}</div>
@@ -943,7 +1062,7 @@ function openAdd(dayId){
 function openSwap(dayId,ei){
   swapCtx={dayId,ei,mode:"swap"}; swapQuery="";
   const cur=exAt(dayId,ei);
-  const origDay=PROGRAM.days.find(d=>d.id===dayId);
+  const origDay=builtinDays().find(d=>d.id===dayId);
   const orig=(origDay&&origDay.exercises&&origDay.exercises[ei])?origDay.exercises[ei].n:null;
   let html=`<button class="modal-x" onclick="closeModal()">&#10005;</button>
     <div class="modal-h">Swap exercise</div>
@@ -975,23 +1094,21 @@ function libToPlanEx(it){
 }
 function pickFromLib(idx){
   const it=LIBRARY[idx], dayId=swapCtx.dayId;
-  materializePlan();
-  const d=PLAN.days.find(x=>x.id===dayId);
+  const d=planDay(dayId);
   if(swapCtx.mode==="add"){
     d.exercises.push(libToPlanEx(it));
-    savePlan(); closeModal(); renderDay(dayId); toast("Added "+it.n);
+    savePlans(); closeModal(); renderDay(dayId); toast("Added "+it.n);
   } else {
     const old=d.exercises[swapCtx.ei];
     d.exercises[swapCtx.ei]=Object.assign(libToPlanEx(it), {sets:old.sets||3, rest:old.rest||90});
-    savePlan(); closeModal(); renderDay(dayId); toast("Swapped to "+it.n);
+    savePlans(); closeModal(); renderDay(dayId); toast("Swapped to "+it.n);
   }
 }
 function resetSwap(){
   const {dayId,ei}=swapCtx;
-  materializePlan();
-  const d=PLAN.days.find(x=>x.id===dayId);
-  const od=PROGRAM.days.find(x=>x.id===dayId);
-  if(od && od.exercises && od.exercises[ei]){ d.exercises[ei]=JSON.parse(JSON.stringify(od.exercises[ei])); savePlan(); }
+  const d=planDay(dayId);
+  const od=builtinDays().find(x=>x.id===dayId);
+  if(od && od.exercises && od.exercises[ei]){ d.exercises[ei]=JSON.parse(JSON.stringify(od.exercises[ei])); savePlans(); }
   delete SWAPS[dayId+":"+ei]; saveSwaps();
   closeModal(); renderDay(dayId); toast("Reset to original");
 }
@@ -1001,52 +1118,47 @@ function closeModal(){ document.getElementById("modal").classList.remove("show")
 let editMode=false;
 function toggleEditMode(){ editMode=!editMode; renderDay(current); }
 function removeEx(id,ei){
-  const d=dayById(id);
   if(!confirm("Remove "+exAt(id,ei).n+" from this workout? Today's unlogged inputs for this day will be cleared (history is safe).")) return;
-  materializePlan();
-  PLAN.days.find(x=>x.id===id).exercises.splice(ei,1);
-  clearDayWork(id); savePlan(); renderDay(id);
+  planDay(id).exercises.splice(ei,1);
+  clearDayWork(id); savePlans(); renderDay(id);
 }
 function moveEx(id,ei,dir){
-  materializePlan();
-  const arr=PLAN.days.find(x=>x.id===id).exercises;
+  const arr=planDay(id).exercises;
   const j=ei+dir; if(j<0||j>=arr.length) return;
   const t=arr[ei]; arr[ei]=arr[j]; arr[j]=t;
-  clearDayWork(id); savePlan(); renderDay(id);
+  clearDayWork(id); savePlans(); renderDay(id);
 }
 function editField(id,ei,f,v){
-  materializePlan();
-  const ex=PLAN.days.find(x=>x.id===id).exercises[ei];
+  const ex=planDay(id).exercises[ei];
   if(f==="sets"){ ex.sets=Math.max(1,Math.min(10,Number(v)||1)); }
   else if(f==="rest"){ ex.rest=Math.max(0,Number(v)||0); }
   else if(f==="reps"){ ex.reps=v||"8-12"; }
-  savePlan(); renderDay(id);
+  savePlans(); renderDay(id);
 }
 function newWorkout(){
   const name=prompt("Name your workout (e.g. Grip & Core Friday):");
   if(!name||!name.trim()) return;
-  materializePlan();
   const id="c"+Date.now().toString(36);
-  PLAN.days.push({ id:id, tag:"Custom", name:name.trim(), type:"work", custom:true,
+  planDays().push({ id:id, tag:"Custom", name:name.trim(), type:"work", custom:true,
     desc:"Custom workout", exercises:[] });
-  savePlan(); editMode=true; go(id);
+  savePlans(); editMode=true; go(id);
 }
 function deleteWorkout(id){
   const d=dayById(id);
   if(!confirm("Delete the workout \""+d.name+"\"? Its logged history stays in the calendar.")) return;
-  materializePlan();
-  PLAN.days=PLAN.days.filter(x=>x.id!==id);
-  clearDayWork(id); savePlan();
+  const pid=progId();
+  PLANS[pid].days=planDays().filter(x=>x.id!==id);
+  clearDayWork(id); savePlans();
   editMode=false; current=null; render(); toast("Workout deleted");
 }
 function resetDayToDefault(id){
-  const od=PROGRAM.days.find(x=>x.id===id);
+  const od=builtinDays().find(x=>x.id===id);
   if(!od){ toast("No default for a custom workout"); return; }
   if(!confirm("Reset this day to the original program?")) return;
-  materializePlan();
-  const i=PLAN.days.findIndex(x=>x.id===id);
-  PLAN.days[i]=JSON.parse(JSON.stringify(od));
-  clearDayWork(id); savePlan(); renderDay(id); toast("Day reset to default");
+  const arr=planDays();
+  const i=arr.findIndex(x=>x.id===id);
+  arr[i]=JSON.parse(JSON.stringify(od));
+  clearDayWork(id); savePlans(); renderDay(id); toast("Day reset to default");
 }
 
 /* ---------- SUPERSETS ---------- */
@@ -1100,7 +1212,7 @@ function renderDay(id){
       return;
     }
     if(ex.ladder){
-      const L=PROGRAM.ladders[ex.ladder];
+      const L=ladders()[ex.ladder];
       html+=`<details class="ladder"><summary>${L.title}</summary>`;
       L.rows.forEach(r=>{ html+=`<div class="lrow"><span class="lstage">${r[0]}</span><span><b>${r[1]}</b></span><span>${r[2]}</span></div>`; });
       html+=`</details>`;
@@ -1136,7 +1248,7 @@ function renderDay(id){
   if(editMode){
     html+=`<button class="btn btn-a" onclick="openAdd('${id}')">+ Add exercise</button>`;
     if(day.custom){ html+=`<button class="btn btn-g" style="color:var(--warn);" onclick="deleteWorkout('${id}')">Delete this workout</button>`; }
-    else if(PROGRAM.days.some(x=>x.id===id)){ html+=`<button class="btn btn-g" onclick="resetDayToDefault('${id}')">Reset day to default program</button>`; }
+    else if(builtinDays().some(x=>x.id===id)){ html+=`<button class="btn btn-g" onclick="resetDayToDefault('${id}')">Reset day to default program</button>`; }
     html+=`<button class="btn btn-g" onclick="toggleEditMode()">Done editing</button>`;
   } else {
     html+=`<button class="btn btn-a" onclick="go(null)">Done for today</button>`;
@@ -1267,7 +1379,7 @@ function progExercises(){
   Object.keys(HIST).forEach(dk=>{ const day=HIST[dk]; Object.keys(day).forEach(id=>{
     day[id].exercises.forEach(ex=>{ inHist[ex.n]=true; }); }); });
   const ordered=[];
-  PROGRAM.days.forEach(d=>{ if(d.exercises) d.exercises.forEach(ex=>{
+  days().forEach(d=>{ if(d.exercises) d.exercises.forEach(ex=>{
     if(inHist[ex.n] && ordered.indexOf(ex.n)<0) ordered.push(ex.n); }); });
   Object.keys(inHist).forEach(n=>{ if(ordered.indexOf(n)<0) ordered.push(n); });
   return ordered;
@@ -1391,7 +1503,7 @@ function setBW(val){ SETTINGS.bw = (val===""?0:Number(val)); saveSettings(); }
 function pad2(n){ return String(n).padStart(2,"0"); }
 function exportData(){
   const payload={ app:"calisthenics", version:2, exportedAt:new Date().toISOString(),
-    data:{ log:DB, history:HIST, settings:SETTINGS, plan:PLAN, super:SUPER, swaps:SWAPS } };
+    data:{ log:DB, history:HIST, settings:SETTINGS, plans:PLANS, super:SUPER, swaps:SWAPS } };
   const json=JSON.stringify(payload,null,2);
   const blob=new Blob([json],{type:"application/json"});
   const url=URL.createObjectURL(blob);
@@ -1420,10 +1532,10 @@ function importData(input){
       DB = d.log || {};
       HIST = d.history || {};
       SETTINGS = d.settings || {};
-      PLAN = d.plan || {};
+      PLANS = d.plans || (d.plan && d.plan.days ? {classic:d.plan} : {});
       SUPER = d.super || {};
       SWAPS = d.swaps || {};
-      saveAll(DB); saveHist(); saveSettings(); savePlan(); saveSuper(); saveSwaps();
+      saveAll(DB); saveHist(); saveSettings(); savePlans(); saveSuper(); saveSwaps();
       current=null; selDate=null;
       render();
       toast("Backup restored");
